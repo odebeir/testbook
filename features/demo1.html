@@ -7,16 +7,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,minimum-scale=1">
 
-  <title>Home</title>
-  <meta name="description" content="Books with Jupyter and Jekyll Jupyter Books lets you build an online book using a collection of Jupyter Notebooksand Markdown files. Its output is similar to...">
+  <title>Jupyter demo1</title>
+  <meta name="description" content="    from matplotlib import rcParams, cyclerimport matplotlib.pyplot as pltimport numpy as npplt.ion()        np.random.random((10,10))    array([[0.59020832,...">
 
-  <link rel="canonical" href="/YOUR%20URL//intro.html">
+  <link rel="canonical" href="/YOUR%20URL//features/demo1.html">
   <link rel="alternate" type="application/rss+xml" title="YOUR BOOK NAME" href="/YOUR%20URL//feed.xml">
 
-  <meta property="og:url"         content="/YOUR%20URL//intro.html" />
+  <meta property="og:url"         content="/YOUR%20URL//features/demo1.html" />
 <meta property="og:type"        content="article" />
-<meta property="og:title"       content="Home" />
-<meta property="og:description" content="Books with Jupyter and Jekyll Jupyter Books lets you build an online book using a collection of Jupyter Notebooksand Markdown files. Its output is similar to..." />
+<meta property="og:title"       content="Jupyter demo1" />
+<meta property="og:description" content="    from matplotlib import rcParams, cyclerimport matplotlib.pyplot as pltimport numpy as npplt.ion()        np.random.random((10,10))    array([[0.59020832,..." />
 <meta property="og:image"       content="YOUR%20URL/images/logo/logo.png" />
 
 <meta name="twitter:card" content="summary">
@@ -26,11 +26,11 @@
   {
   "@context": "http://schema.org",
   "@type": "NewsArticle",
-  "mainEntityOfPage": "YOUR URL//intro.html",
-  "headline": "Home",
+  "mainEntityOfPage": "YOUR URL//features/demo1.html",
+  "headline": "Jupyter demo1",
   "datePublished": "2019-09-20T13:42:08+02:00",
   "dateModified": "2019-09-20T13:42:08+02:00",
-  "description": "Books with Jupyter and Jekyll Jupyter Books lets you build an online book using a collection of Jupyter Notebooksand Markdown files. Its output is similar to...",
+  "description": "    from matplotlib import rcParams, cyclerimport matplotlib.pyplot as pltimport numpy as npplt.ion()        np.random.random((10,10))    array([[0.59020832,...",
   "author": {
     "@type": "Person",
     "name": "YOUR AUTHOR NAME"
@@ -221,7 +221,7 @@ initFunction(addThebelabButtonToCodeCells);
         theme: "abcdef"
       },
       kernelOptions: {
-        name: 'python3',
+        name: 'py3',
       }
     }
 </script>
@@ -645,7 +645,7 @@ initFunction(initPrint)
       
       
       <li class="c-sidebar__chapter">
-        <a class="c-sidebar__entry c-sidebar__entry--active"
+        <a class="c-sidebar__entry "
           href="/intro.html"
         >
           
@@ -774,7 +774,7 @@ initFunction(initPrint)
               
 
               <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
+                <a class="c-sidebar__entry c-sidebar__entry--active"
                   href="/features/demo1.html"
                 >
                   
@@ -863,7 +863,7 @@ initFunction(initPrint)
 <div class="download-buttons-dropdown">
     <button id="dropdown-button-trigger" class="interact-button"><i class="fa fa-download"></i></button>
     <div class="download-buttons">
-        <a href="/content/intro.md" download>
+        <a href="/content/features/demo1.ipynb" download>
         <button id="interact-button-download" class="interact-button">ORIG</button>
         </a>
         
@@ -894,51 +894,130 @@ initFunction(initPrint)
             <div class="c-textbook__content" id="textbook_content">
               <div class="jb_cell">
 
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Books-with-Jupyter-and-Jekyll">Books with Jupyter and Jekyll<a class="anchor-link" href="#Books-with-Jupyter-and-Jekyll"> </a></h1><p><img src="https://circleci.com/gh/jupyter/jupyter-book.svg?style=svg" class="left"></p>
-<p>Jupyter Books lets you build an online book using a collection of Jupyter Notebooks
-and Markdown files. Its output is similar to the excellent <a href="https://bookdown.org/yihui/bookdown/">Bookdown</a> tool,
-and adds extra functionality for people running a Jupyter stack.</p>
-<p>For an example of a book built with Jupyter Books, see the <a href="https://www.textbook.ds100.org/">textbook for Data 100</a> at UC Berkeley.</p>
-<p>Here are a few features of Jupyter Books</p>
-<ul>
-<li>All course content is written in markdown and Jupyter Notebooks, stored in <code>notebooks/</code></li>
-<li>The Jupyter Book repo comes packaged with helper scripts to convert these into Jekyll pages (in <code>scripts/</code>) that can be hosted for free on GitHub</li>
-<li>Pages can have <a href="https://mybinder.org">Binder</a> or JupyterHub links automatically added for interactivity.</li>
-<li>The website itself is based on Jekyll, and is highly extensible and can be freely-hosted on GitHub.</li>
-<li>There are lots of nifty HTML features under-the-hood, such as Turbolinks fast-navigation and
-click-to-copy in code cells.</li>
-</ul>
-<h2 id="Getting-started">Getting started<a class="anchor-link" href="#Getting-started"> </a></h2><p>To get started, you may be interested in the following links.
-Here are a few links of interest:</p>
-<ul>
-<li><p><strong><a href="features/features">Quickstart</a></strong> is a quick demo and overview of Jupyter Books.</p>
-</li>
-<li><p><strong><a href="guide/01_overview">The Jupyter Book Guide</a></strong>
-will step you through the process of configuring and building your own Jupyter Book.</p>
-</li>
-<li><p><strong><a href="https://github.com/jupyter/jupyter-book">The Jupyter Book template repo</a></strong> is the template
-repository you'll use as a start for your Jupyter Book.</p>
-</li>
-<li><p><strong>A demo of the Jupyter Book</strong> can be browsed via the sidebar to the left.</p>
-</li>
-</ul>
-<h2 id="Installation">Installation<a class="anchor-link" href="#Installation"> </a></h2><p>Here's a brief rundown of how to create your own Jupyter Book using this site. For a more
-complete guide, see <a href="guide/01_overview">the Jupyter Book guide</a>.</p>
-<ul>
-<li>Fork the Jupyter Book template repo</li>
-<li>Replace the demo notebooks in <code>content/</code> with your own notebooks and markdown files.</li>
-<li>Create a Table of Contents yaml file by editing <code>_data/toc.yaml</code>.</li>
-<li>Generate the Jekyll markdown for your notebooks by running <code>scripts/generate_book.py</code></li>
-<li>Push your changes to GitHub (or wherever you host your site)!</li>
-</ul>
-<h2 id="Acknowledgements">Acknowledgements<a class="anchor-link" href="#Acknowledgements"> </a></h2><p>Jupyter Books was originally created by <a href="http://www.samlau.me/">Sam Lau</a> and <a href="https://predictablynoisy.com">Chris Holdgraf</a>
-with support of the <strong>UC Berkeley Data Science Education Program and the Berkeley
-Institute for Data Science</strong>.</p>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">rcParams</span><span class="p">,</span> <span class="n">cycler</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
 
 </div>
 </div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[0.59020832, 0.30281941, 0.97471742, 0.16847998, 0.18973942,
+        0.2137434 , 0.33587379, 0.69935049, 0.54277638, 0.0631799 ],
+       [0.06805869, 0.94382463, 0.41458625, 0.08927007, 0.46513789,
+        0.51625119, 0.287553  , 0.56000146, 0.66898586, 0.88180055],
+       [0.43697955, 0.07630036, 0.88592494, 0.59113958, 0.75099287,
+        0.36773595, 0.51956629, 0.10751256, 0.50027841, 0.71473967],
+       [0.35122278, 0.86001458, 0.4849633 , 0.18722847, 0.8344685 ,
+        0.21082678, 0.76103677, 0.55039878, 0.60140844, 0.72541339],
+       [0.2644056 , 0.35627575, 0.90665596, 0.85674572, 0.27726879,
+        0.20689576, 0.37496828, 0.9290322 , 0.05021753, 0.89082079],
+       [0.39552375, 0.56412819, 0.05761692, 0.80782677, 0.05074155,
+        0.64937697, 0.98901233, 0.17506348, 0.06994155, 0.68992408],
+       [0.05818001, 0.74586171, 0.67026694, 0.53555618, 0.99312404,
+        0.09033044, 0.55824912, 0.35381021, 0.18396974, 0.90972193],
+       [0.9995978 , 0.62800865, 0.93806527, 0.08464823, 0.17231262,
+        0.96165747, 0.51573948, 0.34911976, 0.7169688 , 0.54466751],
+       [0.59269364, 0.94569854, 0.23200475, 0.94494672, 0.17470579,
+        0.75764471, 0.19048812, 0.9810106 , 0.22878643, 0.96270311],
+       [0.86918176, 0.82809171, 0.5657514 , 0.65210023, 0.58056516,
+        0.3414913 , 0.84189052, 0.52670766, 0.38735015, 0.10554912]])</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">camera</span>
+<span class="kn">import</span> <span class="nn">skimage.filters.rank</span> <span class="k">as</span> <span class="nn">skr</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">camera</span><span class="p">()</span>
+<span class="n">med</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">med</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../images/features/demo1_3_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -949,15 +1028,15 @@ Institute for Data Science</strong>.</p>
             <nav class="c-page__nav">
   
     
-    <a id="js-page__nav__prev" class="c-page__nav__prev" href="">
-      〈 <span class="u-margin-right-tiny"></span> 
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/features/notebooks.html">
+      〈 <span class="u-margin-right-tiny"></span> Jupyter notebooks
     </a>
   
 
   
     
-    <a id="js-page__nav__next" class="c-page__nav__next" href="/features/features.html">
-      Features and customization <span class="u-margin-right-tiny"></span> 〉
+    <a id="js-page__nav__next" class="c-page__nav__next" href="">
+       <span class="u-margin-right-tiny"></span> 〉
     </a>
   
 </nav>
