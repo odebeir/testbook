@@ -1,0 +1,76 @@
+<svg height="600" viewBox="25 25 600 600" width="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs><g id="Diamj"><path d="M0,-13L6.5,-6.5L-6.5,6.5L0,13L6.5,6.5L-6.5,-6.5Z"/>
+<path d="M-13,0L-6.5,6.5L6.5,-6.5L13,0L6.5,6.5L-6.5,-6.5Z" fill="#ffffff"/></g>
+<g id="Diamw"><path d="M0,-13L6.5,-6.5L-6.5,6.5L0,13L6.5,6.5L-6.5,-6.5Z" fill="#ffffff"/>
+<path d="M-13,0L-6.5,6.5L6.5,-6.5L13,0L6.5,6.5L-6.5,-6.5Z"/></g></defs>
+<rect fill="#ffffff" height="650" width="650"/>
+<g fill="#009a11" id="Rw"><g id="Ck"><rect height="50" id="X1" width="50"/>
+<rect height="50" width="50" x="50" y="50"/></g>
+<use x="100" xlink:href="#Ck"/><use x="200" xlink:href="#Ck"/>
+<use x="300" xlink:href="#Ck"/><use x="400" xlink:href="#Ck"/>
+<use x="500" xlink:href="#Ck"/><use x="600" xlink:href="#X1"/></g>
+<use xlink:href="#Rw" y="100"/><use xlink:href="#Rw" y="200"/>
+<use xlink:href="#Rw" y="300"/><use xlink:href="#Rw" y="400"/>
+<use xlink:href="#Rw" y="500"/>
+<g fill="#009a11" transform="translate(0,600)"><use xlink:href="#X1"/>
+<use x="100" xlink:href="#X1"/><use x="200" xlink:href="#X1"/>
+<use x="300" xlink:href="#X1"/><use x="400" xlink:href="#X1"/>
+<use x="500" xlink:href="#X1"/><use x="600" xlink:href="#X1"/></g>
+<g id="r50" transform="translate(0,50)"><use x="50" xlink:href="#Diamj"/>
+<use x="100" xlink:href="#Diamw"/><use x="150" xlink:href="#Diamj"/>
+<use x="200" xlink:href="#Diamw"/><use x="250" xlink:href="#Diamw"/>
+<use x="300" xlink:href="#Diamj"/><use x="350" xlink:href="#Diamw"/>
+<use x="400" xlink:href="#Diamj"/><use x="450" xlink:href="#Diamj"/>
+<use x="500" xlink:href="#Diamw"/><use x="550" xlink:href="#Diamj"/>
+<use x="600" xlink:href="#Diamw"/></g>
+<g id="r100" transform="translate(0,100)"><use x="50" xlink:href="#Diamj"/>
+<use x="100" xlink:href="#Diamj"/><use x="150" xlink:href="#Diamw"/>
+<use x="200" xlink:href="#Diamj"/><use x="250" xlink:href="#Diamw"/>
+<use x="300" xlink:href="#Diamw"/><use x="350" xlink:href="#Diamj"/>
+<use x="400" xlink:href="#Diamw"/><use x="450" xlink:href="#Diamj"/>
+<use x="500" xlink:href="#Diamj"/><use x="550" xlink:href="#Diamw"/>
+<use x="600" xlink:href="#Diamj"/></g>
+<g id="r150" transform="translate(0,150)"><use x="50" xlink:href="#Diamw"/>
+<use x="100" xlink:href="#Diamj"/><use x="150" xlink:href="#Diamj"/>
+<use x="200" xlink:href="#Diamw"/><use x="250" xlink:href="#Diamj"/>
+<use x="300" xlink:href="#Diamw"/><use x="350" xlink:href="#Diamw"/>
+<use x="400" xlink:href="#Diamj"/><use x="450" xlink:href="#Diamw"/>
+<use x="500" xlink:href="#Diamj"/><use x="550" xlink:href="#Diamj"/>
+<use x="600" xlink:href="#Diamw"/></g>
+<g id="r200" transform="translate(0,200)"><use x="50" xlink:href="#Diamj"/>
+<use x="100" xlink:href="#Diamw"/><use x="150" xlink:href="#Diamj"/>
+<use x="200" xlink:href="#Diamj"/><use x="250" xlink:href="#Diamw"/>
+<use x="300" xlink:href="#Diamj"/><use x="350" xlink:href="#Diamw"/>
+<use x="400" xlink:href="#Diamw"/><use x="450" xlink:href="#Diamj"/>
+<use x="500" xlink:href="#Diamw"/><use x="550" xlink:href="#Diamj"/>
+<use x="600" xlink:href="#Diamj"/></g>
+<g transform="translate(0,250)"><use x="50" xlink:href="#Diamw"/>
+<use x="100" xlink:href="#Diamj"/><use x="150" xlink:href="#Diamw"/>
+<use x="200" xlink:href="#Diamj"/><use x="250" xlink:href="#Diamj"/>
+<use x="300" xlink:href="#Diamw"/><use x="350" xlink:href="#Diamj"/>
+<use x="400" xlink:href="#Diamw"/><use x="450" xlink:href="#Diamw"/>
+<use x="500" xlink:href="#Diamj"/><use x="550" xlink:href="#Diamw"/>
+<use x="600" xlink:href="#Diamj"/></g>
+<g transform="translate(0,300)"><use x="50" xlink:href="#Diamw"/>
+<use x="100" xlink:href="#Diamw"/><use x="150" xlink:href="#Diamj"/>
+<use x="200" xlink:href="#Diamw"/><use x="250" xlink:href="#Diamj"/>
+<use x="300" xlink:href="#Diamj"/><use x="350" xlink:href="#Diamw"/>
+<use x="400" xlink:href="#Diamj"/><use x="450" xlink:href="#Diamw"/>
+<use x="500" xlink:href="#Diamw"/><use x="550" xlink:href="#Diamj"/>
+<use x="600" xlink:href="#Diamw"/></g>
+<g transform="translate(0,350)"><use x="50" xlink:href="#Diamj"/>
+<use x="100" xlink:href="#Diamw"/><use x="150" xlink:href="#Diamw"/>
+<use x="200" xlink:href="#Diamj"/><use x="250" xlink:href="#Diamw"/>
+<use x="300" xlink:href="#Diamj"/><use x="350" xlink:href="#Diamj"/>
+<use x="400" xlink:href="#Diamw"/><use x="450" xlink:href="#Diamj"/>
+<use x="500" xlink:href="#Diamw"/><use x="550" xlink:href="#Diamw"/>
+<use x="600" xlink:href="#Diamj"/></g>
+<g transform="translate(0,400)"><use x="50" xlink:href="#Diamw"/>
+<use x="100" xlink:href="#Diamj"/><use x="150" xlink:href="#Diamw"/>
+<use x="200" xlink:href="#Diamw"/><use x="250" xlink:href="#Diamj"/>
+<use x="300" xlink:href="#Diamw"/><use x="350" xlink:href="#Diamj"/>
+<use x="400" xlink:href="#Diamj"/><use x="450" xlink:href="#Diamw"/>
+<use x="500" xlink:href="#Diamj"/><use x="550" xlink:href="#Diamw"/>
+<use x="600" xlink:href="#Diamw"/></g>
+<use xlink:href="#r50" y="400"/><use xlink:href="#r100" y="400"/>
+<use xlink:href="#r150" y="400"/><use xlink:href="#r200" y="400"/></svg>
