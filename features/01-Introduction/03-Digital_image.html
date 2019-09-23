@@ -11,7 +11,7 @@
   <meta name="description" content="    from IPython.display import HTML,Image,SVG,YouTubeVideo    Image representation A digital image is discrete. It means that there is somewhere in the acqu...">
 
   <link rel="canonical" href="/YOUR%20URL//features/01-Introduction/03-Digital_image.html">
-  <link rel="alternate" type="application/rss+xml" title="YOUR BOOK NAME" href="/YOUR%20URL//feed.xml">
+  <link rel="alternate" type="application/rss+xml" title="INFO-H-500" href="/YOUR%20URL//feed.xml">
 
   <meta property="og:url"         content="/YOUR%20URL//features/01-Introduction/03-Digital_image.html" />
 <meta property="og:type"        content="article" />
@@ -28,12 +28,12 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//features/01-Introduction/03-Digital_image.html",
   "headline": "Digital image",
-  "datePublished": "2019-09-23T18:38:12+02:00",
-  "dateModified": "2019-09-23T18:38:12+02:00",
+  "datePublished": "2019-09-23T18:39:35+02:00",
+  "dateModified": "2019-09-23T18:39:35+02:00",
   "description": "    from IPython.display import HTML,Image,SVG,YouTubeVideo    Image representation A digital image is discrete. It means that there is somewhere in the acqu...",
   "author": {
     "@type": "Person",
-    "name": "YOUR AUTHOR NAME"
+    "name": "Olivier DEBEIR"
   },
   "publisher": {
     "@type": "Organization",
@@ -179,134 +179,6 @@ initFunction(findInputCells);
 
   <!-- Load Thebelab for interactive widgets -->
   <!-- Include Thebelab for interactive code if it's enabled -->
-
-
-<!-- Display Thebelab button in each code cell -->
-<script>
-/**
- * Set up thebelab button for code blocks
- */
-
-const thebelabCellButton = id =>
-  `<a id="thebelab-cell-button-${id}" class="btn thebebtn o-tooltip--left" data-tooltip="Interactive Mode">
-    <img src="/assets/images/edit-button.svg" alt="Start interactive mode">
-  </a>`
-
-
-const addThebelabButtonToCodeCells =  () => {
-
-  const codeCells = document.querySelectorAll('div.input_area > div.highlight:not(.output) pre')
-  codeCells.forEach((codeCell, index) => {
-    const id = codeCellId(index)
-    codeCell.setAttribute('id', id)
-    if (document.getElementById("thebelab-cell-button-" + id) == null) {
-      codeCell.insertAdjacentHTML('afterend', thebelabCellButton(id));
-    }
-  })
-}
-
-initFunction(addThebelabButtonToCodeCells);
-</script>
-
-
-
-<script type="text/x-thebe-config">
-    {
-      requestKernel: true,
-      binderOptions: {
-        repo: 'YOUR-ORG/YOUR-REPO',
-        ref: 'gh-pages',
-      },
-      codeMirrorConfig: {
-        theme: "abcdef"
-      },
-      kernelOptions: {
-        name: 'python3',
-      }
-    }
-</script>
-<script src="https://unpkg.com/thebelab@0.4.0/lib/index.js" async></script>
-<script>
-    /**
-     * Add attributes to Thebelab blocks
-     */
-
-    const initThebelab = () => {
-        const addThebelabToCodeCells = () => {
-            console.log("Adding thebelab to code cells...");
-            // If Thebelab hasn't loaded, wait a bit and try again. This
-            // happens because we load ClipboardJS asynchronously.
-            if (window.thebelab === undefined) {
-                setTimeout(addThebelabToCodeCells, 250)
-            return
-            }
-
-            // If we already detect a Thebelab cell, don't re-run
-            if (document.querySelectorAll('div.thebelab-cell').length > 0) {
-                return;
-            }
-
-            // Find all code cells, replace with Thebelab interactive code cells
-            const codeCells = document.querySelectorAll('.input_area pre')
-            codeCells.forEach((codeCell, index) => {
-                const id = codeCellId(index)
-                codeCell.setAttribute('data-executable', 'true')
-
-                // Figure out the language it uses and add this too
-                var parentDiv = codeCell.parentElement.parentElement;
-                var arrayLength = parentDiv.classList.length;
-                for (var ii = 0; ii < arrayLength; ii++) {
-                    var parts = parentDiv.classList[ii].split('language-');
-                    if (parts.length === 2) {
-                        // If found, assign dataLanguage and break the loop
-                        var dataLanguage = parts[1];
-                        break;
-                    }
-                }
-                codeCell.setAttribute('data-language', dataLanguage)
-
-                // If the code cell is hidden, show it
-                var inputCheckbox = document.querySelector(`input#hidebtn${codeCell.id}`);
-                if (inputCheckbox !== null) {
-                    setCodeCellVisibility(inputCheckbox, 'visible');
-                }
-            });
-
-            // Remove the event listener from the page so keyboard press doesn't
-            // Change page
-            document.removeEventListener('keydown', initPageNav)
-            keyboardListener = false;
-
-            // Init thebelab
-            thebelab.bootstrap();
-
-            // Remove copy buttons since they won't work anymore
-            const copyAndThebeButtons = document.querySelectorAll('.copybtn, .thebebtn')
-            copyAndThebeButtons.forEach((button, index) => {
-                button.remove();
-            });
-
-            // Remove outputs since they'll be stale
-            const outputs = document.querySelectorAll('.output *, .output')
-            outputs.forEach((output, index) => {
-                output.remove();
-            });
-        }
-
-        // Add event listener for the function to modify code cells
-        const thebelabButtons = document.querySelectorAll('[id^=thebelab], [id$=thebelab]')
-        thebelabButtons.forEach((thebelabButton,index) => {
-            if (thebelabButton === null) {
-                setTimeout(initThebelab, 250)
-                return
-            };
-            thebelabButton.addEventListener('click', addThebelabToCodeCells);
-        });
-    }
-
-    // Initialize Thebelab
-    initFunction(initThebelab);
-</script>
 
 
 
@@ -633,7 +505,7 @@ initFunction(initPrint)
 
 <nav id="js-sidebar" class="c-textbook__sidebar">
   <a href="https://jupyter.org/jupyter-book/"><img src="/images/logo/logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
-  <h2 class="c-sidebar__title">YOUR BOOK NAME</h2>
+  <h2 class="c-sidebar__title">INFO-H-500</h2>
   <ul class="c-sidebar__chapters">
     
       
@@ -905,8 +777,7 @@ initFunction(initPrint)
     </div>
 </div>
 
-  <button id="interact-button-thebelab" class="interact-button">Thebelab</button>
-
+  
   
   
   
