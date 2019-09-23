@@ -67,4 +67,10 @@
   - title: Biological vision
     url: /features/01-Introduction/01-Biological_vision
     not_numbered: true
+  - title: Image sensors
+    url: /features/01-Introduction/02-Image_sensors
+    not_numbered: true
+  - title: Digital image
+    url: /features/01-Introduction/03-Digital_image
+    not_numbered: true
   

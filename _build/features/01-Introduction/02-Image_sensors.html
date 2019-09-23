@@ -1,0 +1,1968 @@
+---
+redirect_from:
+  - "/features/01-introduction/02-image-sensors"
+interact_link: content/features/01-Introduction/02-Image_sensors.ipynb
+kernel_name: py3
+has_widgets: false
+title: |-
+  Image sensors
+prev_page:
+  url: /features/01-Introduction/01-Biological_vision.html
+  title: |-
+    Biological vision
+next_page:
+  url: /features/01-Introduction/03-Digital_image.html
+  title: |-
+    Digital image
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Image-sources">Image sources<a class="anchor-link" href="#Image-sources"> </a></h1>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Passive-vs-active-imaging">Passive vs active imaging<a class="anchor-link" href="#Passive-vs-active-imaging"> </a></h2><ul>
+<li>the object is the source of photon (SPECT, stars,...)</li>
+<li>the object reflects/react to light given by a external source (flash, fluorescence)</li>
+<li>the object is traversed by the ligh and diffuses/asborbes it (X-ray)</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/trans_reflect.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_3_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Object-as-a-source">Object as a source<a class="anchor-link" href="#Object-as-a-source"> </a></h3><p>Nuclear imaging is a good example of the first setup, here an injection of radio-tracer will accumulates to some region of interset (due to specific biochemical affinity). The following example shows how the radio-tracer identifies bone metastasis of a prostate cancer using a gamma camera.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/a/ae/Prostate-mets-102.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_5_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:Prostate-mets-102.jpg">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The source can also be the result of an external exitation i.e. an absorbtion and a re-emission of an other photon (fluorescence).</p>
+<p>Fluorescence lymphography is an example of imaging using an external exitation, here, infrared light is used to exite fluorophore injected in the lymph system. Fluorophore can in turn re-emit infrared (at a longer wavelength). By using adapted filter, one can observe the lymph displacement inside the lymph network (close to the skin surface).</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/fluoroscopy.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_8_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup>J.P.Belgrado<sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>An other example, where fluorescence is used: the fluorescence microscopy.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#add example</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Object-reflects-/-diffuses-the-light-from-an-external-source">Object reflects / diffuses the light from an external source<a class="anchor-link" href="#Object-reflects-/-diffuses-the-light-from-an-external-source"> </a></h3><p>This is the more common acquisition setup, external light source flood the scene with visible photons that are reflected by the objects, these photons are then acquired by a sensor.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Object-attenuates-the-source">Object attenuates the source<a class="anchor-link" href="#Object-attenuates-the-source"> </a></h3><p>Source and sensor can be placed on both side of the object being imaged, a good example is the X-Ray imaging, where a X-Ray source project photon trough a patient, these photon interact with the matter in such a way that tissue density and composition (bones vs soft tissues) can give a contrast variation at the sensor level.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://farm6.staticflickr.com/5127/5327224133_bf0f021a1b_m_d.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://www.flickr.com/photos/tracemeek/5327224133">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Direct-image-acquisition">Direct image acquisition<a class="anchor-link" href="#Direct-image-acquisition"> </a></h2>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="CCD---coupled-charge-device">CCD - coupled charge device<a class="anchor-link" href="#CCD---coupled-charge-device"> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Charges are liberated by light interaction with the semiconductor inside photoactive region, for each pixel of the sensor grid. In order to digitize the amount of charges (proportinal to light captured, CCD devices will move the charges along the substrate up to a charge to voltage converter.</p>
+<p>Coupled Charge Device uses electrode potentials to move charges inside silicium substrate as illustrated bellow.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/6/66/CCD_charge_transfer_animation.gif&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/66/CCD_charge_transfer_animation.gif"/>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:CCD_charge_transfer_animation.gif">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Image sensor can have essentially two types of geometry:</p>
+<ul>
+<li>linear: typically used when the sensor is translated (flatbed scanner, but also bank note scanner, satellite, photo finish)</li>
+<li>rectangular: almost every other camera</li>
+</ul>
+<p>In order to move charges along the dimensions of the CCD sensor, charges are moved along each image line, a perpendicular buffer is the used to discharge all these pixels in column into an amplifier that transform each charge into a voltage. The voltage is then converted by an ADC circuit.</p>
+<p>Because all the pixels charges are compared using the same circuit, the CCD sensor provide a very constant specification on the complete sensor. The other main advantage of the sensor is the coverage factor of the sensor (the ratio between the sensor surface and the total pixel surface), almost the surface is devoted to light acquisition (no extra circuitry needed).</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/9/98/Ccd_schematic.JPG&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File%3ACcd_schematic.JPG">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/CCD_line_sensor.JPG/320px-CCD_line_sensor.JPG&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_24_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Linear CCD sensor.
+<sup><a href="https://commons.wikimedia.org/wiki/File:CCD_line_sensor.JPG">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/1/17/CCD_in_camera.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_26_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>CCD line sensor in a ceramic dual in-line package. 
+<sup><a href="https://commons.wikimedia.org/wiki/File:CCD_in_camera.jpg">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="CMOS">CMOS<a class="anchor-link" href="#CMOS"> </a></h3><p>The CMOS technology embeds a photo-detector and a charge amplifier for each sensor pixel, the voltage being then transmitted by electrical conductors.</p>
+<p>This strategy enables a greater variety of sensor usage, e.g. adressing a part of the senor (for low resolution and higher speed).</p>
+<p>Because the conversion is done separately for each pixels, no charge shifting is needed, but discrepency between charge amplifier may exist, giving unequal pixel sensitivity and noise.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/CMOS_Image_Sensor_Mechanism_Illustration.svg/500px-CMOS_Image_Sensor_Mechanism_Illustration.svg.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_29_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:CMOS_Image_Sensor_Mechanism_Illustration.svg">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="CMOS-vs-CCD">CMOS vs CCD<a class="anchor-link" href="#CMOS-vs-CCD"> </a></h3><table>
+<thead><tr>
+<th>feature</th>
+<th>CDD</th>
+<th>CMOS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Signal out of pixel</td>
+<td>Electron packet</td>
+<td>Voltage</td>
+</tr>
+<tr>
+<td>Fill factor</td>
+<td>high</td>
+<td>moderate</td>
+</tr>
+<tr>
+<td>Amplifier mismatch</td>
+<td>none</td>
+<td>moderate</td>
+</tr>
+<tr>
+<td>Noise</td>
+<td>low</td>
+<td>moderate</td>
+</tr>
+<tr>
+<td>system complexity</td>
+<td>high</td>
+<td>low</td>
+</tr>
+<tr>
+<td>sensor complexity</td>
+<td>low</td>
+<td>high</td>
+</tr>
+<tr>
+<td>dynamic range</td>
+<td>high</td>
+<td>moderate</td>
+</tr>
+<tr>
+<td>uniformity</td>
+<td>high</td>
+<td>moderate</td>
+</tr>
+<tr>
+<td>speed</td>
+<td>moderate</td>
+<td>high</td>
+</tr>
+</tbody>
+</table>
+<p>CMOS + CDD : high sensitivity to near infrared, therefore, most of the sensors are equiped with a NIR filter.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Response_silicon_photodiode.svg/544px-Response_silicon_photodiode.svg.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Response_silicon_photodiode.svg/544px-Response_silicon_photodiode.svg.png"/>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Response_silicon_photodiode.svg/544px-Response_silicon_photodiode.svg.png">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Multispectral-acquisition">Multispectral acquisition<a class="anchor-link" href="#Multispectral-acquisition"> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Color acquisition is done by acquiring several images at different wavelength, one common (and cheap) approach is to cover sensors pixels by colored dyes (red, green and blue). The figure above illustrated such filters (bayer), where on each 2x2 pixel square, one pixel is sensitive to the red part of the spectrum, one to the blue part of the spectrum, and finally 2 pixels sensitive to the green part of the spectrum.</p>
+<p>The choice of duplicating green is done for symetry purposes and also because the intensity sensitivity of the eye (see rods) is correlated to the green part of the spectrum.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Bayer_pattern_on_sensor.svg/320px-Bayer_pattern_on_sensor.svg.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_36_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://en.wikipedia.org/wiki/Bayer_filter#/media/File:Bayer_pattern_on_sensor.svg">wiki commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>One limitation of the dye approach is the resolution limitation, indeed the image resolution is divided by 4.</p>
+<p>The other method used is based on three CCD coupled on the same optical axis and having three different dyes (red, green, blue) as illustrated bellow.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Dichroic-prism.svg/200px-Dichroic-prism.svg.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_39_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:Dichroic-prism.svg">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The big advantage of this approach is to keep the sensor native resolution for each color channel.</p>
+<p>The number of spectral bands can be higher that three, for example satellite imagery offers many wavelength inside but also next to it (UV and near-IR).</p>
+<p>Quick-bird (envionemental imagery,  pixel = 0.65m)</p>
+<ul>
+<li>Pan: 450-900 nm</li>
+<li>Blue: 450-520 nm</li>
+<li>Green: 520-600 nm</li>
+<li>Red: 630-690 nm</li>
+<li>Near IR: 760-900 nm</li>
+</ul>
+<p>IKONOS (commercial earth observation satellite)</p>
+<p>resolution</p>
+<ul>
+<li>0.8 m panchromatic (1-m PAN)</li>
+<li>4-meter multispectral (4-m MS)</li>
+</ul>
+<p>spectrum</p>
+<ul>
+<li>Blue: 0.445–0.516 µm</li>
+<li>Green: 0.506–0.595 µm</li>
+<li>Red: 0.632–0.698 µm</li>
+<li>Near IR: 0.757–0.853 µm</li>
+</ul>
+<p>Landsat 8 (American Earth observation satellite)</p>
+<ul>
+<li>Band 1 - Coastal / Aerosol    0.433 - 0.453 µm    30 m</li>
+<li>Band 2 - Blue 0.450 - 0.515 µm    30 m</li>
+<li>Band 3 - Green    0.525 - 0.600 µm    30 m</li>
+<li>Band 4 - Red  0.630 - 0.680 µm    30 m</li>
+<li>Band 5 - Near Infrared    0.845 - 0.885 µm    30 m</li>
+<li>Band 6 - Short Wavelength Infrared    1.560 - 1.660 µm    30 m</li>
+<li>Band 7 - Short Wavelength Infrared    2.100 - 2.300 µm    30 m</li>
+<li>Band 8 - Panchromatic 0.500 - 0.680 µm    15 m</li>
+<li>Band 9 - Cirrus   1.360 - 1.390 µm    30 m</li>
+</ul>
+<p>AVIRIS - airborne visible/infrared imaging spectrometer</p>
+<ul>
+<li>four linear spectrometers (614-pixel wide) / 224 adjacent spectral bands.</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/4/48/HyperspectralCube.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_42_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:HyperspectralCube.jpg">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Depth-acquisition">Depth acquisition<a class="anchor-link" href="#Depth-acquisition"> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Depth imaging is traditionnaly used in stereo application, such for robot vision.
+Recently depth sensor became widely available thanks to game applications.The main technologies used are:</p>
+<ul>
+<li>stereovision </li>
+<li>laser triangulation</li>
+<li>structured light projection</li>
+<li>Time-Of-Flight (TOF) imaging</li>
+</ul>
+<p>The information provided by these sensors is of two types: a rgb image of the scene, and a depth estimation (usually at a coarser resolution).</p>
+<p>example of a high resolution laser triangulation scanner:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/scanner.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_46_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>When high speed is needed, structured light may be a solution.</p>
+<p>For example, the first generation of the Kinect sensor uses the principe of structured light projection, a pseudo-random pattern is projected in the near-infrared spectrum(i.e. invible to human eye) and acquired by a IR sensitive camera. The depth image is produced with a video framerate compatible with gaming.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Xbox-360-Kinect-Standalone.png/320px-Xbox-360-Kinect-Standalone.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_48_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:Xbox-360-Kinect-Standalone.png">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://www.mattcutts.com/images/ir-projection.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_50_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://www.mattcutts.com/blog/open-kinect-contest/">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://3.bp.blogspot.com/_PsITwyTOc4Y/TOUvQTQE7WI/AAAAAAAAApg/cGHQtXou2yw/s1600/Kinect+Pattern_IMG_0073.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_52_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="http://image-sensors-world.blogspot.be/2010_11_01_archive.html">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The depth is computed by triangulation thanks to the identification of specific pattern in the image.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The second generation of sensors is based on a completely different technology, the Time-Of-Flight (TOF). To estimate the distance between the sensor and the scene, a light wave is send and received by the sensor. The phase difference between a modulated light pattern sended by the source and the signal received by the camera gives a measure of the scene depth.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://www.softkinetic.com/Portals/0/images/IMG_5937.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="http://www.softkinetic.com/Portals/0/images/IMG_5937.jpg">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>How to measure distance with light ?</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.laserfocusworld.com/content/dam/etc/medialib/new-lib/laser-focus-world/online-articles/2011/01/98070.res/_jcr_content/renditions/pennwell.web.399.293.gif&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<img src="http://www.laserfocusworld.com/content/dam/etc/medialib/new-lib/laser-focus-world/online-articles/2011/01/98070.res/_jcr_content/renditions/pennwell.web.399.293.gif"/>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="http://www.laserfocusworld.com/articles/2011/01/lasers-bring-gesture-recognition-to-the-home.html">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Continuous wave demodulation</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>retrieve phase shift by demodulation of the received signal</li>
+<li>demodulation by cross-correlation of the received signal with the emitted signal</li>
+<li>emitted signal is
+$$g(t) = \cos(\omega t)$$ with $\omega$ the modulation frequency</li>
+<li>received signal after the return trip to the scene surface:
+$$s(t) = b + a \cos(\omega t +\phi)$$ where $a$ is an unknown attenuation, $\phi$ the phase shift <strong>i.e. a value proportional to the scene distance</strong> and $b$ an unknown acquisition noise (neglected here).</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">camera</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="o">.</span><span class="mi">8</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="o">.</span><span class="mi">75</span>
+<span class="n">phi</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="o">+</span><span class="n">phi</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">s</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*.</span><span class="mi">5</span><span class="o">/</span><span class="n">omega</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">phi</span><span class="o">/</span><span class="n">omega</span><span class="o">-.</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">([</span><span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">omega</span><span class="p">,(</span><span class="o">.</span><span class="mi">5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">-</span><span class="n">phi</span><span class="p">)</span><span class="o">/</span><span class="n">omega</span><span class="p">],</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="o">.</span><span class="mi">6</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">omega</span><span class="p">,</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span><span class="s1">&#39;$\phi$&#39;</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="s1">&#39;xx-large&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/01-Introduction/02-Image_sensors_63_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>cross correlation of both emitted and received signal becomes:
+$$ d(\tau) = s * g = \int_{-\inf}^{+\inf} s(t).g(t+\tau) dt$$ with $\tau$ an internal offset</li>
+</ul>
+$$ d(\tau) = \frac a 2 \cos(\omega t + \phi) + b $$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>sample $d(\tau)$ at 4 distinct moments (phase offsets):
+$$A_i = d(i.\frac \pi 2)  \text{ with } i = 0,\dots, 3$$</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">omega</span><span class="o">*</span><span class="n">t</span><span class="o">+</span><span class="n">phi</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">omega</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="o">-.</span><span class="mi">5</span><span class="p">,</span><span class="s1">&#39;$A_</span><span class="si">%d</span><span class="s1">$&#39;</span><span class="o">%</span><span class="k">i</span>,size=&#39;xx-large&#39;)
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/01-Introduction/02-Image_sensors_66_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>phase and attenuation are then:
+$$ \phi = \arg \tan(\frac{A_3-A_1}{A_0-A_2}) $$
+and
+$$ a = \frac 1 2 \sqrt{(A_3-A_1)^2+(A_0-A_2)^2}$$</li>
+<li>scene distance is then:
+$$dist = \frac{c}{4.\pi.\omega} \phi$$ where $c$ is the speed of light.</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>What a depth image looks like ?</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/1/19/TOF_Kamera_3D_Gesicht.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_69_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="https://commons.wikimedia.org/wiki/File:TOF_Kamera_3D_Gesicht.jpg">wikimedia commons</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Indirect-image-acquisition">Indirect image acquisition<a class="anchor-link" href="#Indirect-image-acquisition"> </a></h2><p>Image can also be the result of a mathematical reconstruction based on an indirect acquisition, the sensor do not acquire an image directly.</p>
+<p>For example, computed tomography, uses a series of 1D density profile acquisition enable a 2D reconstruction of the slice.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://130.237.83.53/medicaldevices/album/Ch</span><span class="si">%207%</span><span class="s1">20Medical</span><span class="si">%20i</span><span class="s1">mages/slides/F%207-10%20Computer%20tomography.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/01-Introduction/02-Image_sensors_72_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="&#39;http://130.237.83.53/medicaldevices/album/Ch%207%20Medical%20images/slides/F%207-10%20Computer%20tomography.jpg&#39;">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Echography is an other example of indirect imaging, where mechanical wave propagation are transformed in a 2D image showing the presence of interfaces between tissue of different acoustic impedence.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg/638px-CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="&#39;https://commons.wikimedia.org/wiki/File:CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg&#39;">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>other example: MRI image reconstruction</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Synthetic-images">Synthetic images<a class="anchor-link" href="#Synthetic-images"> </a></h2><p>Image can also be the result of the grouping of a huge number of localized data, for example, one can imagine a network of temperature sensors spread over a complete contry, then the temperature measurements can be grouped on a 2D map (and interpolated to have a complete coverage).</p>
+<p>Visualized data can be from various nature, the common aspect is that these data are placed in a geometric space (usually 2D or 3D).</p>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+
