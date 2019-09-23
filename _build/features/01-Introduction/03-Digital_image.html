@@ -2,7 +2,11 @@
 redirect_from:
   - "/features/01-introduction/03-digital-image"
 interact_link: content/features/01-Introduction/03-Digital_image.ipynb
+<<<<<<< HEAD
 kernel_name: python3
+=======
+kernel_name: py3
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 has_widgets: false
 title: |-
   Digital image
@@ -80,6 +84,7 @@ One have to pay attention to that, in particular when we will extract measures f
 
 <div class="jb_cell">
 
+<<<<<<< HEAD
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Image-sampling">Image sampling<a class="anchor-link" href="#Image-sampling"> </a></h1>
@@ -90,11 +95,14 @@ One have to pay attention to that, in particular when we will extract measures f
 
 <div class="jb_cell tag_hide_input">
 
+=======
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
 <span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">camera</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -131,12 +139,16 @@ One have to pay attention to that, in particular when we will extract measures f
 <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># add example of embryo</span>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<<<<<<< HEAD
 <div class="output_wrapper">
 <div class="output">
 
@@ -155,6 +167,18 @@ One have to pay attention to that, in particular when we will extract measures f
 </div>
 </div>
 
+=======
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Image-sampling">Image sampling<a class="anchor-link" href="#Image-sampling"> </a></h1>
+</div>
+</div>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </div>
 </div>
 
@@ -165,7 +189,16 @@ One have to pay attention to that, in particular when we will extract measures f
 
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">build_gaussian_pyramid</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">levelmax</span><span class="p">):</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">camera</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+
+<span class="k">def</span> <span class="nf">build_gaussian_pyramid</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">levelmax</span><span class="p">):</span>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
     <span class="sd">&quot;&quot;&quot;return a list of subsampled images (using gaussion pre-filter</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">r</span> <span class="o">=</span> <span class="p">[</span><span class="n">ima</span><span class="p">]</span>
@@ -1269,14 +1302,22 @@ If the image has a lot of continuous parts, this compression can be very efficie
 </div>
 </div>
 
+<<<<<<< HEAD
 <div class="jb_cell tag_hide_input">
+=======
+<div class="jb_cell">
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/HSV_color_solid_cylinder.png/640px-HSV_color_solid_cylinder.png&#39;</span><span class="p">)</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/HSV_color_solid_cylinder_saturation_gray.png/640px-HSV_color_solid_cylinder_saturation_gray.png&#39;</span><span class="p">)</span>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </pre></div>
 
     </div>

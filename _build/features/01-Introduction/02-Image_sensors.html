@@ -2,7 +2,11 @@
 redirect_from:
   - "/features/01-introduction/02-image-sensors"
 interact_link: content/features/01-Introduction/02-Image_sensors.ipynb
+<<<<<<< HEAD
 kernel_name: python3
+=======
+kernel_name: py3
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 has_widgets: false
 title: |-
   Image sensors
@@ -259,6 +263,127 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 </div>
 </div>
 
+<<<<<<< HEAD
+=======
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://farm6.staticflickr.com/5127/5327224133_bf0f021a1b_m_d.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 <div class="jb_cell">
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
@@ -370,7 +495,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/EMCCD2_color_en.svg/640px-EMCCD2_color_en.svg.png&#39;</span><span class="p">)</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/9/98/Ccd_schematic.JPG&#39;</span><span class="p">)</span>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </pre></div>
 
     </div>
@@ -383,11 +512,102 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 <div class="jb_output_wrapper }}">
 <div class="output_area">
 
+<<<<<<< HEAD
 
 
 <div class="output_png output_subarea output_execute_result">
 <img src="../../images/features/01-Introduction/02-Image_sensors_21_0.png"
 >
+=======
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </div>
 
 </div>
@@ -432,7 +652,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_23_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_24_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -479,7 +703,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_25_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_26_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -539,7 +767,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 
 <div class="output_png output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_28_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_29_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -717,7 +949,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 
 <div class="output_png output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_35_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_36_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -775,7 +1011,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 
 <div class="output_png output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_38_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_39_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -870,7 +1110,11 @@ comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /con
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_41_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_42_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -946,7 +1190,11 @@ Recently depth sensor became widely available thanks to game applications.The ma
 
 
 <div class="output_png output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_45_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_46_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -993,7 +1241,11 @@ Recently depth sensor became widely available thanks to game applications.The ma
 
 
 <div class="output_png output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_47_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_48_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1039,7 +1291,11 @@ Recently depth sensor became widely available thanks to game applications.The ma
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_49_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_50_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1085,7 +1341,11 @@ Recently depth sensor became widely available thanks to game applications.The ma
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_51_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_52_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1130,14 +1390,16 @@ Recently depth sensor became widely available thanks to game applications.The ma
 </div>
 </div>
 
-<div class="jb_cell">
+<<<<<<< HEAD
+=======
+<div class="jb_cell tag_hide_input">
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Time_of_flight_camera_principle.svg/1024px-Time_of_flight_camera_principle.svg.png&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://www.softkinetic.com/Portals/0/images/IMG_5937.jpg&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -1150,9 +1412,94 @@ Recently depth sensor became widely available thanks to game applications.The ma
 <div class="jb_output_wrapper }}">
 <div class="output_area">
 
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
 
-<div class="output_html rendered_html output_subarea output_execute_result">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Time_of_flight_camera_principle.svg/1024px-Time_of_flight_camera_principle.svg.png"/>
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
 </div>
 
 </div>
@@ -1167,7 +1514,75 @@ Recently depth sensor became widely available thanks to game applications.The ma
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><sup><a href="http://www.softkinetic.com/Portals/0/images/IMG_5937.jpg">image source</a><sup></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>How to measure distance with light ?</p>
+
+</div>
+</div>
+</div>
+</div>
+
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<<<<<<< HEAD
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Time_of_flight_camera_principle.svg/1024px-Time_of_flight_camera_principle.svg.png&#39;</span><span class="p">)</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://www.laserfocusworld.com/content/dam/etc/medialib/new-lib/laser-focus-world/online-articles/2011/01/98070.res/_jcr_content/renditions/pennwell.web.399.293.gif&#39;</span><span class="p">)</span>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<<<<<<< HEAD
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Time_of_flight_camera_principle.svg/1024px-Time_of_flight_camera_principle.svg.png"/>
+=======
+<img src="http://www.laserfocusworld.com/content/dam/etc/medialib/new-lib/laser-focus-world/online-articles/2011/01/98070.res/_jcr_content/renditions/pennwell.web.399.293.gif"/>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<<<<<<< HEAD
+<p>How to measure distance with light ?</p>
+=======
+<p><sup><a href="http://www.laserfocusworld.com/articles/2011/01/lasers-bring-gesture-recognition-to-the-home.html">image source</a><sup></p>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 
 </div>
 </div>
@@ -1245,7 +1660,11 @@ $$s(t) = b + a \cos(\omega t +\phi)$$ where $a$ is an unknown attenuation, $\phi
 
 
 <div class="output_png output_subarea ">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_59_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_63_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1315,7 +1734,11 @@ $$A_i = d(i.\frac \pi 2)  \text{ with } i = 0,\dots, 3$$</li>
 
 
 <div class="output_png output_subarea ">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_62_0.png"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_66_0.png"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1379,7 +1802,11 @@ $$dist = \frac{c}{4.\pi.\omega} \phi$$ where $c$ is the speed of light.</li>
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_65_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_69_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1437,7 +1864,11 @@ $$dist = \frac{c}{4.\pi.\omega} \phi$$ where $c$ is the speed of light.</li>
 
 
 <div class="output_jpeg output_subarea output_execute_result">
+<<<<<<< HEAD
 <img src="../../images/features/01-Introduction/02-Image_sensors_68_0.jpeg"
+=======
+<img src="../../images/features/01-Introduction/02-Image_sensors_72_0.jpeg"
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 >
 </div>
 
@@ -1478,7 +1909,11 @@ $$dist = \frac{c}{4.\pi.\omega} \phi$$ where $c$ is the speed of light.</li>
 
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/c/c7/CRL_Crown_rump_length_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg&#39;</span><span class="p">)</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg/638px-CRL_Crown_rump_lengh_12_weeks_ecografia_Dr._Wolfgang_Moroder.jpg&#39;</span><span class="p">)</span>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </pre></div>
 
     </div>
@@ -1491,11 +1926,102 @@ $$dist = \frac{c}{4.\pi.\omega} \phi$$ where $c$ is the speed of light.</li>
 <div class="jb_output_wrapper }}">
 <div class="output_area">
 
+<<<<<<< HEAD
 
 
 <div class="output_jpeg output_subarea output_execute_result">
 <img src="../../images/features/01-Introduction/02-Image_sensors_71_0.jpeg"
 >
+=======
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">    968</span> 
+<span class="ansi-green-intense-fg ansi-bold">    969</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 970</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span>include<span class="ansi-blue-fg">,</span> exclude<span class="ansi-blue-fg">=</span>exclude<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    971</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    972</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_mimebundle_</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1254</span>             mimetype <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_mimetype
+<span class="ansi-green-fg">-&gt; 1255</span><span class="ansi-red-fg">             </span>data<span class="ansi-blue-fg">,</span> metadata <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span>always_both<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>             <span class="ansi-green-fg">if</span> metadata<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1257</span>                 metadata <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span>mimetype<span class="ansi-blue-fg">:</span> metadata<span class="ansi-blue-fg">}</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1264</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1265</span><span class="ansi-red-fg">             </span>b64_data <span class="ansi-blue-fg">=</span> b2a_base64<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>decode<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;ascii&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">TypeError</span>: a bytes-like object is required, not &#39;NoneType&#39;
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/formatters.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, obj)</span>
+<span class="ansi-green-intense-fg ansi-bold">    343</span>             method <span class="ansi-blue-fg">=</span> get_real_method<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>print_method<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    344</span>             <span class="ansi-green-fg">if</span> method <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 345</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> method<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    346</span>             <span class="ansi-green-fg">return</span> <span class="ansi-green-fg">None</span>
+<span class="ansi-green-intense-fg ansi-bold">    347</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_repr_jpeg_</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1287</span>     <span class="ansi-green-fg">def</span> _repr_jpeg_<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1288</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>embed <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>format <span class="ansi-blue-fg">==</span> self<span class="ansi-blue-fg">.</span>_FMT_JPEG<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1289</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_data_and_metadata<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1290</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1291</span>     <span class="ansi-green-fg">def</span> _find_ext<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda/envs/py3/lib/python3.6/site-packages/IPython/core/display.py</span> in <span class="ansi-cyan-fg">_data_and_metadata</span><span class="ansi-blue-fg">(self, always_both)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1266</span>         <span class="ansi-green-fg">except</span> TypeError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1267</span>             raise FileNotFoundError(
+<span class="ansi-green-fg">-&gt; 1268</span><span class="ansi-red-fg">                 &#34;No such file or directory: &#39;%s&#39;&#34; % (self.data))
+</span><span class="ansi-green-intense-fg ansi-bold">   1269</span>         md <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">   1270</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>metadata<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">FileNotFoundError</span>: No such file or directory: &#39;None&#39;</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;IPython.core.display.Image object&gt;</pre>
+>>>>>>> 2feaf932e32bc31a8d4eac632becf522c29ed3f9
 </div>
 
 </div>
