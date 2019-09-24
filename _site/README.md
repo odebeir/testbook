@@ -6,7 +6,7 @@ Introduction to image processing
 Outline
 -------
 
-To browse the content, [start here](http://nbviewer.ipython.org/github/odebeir/info-h-500-501/blob/master/Index.ipynb).
+To browse the content, [start here](https://odebeir.github.io/testbook/).
 
 TOC should be updated from .ipynb
 
@@ -17,7 +17,7 @@ There are two ways to read *Introduction to image processing*:
 
 * The *recommended* way to read the book is to download and run the IPython notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the **Installation** section.
 
-* The *easiest* way to read the book is to view the static notebooks online using [nbviewer](http://nbviewer.ipython.org/). You should [start here](http://nbviewer.ipython.org/github/odebeir/info-h-500-501/blob/master/Index.ipynb).
+* The *easiest* way to read the book is to view the static notebooks online.
 
 If you're new to using IPython or the IPython Notebook, you can find more information at the [IPython website](http://www.ipython.org/), [IPython Notebook website](http://ipython.org/notebook), and the [IPython Notebook example gallery](https://github.com/ipython/ipython/wiki/A-gallery-of-interesting-IPython-Notebooks).
 
@@ -38,15 +38,8 @@ That's it!
 Acknowledgements
 ----------------
 
-ULB
+# License for this book
 
-inspired by Greg Caporaso's Introduction to <a href="https://github.com/gregcaporaso/An-Introduction-To-Applied-Bioinformatics">Applied Bioinformatics</a>
-
-get style from [CFDPython](https://github.com/barbagroup/CFDPython)
-
-License
--------
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a>
-
-<br />
+All content in this book (ie, any files and content in the `content/` folder)
+is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+(CC BY-SA 4.0) license.
