@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//search",
   "headline": "Search the site",
-  "datePublished": "2019-09-24T18:21:26+02:00",
-  "dateModified": "2019-09-24T18:21:26+02:00",
+  "datePublished": "2019-09-24T18:32:58+02:00",
+  "dateModified": "2019-09-24T18:32:58+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -1038,6 +1038,107 @@ initFunction(initPrint)
 
       
     
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/06-Object_feature_extraction/content.html"
+        >
+          
+          Object features extraction
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/01-Statistical_features.html"
+                >
+                  
+                  Statistical features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/02-Contour_features.html"
+                >
+                  
+                  Contour features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/03-Moments.html"
+                >
+                  
+                  Moments
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/04-Texture_features.html"
+                >
+                  
+                  Texture features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
   </ul>
   <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
 </nav>
@@ -1292,6 +1393,46 @@ initFunction(initPrint)
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/05-Morphomathematics/content.html",
+        "teaser":null},{
+        "title": "Statistical features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Statistical features The object we consider here are the connected components obtained after the image segmentation (i.e. objects vs. background). Each connected component can be identified using an image labelling algorithm. A feature is a measure extracted from an object. Object recognition is basically the association of a set of feature values with a certain class of object. The first feature that come in mind is the intensity of the object pixels, i.e. the brightness of an object can be used as a descriptor of it, for a color image, one...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/01-Statistical_features.html",
+        "teaser":null},{
+        "title": "Contour features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Contour features chain code algorithm Chain code algorithm is a method that describes the contour of a connected set as an ordered set of pixels (see below). Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/chain.png&#39;) The algorithm starts from an arbitrary pixel of the contour, e.g. found by rasterazing the image, the first object point detected being used. at each iteration on try to find the next border pixel, the order of test is givenby the arrows in the upper right corner, starting from the direction just after the direction of arrival, i.e. the first direction(3) correspond to...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/02-Contour_features.html",
+        "teaser":null},{
+        "title": "Moments",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Object moments We have seen that moments can be used to describe contours, similarily, the content of the shape can be described by this feature. definition The definition in the continuous domain is as follow $$ m_{pq} = \\int_{-\\infty}^{+\\infty} \\int_{-\\infty}^{+\\infty} x^p y^q f(x,y)\\:dx\\:dy $$$$ \\mu_{pq} = \\int_{-\\infty}^{+\\infty} \\int_{-\\infty}^{+\\infty} (x-\\bar x)^p (y-\\bar y)^q f(x,y)\\:dx\\:dy $$$$ \\bar{x}=\\frac{m_{10}}{m_{00}},\\bar{y}=\\frac{m_{01}}{m_{00}} $$ for a discrete domain, which is the case for image of pixels, we have $$ m_{pq} = \\sum_{x= -\\infty}^{+\\infty}\\sum_{y=-\\infty}^{+\\infty} x^p \\; y^q \\; f(x,y) $$to eliminate the influence of the absolute shape position, one define...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/03-Moments.html",
+        "teaser":null},{
+        "title": "Texture features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Texture features Here is an example of a texture found in ultrasound medical imaging, the image exhibits a clear striation pattern due to muscle fiber orientation. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/muscle.jpg&#39;) The following video sequience illustrates how fiber orientation can vary during the motricity exercice. from IPython.display import YouTubeVideo YouTubeVideo(&#39;PUcz11MLxUk&#39;, start=0, autoplay=1, theme=&quot;light&quot;, color=&quot;blue&quot;,) Here are some classical textures extracted from an atlas (Broadatz). Texture can be natural, such as grains, sand, soil, stone, biological tissue or resulting from a human artifact such as fabric, wall, pavements ... Texture in an image can be characterized...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/04-Texture_features.html",
+        "teaser":null},{
+        "title": "Object features extraction",
+        
+        "excerpt":
+            "    chapter content             chain coding polygonal approximation spectral description (intensity) 2D shape descriptors (contours) 2D shape descriptors (region) area, euler, elong,... moments texture analysis Minkowski fractal dimension  fractal analysis: Hurst coeficient Gabor filter            ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/content.html",
         "teaser":null},{
         "title": "Jupyter demo1",
         
