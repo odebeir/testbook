@@ -9,7 +9,8 @@ chapters = sorted([fn for fn in os.listdir(source_path) if '99-' > fn > '00-'])
 
 print(chapters)
 
-file_to_convert = ['../Index.ipynb']
+file_to_convert = []
+# file_to_convert = ['../Index.ipynb']
 
 for c in chapters:
     #print(os.listdir(os.path.join(source_path,c)))
