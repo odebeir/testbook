@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//search",
   "headline": "Search the site",
-  "datePublished": "2019-09-24T16:42:31+02:00",
-  "dateModified": "2019-09-24T16:42:31+02:00",
+  "datePublished": "2019-09-24T16:52:10+02:00",
+  "dateModified": "2019-09-24T16:52:10+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -695,6 +695,40 @@ initFunction(initPrint)
               </li>
               
             
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/04-Image_restoration.html"
+                >
+                  
+                  Image restoration
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/05-Edge_detection.html"
+                >
+                  
+                  Edge detection
+                </a>
+
+                
+                
+
+              </li>
+              
+            
           </ul>
         
       </li>
@@ -811,6 +845,22 @@ initFunction(initPrint)
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/02-Low-level_image_processing/03-Non_linear_filtering.html",
+        "teaser":null},{
+        "title": "Image restoration",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Image restoration Image acquisition is rarely perfect, physics or external condition may deform the image being acquired, here are some example of typicall problems: Deformation model The original image is $f(x,y)$ undergoes a deformation, given by $H$, and an additive noise $\\eta(x,y)$ the acquired image is $g(x,y)$. The restoration problem can be stated as follow: how to recover a good approximation of $f(x,y)$ from $g(x,y)$? Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/restauration.png&#39;) Some examples: $$g(x,y) = H[f(x,y)] + \\eta(x,y)$$$H$ properties: linear $$ H[k_1 f_1(x,y) + k_2 f_2(x,y)] = k_1 H[f_1(x,y)] + k_2 H[f_2(x,y)]$$ additive $$ H[f_1(x,y) +...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/04-Image_restoration.html",
+        "teaser":null},{
+        "title": "Edge detection",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Edge detection Edges are important features in an image, this is one of the most saillant feature that our eye catches. Edges are also highly correlated with object borders, this is why a lot of different thechniques have been developped. Finite differences Taylor's theorem: $$ \\begin{align} f(x + h) &amp;= f(x) + \\frac{f'(x)}{1!}h + \\frac{f^{(2)}(x)}{2!}h^2 + \\cdots + \\frac{f^{(n)}(x)}{n!}h^n + R_n(x)\\\\ f(x + h) &amp;= f(x) + f'(x)h + R_1^+(x)\\\\ f(x - h) &amp;= f(x) - f'(x)h + R_1^-(x)\\\\ \\end{align} $$ We neglect $R_1$ and we substract the two last equations:...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/05-Edge_detection.html",
         "teaser":null},{
         "title": "Low-level image processing",
         
