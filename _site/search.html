@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//search",
   "headline": "Search the site",
-  "datePublished": "2019-09-24T16:22:57+02:00",
-  "dateModified": "2019-09-24T16:22:57+02:00",
+  "datePublished": "2019-09-24T16:42:31+02:00",
+  "dateModified": "2019-09-24T16:42:31+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -695,40 +695,6 @@ initFunction(initPrint)
               </li>
               
             
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/features/02-Low-level_image_processing/03-04-Image_restoration.html"
-                >
-                  
-                  Image restoration
-                </a>
-
-                
-                
-
-              </li>
-              
-            
-              
-              
-
-              <li class="c-sidebar__section">
-                <a class="c-sidebar__entry "
-                  href="/features/02-Low-level_image_processing/05-Edge_detection.html"
-                >
-                  
-                  Edge detection
-                </a>
-
-                
-                
-
-              </li>
-              
-            
           </ul>
         
       </li>
@@ -785,7 +751,7 @@ initFunction(initPrint)
         "title": "readme",
         
         "excerpt":
-            "Introduction to image processing Outline To browse the content, start here. Original github repository . How to read the content There are two ways to read Introduction to image processing: The recommended way to read the book is to download and run the IPython notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the Installation section. The easiest way to read the book is to view the static notebooks online. If you're new to using IPython or the IPython...",
+            "Introduction to image processing Outline To browse the content, start here. Original github repository . How to read the content There are two ways to read Introduction to image processing: The recommended way to read the book is to download and run the jupyter notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the Installation section. The easiest way to read the book is to view the static notebooks online. If you're new to the jupyter Notebook, you can...",
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/README.html",
@@ -821,6 +787,38 @@ initFunction(initPrint)
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/01-Introduction/content.html",
+        "teaser":null},{
+        "title": "Point processing",
+        
+        "excerpt":
+            "%matplotlib inline from IPython.display import HTML,Image,SVG,YouTubeVideo Histogram import numpy as np import matplotlib.pyplot as plt from matplotlib import cm from skimage.data import camera,astronaut plt.style.use(&#39;ggplot&#39;) def norm_hist(ima): hist,bins = np.histogram(ima.flatten(),range(256)) # histogram is computed on a 1D distribution --&gt; flatten() return 1.*hist/np.sum(hist) # normalized histogram def display_hist(ima,vmin=None,vmax=None): plt.figure(figsize=[10,5]) if ima.ndim == 2: nh = norm_hist(ima) else: nh_r = norm_hist(ima[:,:,0]) nh_g = norm_hist(ima[:,:,1]) nh_b = norm_hist(ima[:,:,2]) # display the results plt.subplot(1,2,1) plt.imshow(ima,cmap=cm.gray,vmin=vmin,vmax=vmax) plt.subplot(1,2,2) if ima.ndim == 2: plt.plot(nh,label=&#39;hist.&#39;) else: plt.plot(nh_r,color=&#39;r&#39;,label=&#39;r&#39;) plt.plot(nh_g,color=&#39;g&#39;,label=&#39;g&#39;) plt.plot(nh_b,color=&#39;b&#39;,label=&#39;b&#39;) plt.legend() plt.xlabel(&#39;gray level&#39;); display_hist(camera()) display_hist(astronaut()) def display_hist2(ima): nh = norm_hist(ima) cumul_hist = np.cumsum(nh) plt.figure(figsize=[10,5]) plt.subplot(1,2,1) plt.imshow(ima,cmap=cm.gray) ax1 = plt.subplot(1,2,2) plt.plot(nh)...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/01-Point_processing.html",
+        "teaser":null},{
+        "title": "Linear filtering",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from helpers import header,compare Linear filtering In the previous chapter, the processed value of a pixel was only a function of its orignal value. Here the processed value will also take into account the surrounding pixels as well. We speak about pixel neighborhood. Neighborhood Pixel neighborhood is defined by a binary structuring element $B$ having an origin. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/b.png&#39;) For a specific pixel (the gray one below), the neighborhood defined by $B$ ... Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/b1.png&#39;) is the ensemble of pixels belonging to $B$ when its origin is moved on the pixel of interest....",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/02-Linear_filtering.html",
+        "teaser":null},{
+        "title": "Non-linear filtering",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from helpers import compare Rank based filters Rank vs. weighted sum If the local processing consists in something different from a weighted sum of neighboor pixesl, one can speak of non-linear filters. One important category of non-linear filters are the rank filters. These filters use the ranked levels from the neighborhood. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/median.png&#39;) from skimage.data import camera import matplotlib.pyplot as plt import numpy as np # Salt and pepper noise filtering ima = camera() plt.imshow(ima,cmap=plt.cm.gray) n = np.random.random(ima.shape) noised_ima = ima.copy() noised_ima[n&lt;.05] = 0 noised_ima[n&gt;.95] = 255 plt.imshow(noised_ima,cmap=plt.cm.gray); from skimage.filters import rank...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/03-Non_linear_filtering.html",
+        "teaser":null},{
+        "title": "Low-level image processing",
+        
+        "excerpt":
+            "    Chapter content   recall of basis ot the signal processing Fourier and other transform image sampling linear filtering non linear filtering image enhancement           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/content.html",
         "teaser":null},{
         "title": "Jupyter demo1",
         

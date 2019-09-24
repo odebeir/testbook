@@ -1,0 +1,764 @@
+---
+redirect_from:
+  - "/features/02-low-level-image-processing/01-point-processing"
+interact_link: content/features/02-Low-level_image_processing/01-Point_processing.ipynb
+kernel_name: python3
+has_widgets: false
+title: |-
+  Point processing
+prev_page:
+  url: /features/02-Low-level_image_processing/content.html
+  title: |-
+    Low-level image processing
+next_page:
+  url: /features/02-Low-level_image_processing/02-Linear_filtering.html
+  title: |-
+    Linear filtering
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Histogram">Histogram<a class="anchor-link" href="#Histogram"> </a></h1>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">camera</span><span class="p">,</span><span class="n">astronaut</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">hist</span><span class="p">,</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span>  <span class="c1"># histogram is computed on a 1D distribution --&gt; flatten()</span>
+    <span class="k">return</span> <span class="mf">1.</span><span class="o">*</span><span class="n">hist</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span> <span class="c1"># normalized histogram</span>
+
+<span class="k">def</span> <span class="nf">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">ima</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">nh</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nh_r</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">nh_g</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">nh_b</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># display the results</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ima</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;hist.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_r</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_g</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_b</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;gray level&#39;</span><span class="p">);</span>
+    
+<span class="n">display_hist</span><span class="p">(</span><span class="n">camera</span><span class="p">())</span>
+<span class="n">display_hist</span><span class="p">(</span><span class="n">astronaut</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_3_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_3_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">display_hist2</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">nh</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">cumul_hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">nh</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh</span><span class="p">)</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cumul_hist</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;cumul.&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    
+<span class="n">display_hist2</span><span class="p">(</span><span class="n">camera</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_4_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Look-Up-Table">Look-Up-Table<a class="anchor-link" href="#Look-Up-Table"> </a></h1><p>Example are given for 8-bits images but can of course be generalized for any kind of integer image, however, due to memory limitation, LUT method will be used only with bit-depth limited images.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">nh</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">lima</span> <span class="o">=</span> <span class="n">lut</span><span class="p">[</span><span class="n">ima</span><span class="p">]</span>
+    <span class="n">nh_lima</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">lima</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">lima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;ima&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_lima</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lut[ima]&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lut</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;lut&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Negative">Negative<a class="anchor-link" href="#Negative"> </a></h2>$$g_{out} = 255 - g_{in}$$<p>To apply this inversion tp the complete image, one use the Look Up Table (LUT) method which consist in pre-computng the transformed levels for all the 255 possible gray level into one vector. Image transformation is then a simple vector addressing.</p>
+<p><code>
+lut = np.arange(255,-1,-1)
+g_out = lut[g_in]
+</code></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># LUT invertion    </span>
+<span class="n">ima</span> <span class="o">=</span> <span class="n">camera</span><span class="p">()</span>
+<span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_8_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Threshold">Threshold<a class="anchor-link" href="#Threshold"> </a></h2><p>Look up table for a simple threshold is:</p>
+$$g_{out} = \begin{cases} 255, &amp; \mbox{if }g_{in}&gt;th\\
+0, &amp; \mbox{otherwise}\end{cases}$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">lut_threshold</span><span class="p">(</span><span class="n">th</span><span class="p">):</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">lut</span> <span class="o">&gt;</span> <span class="n">th</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lut</span> 
+
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut_threshold</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_10_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Semi-threshold">Semi-threshold<a class="anchor-link" href="#Semi-threshold"> </a></h2><p>Look up table for a simple threshold is:</p>
+$$g_{out} = \begin{cases} g_{in}, &amp; \mbox{if }g_{in}&gt;th\\
+0, &amp; \mbox{otherwise}\end{cases}$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">lut_semi_threshold</span><span class="p">(</span><span class="n">th</span><span class="p">):</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">)</span>
+    <span class="n">lut</span><span class="p">[</span><span class="n">lut</span> <span class="o">&lt;</span> <span class="n">th</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">lut</span> 
+
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut_semi_threshold</span><span class="p">(</span><span class="mi">128</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_12_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Gamma-correction">Gamma correction<a class="anchor-link" href="#Gamma-correction"> </a></h2><p>Gamma transform is used to reinforce contrast of the image, level trasform is given by:</p>
+$$g_{out} = A \: g_{in}^{\gamma}$$<p>where $$ A = 255^{(1-\gamma)}$$</p>
+<p>if $\gamma &lt; 1$ the low-level are contrasted, reversely if $\gamma &gt;1$ bright part of the image gains in contrast.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">lut_gamma</span><span class="p">(</span><span class="n">gamma</span><span class="p">):</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span><span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">gamma</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lut</span> 
+
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut_gamma</span><span class="p">(</span><span class="o">.</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut_gamma</span><span class="p">(</span><span class="mf">1.7</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_14_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_14_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Auto-level">Auto-level<a class="anchor-link" href="#Auto-level"> </a></h2><p>Auto-level map the complete image dynamic to the full dynamic scale:</p>
+$$g_{out} = 255 \frac{g_{in} - g_{min}}{g_{max}-g_{min}}$$<p>where $g_{min}$ and $g_{max}$ are respectively minimimal and maximal value present in the image.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">lut_autolevel</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">g_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">g_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">)</span><span class="o">-</span><span class="n">g_min</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mf">1.</span><span class="o">*</span><span class="n">g_max</span><span class="o">-</span><span class="n">g_min</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lut</span>
+
+<span class="n">ima</span><span class="o">=</span><span class="n">camera</span><span class="p">()</span>
+<span class="n">t_ima</span> <span class="o">=</span> <span class="p">(</span><span class="n">ima</span><span class="o">/</span><span class="mi">4</span><span class="o">+</span><span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">display_hist</span><span class="p">(</span><span class="n">t_ima</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">t_ima</span><span class="p">,</span><span class="n">lut_autolevel</span><span class="p">(</span><span class="n">t_ima</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_16_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_16_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Equalization">Equalization<a class="anchor-link" href="#Equalization"> </a></h2><p>One may be interested in using as many gray levels possible for frequent levels, and in grouping rare levels. This is called histogram equalization since, after the operation, the histogram distribution is more equal.</p>
+<p>The next figure illustrate equalization done of the cameraman picture.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">lut_equalization</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">nh</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">ch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">nh</span><span class="p">))</span>
+    <span class="n">lut</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="n">ch</span>
+    <span class="k">return</span> <span class="n">lut</span>
+<span class="n">apply_lut</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">lut_equalization</span><span class="p">(</span><span class="n">ima</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_18_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see that levels frequently observed (in the sky) are now more spread (more contrast is visible), the same inside the cameraman where details are now visible (hand).
+The histogram is not perctly equal, this is due to the technique used (the look up table), indeed pixel having an equal gray level are transform similarily, they cannot be separated.</p>
+<p>If we look to the code used to achieve the equalization, we see that we simply used, as look up table, the summed histogram !</p>
+<p>Here is the justification of that:</p>
+<ul>
+<li>the gray level(arbitrarily set in $[0,1]$) probability is given by:</li>
+</ul>
+$$p_r(r) = \frac{n_r}{n}\\
+0 \le r \le 1\\
+$$<p>where $n_r$ is the number of pixels having the value $r$ anf $n$ the total number of image pixels.</p>
+<ul>
+<li>let's consider a transform $T$ that maps graylevels $r$ to graylevel $s$,
+$T(r)$ is considered as monotically increasing on $0 \le r \le 1$.</li>
+</ul>
+$$\begin{align}
+s&amp;=T(r)\\
+0 \le &amp;T(r) \le 1\\
+r &amp;= T{-1}(s)
+\end{align}
+$$<p>We also assume that $T{-1}(s)$ is monotically increasing on $0 \le s \le 1$ and bounded to $[0,1]$.</p>
+<ul>
+<li>from probability theory, the probability density function of the transformed gray level is:</li>
+</ul>
+$$p_s(s) = \Big[p_r(r)\frac{dr}{ds}\Big]_{r=T^{-1}(s)}$$<ul>
+<li>if we consider the following transform function:</li>
+</ul>
+$$ s = T(r) = \int _0 ^r p_r(w) dw \qquad 0 \le r \le 1$$<ul>
+<li>then</li>
+</ul>
+$$\frac{ds}{dr} = p_r(r)$$<ul>
+<li>we can substitute this fraction in the previous equation:</li>
+</ul>
+$$\begin{align}
+p_s(s) &amp;= \Big[p_r(r)\frac{1}{p_r(r)}\Big]_{r=T^{-1}(s)} \\
+&amp;= \Big[1\Big]_{r=T^{-1}(s)} \\
+&amp;= 1 \qquad 0 \le s \le 1
+\end{align}
+$$<p>which is uniform on the interval.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#other example</span>
+<span class="kn">from</span> <span class="nn">skimage.io</span> <span class="k">import</span> <span class="n">imread</span>
+<span class="n">ima</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/bones.png&#39;</span><span class="p">)</span>
+<span class="n">lut</span> <span class="o">=</span> <span class="n">lut_equalization</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">lut</span><span class="p">[</span><span class="n">ima</span><span class="p">],</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_20_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_20_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>if we need to increase the conrtrast in a certain part of the image, equalization LUT may be restricted to a certain area:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">roi</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">100</span><span class="p">,</span><span class="mi">150</span><span class="p">),</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">]</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">ima</span><span class="p">[</span><span class="n">roi</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span><span class="n">roi</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">roi</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">roi</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span><span class="n">roi</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">roi</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">lut</span> <span class="o">=</span> <span class="n">lut_equalization</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="o">*</span><span class="n">roi</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">lut</span><span class="p">[</span><span class="n">ima</span><span class="p">],</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+<span class="n">rect</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="o">*</span><span class="n">roi</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">25</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_22_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/02-Low-level_image_processing/01-Point_processing_22_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>see also:</p>
+<ul>
+<li>histogram based methods <a href="../00-Preface/06-References.ipynb#[IPAMV]">IPAMV</a> pp58-61</li>
+</ul>
+</blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+

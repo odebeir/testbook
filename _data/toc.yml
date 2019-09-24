@@ -89,9 +89,9 @@
   - title: Non-linear filtering
     url: /features/02-Low-level_image_processing/03-Non_linear_filtering
     not_numbered: true
-  - title: Image restoration
-    url: /features/02-Low-level_image_processing/03-04-Image_restoration
-    not_numbered: true
-  - title: Edge detection
-    url: /features/02-Low-level_image_processing/05-Edge_detection
-    not_numbered: true
+  # - title: Image restoration
+  #   url: /features/02-Low-level_image_processing/03-04-Image_restoration
+  #   not_numbered: true
+  # - title: Edge detection
+  #   url: /features/02-Low-level_image_processing/05-Edge_detection
+  #   not_numbered: true
