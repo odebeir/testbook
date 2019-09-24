@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//search",
   "headline": "Search the site",
-  "datePublished": "2019-09-24T18:08:31+02:00",
-  "dateModified": "2019-09-24T18:08:31+02:00",
+  "datePublished": "2019-09-24T18:21:26+02:00",
+  "dateModified": "2019-09-24T18:21:26+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -937,6 +937,107 @@ initFunction(initPrint)
 
       
     
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/05-Morphomathematics/content.html"
+        >
+          
+          Morphomathematics
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/01-Operators.html"
+                >
+                  
+                  Operators
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/02-Combined_operations.html"
+                >
+                  
+                  Combined operators
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/03-The_watershed_transform.html"
+                >
+                  
+                  The_watershed transform
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/04-Gray_level_morphology.html"
+                >
+                  
+                  Gray level morphology
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
   </ul>
   <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
 </nav>
@@ -1151,6 +1252,46 @@ initFunction(initPrint)
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/04-Image_segmentation/content.html",
+        "teaser":null},{
+        "title": "Operators",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Morphomathematical operators Definitions Image The image $X$ is defined as a the set of pixels, connect or not, equal to $1$ (or True), the backgound being set to $0$ (or False). import matplotlib.pyplot as plt import numpy as np X = np.asarray([[0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,1,1,1,0,0,0], [0,0,1,1,1,0,0,0,0], [0,0,1,1,1,1,0,0,0], [0,0,1,1,1,0,0,0,0], [0,0,0,1,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0]]) plt.imshow(X,interpolation=&#39;nearest&#39;,cmap=plt.cm.gray); Structuring element similarily one define a structuring element $B$ as a set of pixels (connected or not) having one origin $o$. Example of a 3x3 centered structuring element: B = np.ones((3,3)) plt.imshow(B,interpolation=&#39;nearest&#39;,cmap=plt.cm.gray) plt.plot(1,1,&#39;or&#39;) plt.gca().set_xlim(-1,3) plt.gca().set_ylim(-1,3); Basic operations Image...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/01-Operators.html",
+        "teaser":null},{
+        "title": "Combined operators",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Combined operations Morphological thinning and thickening by iterating the Hit-or-Miss transform and remove detected pixels from $X$. thinning $$ X \\oslash B = X \\; | \\;(X \\otimes B)$$ thickening $$ X \\odot B = X \\cup (X \\otimes B)$$ import matplotlib.pyplot as plt import numpy as np from skimage.data import imread from skimage.morphology import erosion def hit_or_miss(X,B12): B1 = B12 == 1 B2 = B12 == 0 r = np.logical_and(erosion(X,B1),erosion(1-X,B2)) return r def rotate_4(B): #returns structuring element oriented in 4 directions return [B,np.rot90(B),np.rot90(np.rot90(B)),np.rot90(np.rot90(np.rot90(B)))] X = (imread(&#39;http://homepages.ulb.ac.be/~odebeir/data/man.tif&#39;)&gt;0)[:,:,0].astype(np.uint8) B = np.array([[2,1,2],[0,1,1],[0,0,2]]) #...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/02-Combined_operations.html",
+        "teaser":null},{
+        "title": "The_watershed transform",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo The watershed transform Principes The idea behind the watershed transform is to isolate regions of the image similarily to hydrographic region in geography. An image can indeed be seen as a 2D and a half data, i.e. with the gray level considered as the altitude. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/0/02/Amazonriverbasin_basemap.png&#39;) If one look at the gradient of an image, the borders of the objects correspond to the crests of the gradient surface. Gradient crests from skimage.data import imread import numpy as np from skimage.morphology import disk import skimage.filters.rank as skr from skimage.measure import label from...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/03-The_watershed_transform.html",
+        "teaser":null},{
+        "title": "Gray level morphology",
+        
+        "excerpt":
+            "           %matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo                  Gray level morphology  Definitions            Erosion  The equivalent gray level for the erosion operator is the local minimum.            Dilation  The equivalent gray level for the dilation operator is the local maximum.            see also:   Morphological algorithms MMIP p255-288            ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/04-Gray_level_morphology.html",
+        "teaser":null},{
+        "title": "Morphomathematics",
+        
+        "excerpt":
+            "    Chapter content             Morphological algorithms Morphological thinning and skeletonizing Ultimate Eroded Point (UEP) Euclidian Distance Map (EDM) The watershed transform           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/content.html",
         "teaser":null},{
         "title": "Jupyter demo1",
         
