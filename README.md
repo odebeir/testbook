@@ -6,7 +6,9 @@ Outline
 
 To browse the content, [start here](https://odebeir.github.io/testbook/README.html).
 
-TOC should be updated from .ipynb
+Original [github repository ](https://github.com/odebeir/testbook).
+
+
 
 How to read the content
 -----------------------
