@@ -1,0 +1,1427 @@
+---
+redirect_from:
+  - "/features/04-image-segmentation/01-histogram-based-image-segmentation"
+interact_link: content/features/04-Image_segmentation/01-Histogram_based_image_segmentation.ipynb
+kernel_name: python3
+has_widgets: false
+title: |-
+  Histogram based segmentation
+prev_page:
+  url: /features/04-Image_segmentation/content.html
+  title: |-
+    Image segmentation
+next_page:
+  url: /features/04-Image_segmentation/02-Border-based_segmentation.html
+  title: |-
+    Border based segmentation
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Histogram-based-segmentation">Histogram based segmentation<a class="anchor-link" href="#Histogram-based-segmentation"> </a></h1><p>All the pixels in the image are processed the same way.</p>
+<ul>
+<li>common method</li>
+<li>easy and fast</li>
+<li>used when pixel value has a direct interpretation </li>
+</ul>
+<p>e.g. Hounsfield Unit in CT scan
+$$HU = 1000\times\frac{\mu - \mu_{water}}{\mu_{water} - \mu_{air}}$$</p>
+<p>Imaging: Substance densities in Hounsfield Units (Radiodensity)</p>
+
+<pre><code>Air: -1000
+Lung: -700
+Soft Tissue: -300 to -100
+Fat: -50
+Water: 0
+CSF: +15
+Blood: +30 to +45
+Muscle: +40
+Calculus: +100 to +400
+Bone: +1000 (up to +3000 for dense bone)</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://crashingpatient.com/wp-content/images/part1/tissuedensities.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_2_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>a problem can arise when:</p>
+<ul>
+<li>the illumination is uneven</li>
+<li>in presence of shadows</li>
+<li>when the object of interest has a variable brightness or texture, etc</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Image-threshold">Image threshold<a class="anchor-link" href="#Image-threshold"> </a></h2><p>definition</p>
+$$\begin{align*} 
+g(i,j) &amp;= 1 \, \text{if} \, f(i,j)&gt;T \\
+\,  &amp;= 0 \, \text{otherwise}
+\end{align*}$$<p>$T$ can be:</p>
+<ul>
+<li>fixed: $T = T0$</li>
+<li>globally adaptive: $T = T(f)$</li>
+<li>locally adaptive: $T = T(f,fc)$</li>
+</ul>
+<h3 id="some-examples">some examples<a class="anchor-link" href="#some-examples"> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">data</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">hist</span><span class="p">,</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span>  <span class="c1"># histogram is computed on a 1D distribution --&gt; flatten()</span>
+    <span class="k">return</span> <span class="mf">1.</span><span class="o">*</span><span class="n">hist</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span> <span class="c1"># normalized histogram</span>
+
+<span class="k">def</span> <span class="nf">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">ima</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">nh</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nh_r</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">nh_g</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">nh_b</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># display the results</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ima</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;hist.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_r</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_g</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_b</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;gray level&#39;</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">horse</span><span class="p">())</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">horse</span><span class="p">()[:],</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">h</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/numpy/lib/histograms.py:778: RuntimeWarning: Converting input from bool to &lt;class &#39;numpy.uint8&#39;&gt; for compatibility.
+  a, weights = _ravel_and_check_weights(a, weights)
+/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/numpy/lib/histograms.py:778: RuntimeWarning: Converting input from bool to &lt;class &#39;numpy.uint8&#39;&gt; for compatibility.
+  a, weights = _ravel_and_check_weights(a, weights)
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([43412, 87788,     0,     0,     0,     0,     0,     0,     0]),
+ array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_6_2.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span>    <span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">checkerboard</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_7_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">page</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_8_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">rank</span> <span class="k">as</span> <span class="n">skr</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">page</span><span class="p">()</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">g</span><span class="o">/</span><span class="n">m</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.colorbar.Colorbar at 0x7f00a5f1def0&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_9_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">coins</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_10_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coins</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">g</span><span class="o">&gt;</span><span class="mi">90</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.image.AxesImage at 0x7f00a5def3c8&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_11_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">camera</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_12_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">camera</span><span class="p">()</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="mi">150</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">t1</span><span class="o">+</span><span class="n">t2</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">g</span><span class="o">&lt;</span><span class="mi">100</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">t3</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[1, 1, 1, ..., 1, 1, 1],
+       [1, 1, 1, ..., 1, 1, 1],
+       [1, 1, 1, ..., 1, 1, 1],
+       ...,
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0]])</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_13_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">hubble_deep_field</span><span class="p">()[:,:,</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_14_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">moon</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_15_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">coffee</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_16_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="percentile-threshold">percentile threshold<a class="anchor-link" href="#percentile-threshold"> </a></h2>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ima</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">hubble_deep_field</span><span class="p">()[:,:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_18_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we know a priori the surface of the object of interest, here the galaxies, one can set the threshold to the corresponding percentile.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">perc</span> <span class="o">=</span> <span class="o">.</span><span class="mi">95</span> <span class="c1">#galaxies are the 5% brighter pixels in the image</span>
+
+<span class="n">h</span><span class="p">,</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="p">[:],</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">perc</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="n">th_perc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span><span class="o">&gt;=</span><span class="n">perc</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">th_perc</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="o">&gt;=</span><span class="n">th_perc</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_20_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_20_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="optimal-threshold">optimal threshold<a class="anchor-link" href="#optimal-threshold"> </a></h2><p>algorithm:</p>
+<ol>
+<li>set an initial threshold to $T$</li>
+<li>cut distribution into:
+$$G1 = \{p(x,y)&gt;T\}$$
+$$G2 = \{p(x,y)&lt;=T\}$$</li>
+<li>compute distribution centroid for each part $m1$ and $m2$</li>
+<li>the new threshold is given by:
+$$T’=(m1+m2)/2$$</li>
+<li>iterate (2) until convergence</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Question:</p>
+<ul>
+<li>write a function that finds the optimal threshold for the cameraman</li>
+<li>what clustering method (machine mearning) is equivallent to that algorithm ?</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Otsu's-threshold">Otsu's threshold<a class="anchor-link" href="#Otsu's-threshold"> </a></h2><p>One define two classes (e.g. foreground/background) based on pixel intensity, classes are separated by a threshold value $k$:</p>
+<p>the class probabilities are defined such as:</p>
+$$
+\begin{align*} 
+\omega_0 &amp;=&amp; Pr(C_0) = \sum_{i=0}^k p_i  = \omega (k)\\
+\omega_1 &amp;=&amp; Pr(C_1) = \sum_{i=k+1}^L p_i  = 1-\omega (k)\\
+\end{align*} 
+$$<p>the class means are defined by:</p>
+$$
+\begin{align*} 
+\mu_0 &amp;=&amp; \sum_{i=0}^k i\:Pr(i|C_0) = \sum_{i=0}^k i\:p_i/\omega_0 = \mu(k)/\omega(k) \\
+\mu_1 &amp;=&amp; \sum_{i=k+1}^L i\:Pr(i|C_1) = \sum_{i=k+1}^L i\:p_i/\omega_1 = \frac{\mu_T - \mu(k)}{1-\omega(k)} \\
+\end{align*} 
+$$<p>with</p>
+$$
+\begin{align*} 
+\mu(k) &amp;=&amp; \sum_{i=0}^k i\: p_i\\
+\end{align*} 
+$$<p>for the total image one have:</p>
+$$
+\begin{align*} 
+\mu_T &amp;=&amp; \mu(L) = \sum_{i=0}^L i\: p_i  
+\end{align*} 
+$$<p>total image values and class values are linked with:</p>
+$$
+\begin{align*} 
+\omega_0 \mu_0 + \omega_1  \mu_1 &amp;=&amp; \mu_T\\
+\omega_0 + \omega_1 &amp;=&amp; 1
+\end{align*} 
+$$<p>class variances are defined by:</p>
+$$
+\begin{align*} 
+\sigma_0^2 &amp;=&amp; \sum_{i=0}^k (i-\mu_0)^2\:Pr(i|C_0) =\sum_{i=0}^L (i-\mu_0)^2 p_i/\omega_0\\
+\sigma_1^2 &amp;=&amp; \sum_{i=k+1}^L (i-\mu_1)^2\:Pr(i|C_1) =\sum_{i=0}^L (i-\mu_1)^2 p_i/\omega_1\\
+\end{align*} 
+$$<p>variance intra-classe (within):</p>
+$$\sigma_W^2 = \omega_0 \sigma_0^2 + \omega_1 \sigma_1^2$$<p>variance inter-classe (between):
+$$
+\begin{align*} 
+\sigma_B^2 &amp;=&amp; \omega _0 (\mu_0 - \mu_T)^2 + \omega_1(\mu_1-\mu_T)^2\\
+&amp;=&amp; \omega_0 \omega_1(\mu_1-\mu_0)^2
+\end{align*} 
+$$</p>
+<p>total variance:
+$$\sigma_T^2 = \sum_{i=0}^L (i-\mu_T)^2 p_i$$</p>
+<p>separability:
+$$\lambda = \sigma_B^2/\sigma_W^2 \:,\: \kappa = \sigma_T^2/\sigma_W^2 \:,\: \eta = \sigma_B^2/\sigma_T^2 $$</p>
+<p>Otsu's threshold is $k$ such that separability is maximal (e.g.):</p>
+$$\eta = \sigma_B^2(k)/\sigma_T^2(k)$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">threshold_otsu</span>
+
+<span class="n">ima</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="n">data</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Monocyte_no_vacuoles.JPG/712px-Monocyte_no_vacuoles.JPG&#39;</span><span class="p">,</span><span class="n">as_grey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">th</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">th</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Otsu&#39;s thresold = </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">th</span> );
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/skimage/io/_io.py:48: UserWarning: `as_grey` has been deprecated in favor of `as_gray`
+  warn(&#39;`as_grey` has been deprecated in favor of `as_gray`&#39;)
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_24_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>see also:</p>
+<ul>
+<li>Otsu's method <a href="../00-Preface/06-References.ipynb#[Otsu79]">Otsu79</a> p432</li>
+</ul>
+</blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="entropy-threshold">entropy threshold<a class="anchor-link" href="#entropy-threshold"> </a></h2><p>The threshold is the value maximizing total entropy, which is the sum of the two subspaces entropies below and above the threshold.</p>
+$$ e = - \sum p \, log_2 (p) $$<p>where $p$ is the probability of occurence for one gray level in one specific subspace.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ima</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astronaut</span><span class="p">()[:,:,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">h</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="p">[:],</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span><span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">symb</span><span class="p">,</span><span class="n">freq</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">freq</span><span class="o">/</span><span class="n">s</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">e</span>
+
+<span class="n">e0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">255</span><span class="p">):</span>
+    <span class="n">e0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">g</span><span class="p">),</span><span class="n">h</span><span class="p">[:</span><span class="n">g</span><span class="p">]))</span>
+    <span class="n">e1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="n">h</span><span class="p">[</span><span class="n">g</span><span class="p">:</span><span class="mi">255</span><span class="p">]))</span>
+
+<span class="n">e0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+
+<span class="n">e_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">e0</span><span class="o">+</span><span class="n">e1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e0</span><span class="o">+</span><span class="n">e1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">e_max</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="o">&gt;</span><span class="n">e_max</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/ipykernel_launcher.py:3: VisibleDeprecationWarning: Passing `normed=True` on non-uniform bins has always been broken, and computes neither the probability density function nor the probability mass function. The result is only correct if the bins are uniform, when density=True will produce the same result anyway. The argument will be removed in a future version of numpy.
+  This is separate from the ipykernel package so we can avoid doing imports until
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_27_1.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_27_2.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_27_3.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_28_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="multi-spectral-theshold">multi-spectral theshold<a class="anchor-link" href="#multi-spectral-theshold"> </a></h2><p>For multi-spectral images (e.g. rgb, hsv, etc) one can consider each spectral plane independently and group the obtained segmentations.</p>
+<p>The following example apply an Otsu's threshold on each color plane and make a combine the segmented results.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">threshold_otsu</span>
+<span class="kn">from</span> <span class="nn">skimage.color</span> <span class="k">import</span> <span class="n">rgb2hsv</span>
+
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">immunohistochemistry</span><span class="p">()</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">th_r</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">th_g</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">th_b</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">mix</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="n">th_r</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="n">th_g</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">&gt;</span><span class="n">th_b</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="n">th_r</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="n">th_g</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">b</span><span class="o">&gt;</span><span class="n">th_b</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mix</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_30_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_30_1.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_30_2.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Questions:</p>
+<ul>
+<li>what appens in an other color space ?</li>
+<li>can we use this approach for images that are not multi-spectral ?</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="adding-spectral-dimensions">adding spectral dimensions<a class="anchor-link" href="#adding-spectral-dimensions"> </a></h2><p>Sometime the gray level information is not enough to segment the image, the folowing image presents clearly 3 regions of different average gray level.</p>
+<p>Howerver, we also distinguish a variable texture in the central part of the image, the texture is more coarse than on the lateral borders.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">skimage.filters.rank</span> <span class="k">as</span> <span class="nn">skr</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
+
+<span class="n">ima</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">ima</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">:</span><span class="mi">150</span><span class="p">]</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">ima</span><span class="p">[</span><span class="mi">130</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span><span class="mi">130</span><span class="p">:</span><span class="mi">200</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">ima</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">mask</span> <span class="o">=</span> <span class="mf">10.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">mask</span><span class="p">[:,</span><span class="mi">100</span><span class="p">:</span><span class="mi">180</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c1"># add variable noise</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">ima</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">-.</span><span class="mi">5</span>
+<span class="n">ima</span> <span class="o">=</span> <span class="p">(</span><span class="n">ima</span> <span class="o">+</span> <span class="n">mask</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+
+<span class="n">entropy</span> <span class="o">=</span> <span class="mf">255.</span><span class="o">*</span><span class="n">skr</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">/</span><span class="mi">8</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_33_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>the gray level histogram exhibits three peaks corresponding to the three gray levels present in the image.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_35_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>in order to detect the variation of noise inside the central part, one can use a local entropy measurement, we now observe a clear contrast between the central band and the image left and right borders. Entropy is also sensitive to sharp gray level variation, so the box borders are also emphasized.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_37_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">r</span><span class="p">[</span><span class="n">ima</span><span class="o">&gt;</span><span class="mi">110</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">r</span><span class="p">[</span><span class="n">ima</span><span class="o">&gt;</span><span class="mi">140</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="n">ima</span><span class="o">&gt;</span><span class="mi">140</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_38_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="n">entropy</span><span class="o">&gt;</span><span class="mi">110</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">s</span><span class="p">[</span><span class="n">entropy</span><span class="o">&gt;</span><span class="mi">140</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_39_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+

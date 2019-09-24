@@ -1,0 +1,397 @@
+---
+redirect_from:
+  - "/features/04-image-segmentation/04-live-wire"
+interact_link: content/features/04-Image_segmentation/04-Live-wire.ipynb
+kernel_name: python3
+has_widgets: false
+title: |-
+  Live wire
+prev_page:
+  url: /features/04-Image_segmentation/03-Region_based_segmentation.html
+  title: |-
+    Region based segmentation
+next_page:
+  url: /features/04-Image_segmentation/05-Active_contour.html
+  title: |-
+    Active contour
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#rem &quot;%matplotlib notebook&quot; crashes with networkx</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline  
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Model-based-segmentation">Model based segmentation<a class="anchor-link" href="#Model-based-segmentation"> </a></h1><p>As far, we considered the image segmentation as a bottom-up process, where connected pixels are grouped together based on some sort of rule based on gray levels, borders etc.</p>
+<p>In some cases, one know <em>a priori</em> the object we are looking for.</p>
+<p>An example was already given when looking for lines and circles using the Hough transform.</p>
+<p>We will see in this chapter other method using this top-down approach.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Live-wire">Live-wire<a class="anchor-link" href="#Live-wire"> </a></h2><p>The live-wire algorithm is an interactive segmentation method that helps the user to delineate object borders in an image. The user select some points located near the object boundary and the algorithm connect them using a best path strategy.</p>
+<blockquote><p>Barrett, W a, and E N Mortensen. 1997. “Interactive live-wire boundary
+extraction.” Medical image analysis 1(4):331-41.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/lifewire.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/04-Image_segmentation/04-Live-wire_3_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>“intelligent scissors”</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/lw1.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/04-Image_segmentation/04-Live-wire_5_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/lw2.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/04-Image_segmentation/04-Live-wire_6_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Principe:</p>
+<ul>
+<li>user places seed points on the object/structure edge</li>
+<li>program compute locally the best path between these points</li>
+<li>should be fast enough to propose an interactive optimal path</li>
+<li>similar to the shortest problem, which is : d-finding the minimum cost path between one seed and all the possible image points</li>
+</ul>
+<p>Move from one pixel to one of its neighbours</p>
+<ul>
+<li>graph = image latice</li>
+<li>search space = every pixel of the image</li>
+<li>Cost</li>
+<li>local (related to the edge detection etc. )</li>
+<li>euclidian distance from previous position</li>
+</ul>
+<p>Local costs between points p and q</p>
+<ul>
+<li>Laplacian zero crossing, fZ,</li>
+<li>gradient magnitude,fG,</li>
+<li>and gradient direction, fD</li>
+</ul>
+<p>$l(\bf p,bf q) = \omega_G . f_G(\bf q)+\omega_Z . f_Z(\bf q)+\omega_D . f_G(\bf p,\bf q)$</p>
+<p>gradient magnitude, $f_G$:</p>
+<p>$f_G = 1 - \frac{G}{max(G)}$</p>
+<p>Laplacian zero crossing, $f_Z$,</p>
+<p>1 if sign change in the neighbourhood</p>
+<p>a ‘good’ pixel to place a border</p>
+<p>gradient direction, $f_D$</p>
+<p>$f_D(\bf p,\bf q) = \frac{2}{3\pi}\{[\cos(d_p(\bf p,\bf q))]^{-1}+[\cos(d_p(\bf p,\bf q))]^{-1}\}$</p>
+<p>$\bf D(p)$ be the unit vector which is normal to the gradient direction at point</p>
+<p>\bf D(p) = (G_y(\bf p),-G_x(\bf p))</p>
+<p>where</p>
+<p>are vector dot product and</p>
+<p>$ d_p(\bf p,\bf q) = \bf D(\bf p) . L(\bf p,\bf q) $</p>
+<p>$ d_a(\bf p,\bf q) = L(\bf p,\bf q) . \bf D(\bf q) $</p>
+<p>$L(\bf p, \bf q)=\left \{\begin{array}{ll}
+\bf q - \bf p,\quad \text{if} \quad  D(\bf p).(\bf q-\bf p) \ge 0\\
+\bf p - \bf q,\quad \text{if} \quad  D(\bf p).(\bf q-\bf p) &lt; 0\\
+\end{array}
+\right.$</p>
+<p>The direction feature cost is low when the gradient direction of the two pixels are similar to each other and the link between them.</p>
+<p>pros</p>
+<ul>
+<li>general, few initialization</li>
+<li>real-time</li>
+<li>direct control</li>
+</ul>
+<p>cons</p>
+<ul>
+<li>resolution = pixel (&gt; subpixel)</li>
+<li>contour depend on weight</li>
+<li>slow for 3D and high resolution</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Dijkstra-shortest-path-algorithm">Dijkstra shortest path algorithm<a class="anchor-link" href="#Dijkstra-shortest-path-algorithm"> </a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.lib.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
+<span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;8Ls1RqHCOPw&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+        <iframe
+            width="400"
+            height="300"
+            src="https://www.youtube.com/embed/8Ls1RqHCOPw"
+            frameborder="0"
+            allowfullscreen
+        ></iframe>
+        
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="n">G</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">([(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="mi">7</span><span class="p">),(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+                          <span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="s1">&#39;u&#39;</span><span class="p">,</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">)])</span>
+
+<span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">)</span> 
+<span class="n">edgewidth</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">edgewidth</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">])</span>
+    
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span><span class="n">font_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">font_family</span><span class="o">=</span><span class="s1">&#39;sans-serif&#39;</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">pos</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="n">edgewidth</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">,</span><span class="n">arrows</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:579: MatplotlibDeprecationWarning: 
+The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
+  if not cb.iterable(width):
+/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/networkx/drawing/nx_pylab.py:676: MatplotlibDeprecationWarning: 
+The iterable function was deprecated in Matplotlib 3.1 and will be removed in 3.3. Use np.iterable instead.
+  if cb.iterable(node_size):  # many node sizes
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/04-Live-wire_10_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">dijkstra_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">dijkstra_path</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="s1">&#39;v&#39;</span><span class="p">,</span><span class="n">target</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[&#39;s&#39;, &#39;x&#39;, &#39;u&#39;, &#39;v&#39;]
+[&#39;v&#39;, &#39;y&#39;, &#39;s&#39;]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+

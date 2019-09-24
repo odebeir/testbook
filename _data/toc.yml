@@ -95,3 +95,40 @@
   - title: Edge detection
     url: /features/02-Low-level_image_processing/05-Edge_detection
     not_numbered: true
+
+- title: Image analysis
+  url: /features/03-Basic_image_analysis/content
+  not_numbered: true
+  expand_sections: true
+  sections:
+  - title: Image processing chain
+    url: /features/03-Basic_image_analysis/01-Image_processing_chain
+    not_numbered: true
+
+- title: Image segmentation
+  url: /features/04-Image_segmentation/content
+  not_numbered: true
+  expand_sections: true
+  sections:
+  - title: Histogram based segmentation
+    url: /features/04-Image_segmentation/01-Histogram_based_image_segmentation
+    not_numbered: true
+  - title: Border based segmentation
+    url: /features/04-Image_segmentation/02-Border-based_segmentation
+    not_numbered: true
+  - title: Region based segmentation
+    url: /features/04-Image_segmentation/03-Region_based_segmentation
+    not_numbered: true
+  - title: Live wire
+    url: /features/04-Image_segmentation/04-Live-wire
+    not_numbered: true
+  - title: Active contour
+    url: /features/04-Image_segmentation/05-Active_contour
+    not_numbered: true
+  - title: Hough transform
+    url: /features/04-Image_segmentation/06-Hough_transform
+    not_numbered: true
+  - title: Examples
+    url: /features/04-Image_segmentation/07-Examples
+    not_numbered: true
+  

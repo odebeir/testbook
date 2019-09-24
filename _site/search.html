@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//search",
   "headline": "Search the site",
-  "datePublished": "2019-09-24T17:10:59+02:00",
-  "dateModified": "2019-09-24T17:10:59+02:00",
+  "datePublished": "2019-09-24T18:04:07+02:00",
+  "dateModified": "2019-09-24T18:04:07+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -735,6 +735,208 @@ initFunction(initPrint)
 
       
     
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/03-Basic_image_analysis/content.html"
+        >
+          
+          Image analysis
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/03-Basic_image_analysis/01-Image_processing_chain.html"
+                >
+                  
+                  Image processing chain
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/04-Image_segmentation/content.html"
+        >
+          
+          Image segmentation
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html"
+                >
+                  
+                  Histogram based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/02-Border-based_segmentation.html"
+                >
+                  
+                  Border based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/03-Region_based_segmentation.html"
+                >
+                  
+                  Region based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/04-Live-wire.html"
+                >
+                  
+                  Live wire
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/05-Active_contour.html"
+                >
+                  
+                  Active contour
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/06-Hough_transform.html"
+                >
+                  
+                  Hough transform
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/07-Examples.html"
+                >
+                  
+                  Examples
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
   </ul>
   <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
 </nav>
@@ -869,6 +1071,86 @@ initFunction(initPrint)
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/02-Low-level_image_processing/content.html",
+        "teaser":null},{
+        "title": "Image processing chain",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Typical image processing pipelines Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/ip_chain.png&#39;) The classical image processing chain is illstrated above, we can identify the 4 major steps: image acquisition, when photon are converted into a matrix of numbers pre-processing, used to correct image acquisition default or enhance image quality in order to facilitate... the segmentation, that split image into object of interest and background, then each object of interest are described by, feature extraction, that describe shape, color, texture, etc of course, other approaches exist, depending on the image processing task and the difficulty of it. Image segmentation...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/03-Basic_image_analysis/01-Image_processing_chain.html",
+        "teaser":null},{
+        "title": "Image analysis",
+        
+        "excerpt":
+            "    chapter content             the typical image processing pipeline           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/03-Basic_image_analysis/content.html",
+        "teaser":null},{
+        "title": "Histogram based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Histogram based segmentation All the pixels in the image are processed the same way. common method easy and fast used when pixel value has a direct interpretation e.g. Hounsfield Unit in CT scan $$HU = 1000\\times\\frac{\\mu - \\mu_{water}}{\\mu_{water} - \\mu_{air}}$$ Imaging: Substance densities in Hounsfield Units (Radiodensity) Air: -1000 Lung: -700 Soft Tissue: -300 to -100 Fat: -50 Water: 0 CSF: +15 Blood: +30 to +45 Muscle: +40 Calculus: +100 to +400 Bone: +1000 (up to +3000 for dense bone) Image(&#39;http://crashingpatient.com/wp-content/images/part1/tissuedensities.jpg&#39;) a problem can arise when: the illumination is uneven in...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html",
+        "teaser":null},{
+        "title": "Border based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Border based segmentation We have seen that berder detection can be achieved by various filters, e.g. by convolution (linear filters) or by non linear filters such as morphological gradient. The results of these filters is an image where pixels located near abrupt gray level changes have a high intensity whereas pixels located in more contiuous regions share a low value. Here below, the result of a Sobel filter on the an image whith clearly identifiable objects: def norm_hist(ima): hist,bins = np.histogram(ima.flatten(),range(256)) # histogram is computed on a 1D distribution --&gt; flatten()...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/02-Border-based_segmentation.html",
+        "teaser":null},{
+        "title": "Region based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Region based segmentation Because edge based segmentation leave contours not closed, one may be interested in searching for regions. Region growing Starting from one point of the “object” region and recruiting neighbouring pixels. Split and merge Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/quadtree.png&#39;) split phase one define an homogeneity function recursive image split: if image is homogeneous return else split the image into 4 and apply the test on each sub-image merge phase for each adjacent sub-image if the two grouped regions satisfies the homogeneity criterion, merge the regions Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/split_example.png&#39;) see also: Split and merge DIP p.461...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/03-Region_based_segmentation.html",
+        "teaser":null},{
+        "title": "Live wire",
+        
+        "excerpt":
+            "#rem &quot;%matplotlib notebook&quot; crashes with networkx %matplotlib inline import matplotlib.pyplot as plt import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Model based segmentation As far, we considered the image segmentation as a bottom-up process, where connected pixels are grouped together based on some sort of rule based on gray levels, borders etc. In some cases, one know a priori the object we are looking for. An example was already given when looking for lines and circles using the Hough transform. We will see in this chapter other method using this top-down approach. Live-wire The live-wire algorithm is an interactive segmentation method...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/04-Live-wire.html",
+        "teaser":null},{
+        "title": "Active contour",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Active contour import matplotlib.pyplot as plt import matplotlib.cm as cm import numpy as npy from skimage.io import imread from scipy import ndimage,interpolate from scipy.ndimage.filters import convolve1d,gaussian_filter,convolve from os.path import join def Cx(ima): &quot;&quot;&quot;x&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=1,cval=1) return c/2.0 def Cy(ima): &quot;&quot;&quot;y&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=0,cval=1) return c/2.0 def Cxx(ima): &quot;&quot;&quot;x&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=1,cval=1) return c/4.0 def Cyy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=0,cval=1) return c/4.0 def Cxy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; k = npy.array([[+1,0,-1],[0,0,0],[-1,0,+1]]) c = convolve(ima,k) return c/4.0 def term(ima): cx...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/05-Active_contour.html",
+        "teaser":null},{
+        "title": "Hough transform",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Hough transform One typical task in image processing is the detection of specific features such as lines. Lines are often present in images of man made structures. In the following image, some lines are continuous (red, green, blue) other are discontinuous (orange) but are made of aligned segments. Instead of trying to connect touching point that may be on the same line, as one would do with a classical edge detection techniques, Hough transform is grouping pixels that belong to a same line even if line is segmented. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/hough3.png&#39;) based on...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/06-Hough_transform.html",
+        "teaser":null},{
+        "title": "Examples",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from skimage import data import numpy as np from skimage.morphology import disk import skimage.filters.rank as skr from skimage.measure import label from skimage.morphology import watershed from skimage.io import imread from scipy import ndimage as ndi import matplotlib.pyplot as plt from skimage.segmentation import mark_boundaries # segment the coins im = data.coins() plt.imshow(im,cmap=plt.cm.gray) plt.colorbar(); # detect the eyes / nose im = data.chelsea() plt.imshow(im); # counting the galaxies im = data.hubble_deep_field() plt.imshow(im); im = data.page() bg = skr.median(im, disk(10)) res = (1.*im/bg) &lt; .8 plt.imshow(im,cmap=plt.cm.gray) plt.colorbar(); plt.figure() plt.imshow(bg,cmap=plt.cm.gray); plt.colorbar() plt.figure() plt.imshow(res.astype(np.uint8),cmap=plt.cm.gray); plt.colorbar(); # segment...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/07-Examples.html",
+        "teaser":null},{
+        "title": "Image segmentation",
+        
+        "excerpt":
+            "    Chapter content             optimal, entropy, percentile threshold Otsu threshold 2D threshold gaussian mixture condensation algorithm graph-cuts hierarchical region growing split and merge           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/content.html",
         "teaser":null},{
         "title": "Jupyter demo1",
         

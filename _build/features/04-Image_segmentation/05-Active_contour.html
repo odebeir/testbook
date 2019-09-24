@@ -1,0 +1,559 @@
+---
+redirect_from:
+  - "/features/04-image-segmentation/05-active-contour"
+interact_link: content/features/04-Image_segmentation/05-Active_contour.ipynb
+kernel_name: python3
+has_widgets: false
+title: |-
+  Active contour
+prev_page:
+  url: /features/04-Image_segmentation/04-Live-wire.html
+  title: |-
+    Live wire
+next_page:
+  url: /features/04-Image_segmentation/06-Hough_transform.html
+  title: |-
+    Hough transform
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Active-contour">Active contour<a class="anchor-link" href="#Active-contour"> </a></h2>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">npy</span>
+<span class="kn">from</span> <span class="nn">skimage.io</span> <span class="k">import</span> <span class="n">imread</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">ndimage</span><span class="p">,</span><span class="n">interpolate</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">convolve1d</span><span class="p">,</span><span class="n">gaussian_filter</span><span class="p">,</span><span class="n">convolve</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
+
+<span class="k">def</span> <span class="nf">Cx</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;x&#39; derivative of image&quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">cval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">/</span><span class="mf">2.0</span>
+
+<span class="k">def</span> <span class="nf">Cy</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;y&#39; derivative of image&quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">cval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">/</span><span class="mf">2.0</span>
+
+<span class="k">def</span> <span class="nf">Cxx</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;x&#39;&#39; derivative of image&quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">cval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">/</span><span class="mf">4.0</span>
+
+<span class="k">def</span> <span class="nf">Cyy</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">cval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">/</span><span class="mf">4.0</span>
+
+<span class="k">def</span> <span class="nf">Cxy</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">+</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">/</span><span class="mf">4.0</span>
+
+<span class="k">def</span> <span class="nf">term</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">cx</span> <span class="o">=</span> <span class="n">Cx</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">cxx</span> <span class="o">=</span> <span class="n">Cxx</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">cy</span> <span class="o">=</span> <span class="n">Cy</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">cyy</span> <span class="o">=</span> <span class="n">Cyy</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="n">cxy</span> <span class="o">=</span> <span class="n">Cxy</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+
+    <span class="n">num</span> <span class="o">=</span> <span class="n">cyy</span><span class="o">*</span><span class="p">(</span><span class="n">cx</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">cxx</span><span class="o">*</span><span class="p">(</span><span class="n">cy</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">cxy</span><span class="o">*</span><span class="n">cx</span><span class="p">)</span><span class="o">*</span><span class="n">cy</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">cx</span><span class="o">**</span><span class="mf">2.0</span><span class="o">+</span><span class="n">cy</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span>
+
+    <span class="n">t</span> <span class="o">=</span> <span class="n">num</span><span class="o">/</span><span class="p">(</span><span class="n">denom</span><span class="o">+</span><span class="mf">1.e-10</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="n">data_path</span> <span class="o">=</span> <span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data&#39;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s1">&#39;lines.tif&#39;</span><span class="p">)</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">term</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span><span class="s1">&#39;lines2.tif&#39;</span><span class="p">)</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">term</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_2_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_2_1.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_2_2.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_2_3.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Nov 29, 2010</span>
+
+<span class="sd">Attempt to port code found here :</span>
+
+<span class="sd">http://www.iacl.ece.jhu.edu/static/gvf/</span>
+
+<span class="sd">to python</span>
+
+<span class="sd">@author: olivier</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">scp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">npy</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">gaussian_filter</span><span class="p">,</span> <span class="n">convolve1d</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">map_coordinates</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">linalg</span>
+
+
+
+<span class="k">def</span> <span class="nf">test_data</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span><span class="n">filled</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;empty square, snakes is intialased on a centred circle</span>
+
+<span class="sd">    :param radius: radius size relative to image size</span>
+<span class="sd">    :type radius: float [0,1]</span>
+
+<span class="sd">    :returns:  (xs,xy,image) snakes position and bitmap of the test image    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">))</span>
+    <span class="n">im</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">filled</span><span class="p">:</span>
+        <span class="n">im</span><span class="p">[</span><span class="mi">51</span><span class="p">:</span><span class="mi">99</span><span class="p">,</span><span class="mi">51</span><span class="p">:</span><span class="mi">99</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">npy</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">radius</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="n">npy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="n">npy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">im</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">im</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">gradients</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="n">smth</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">),</span> <span class="mf">6.0</span><span class="o">*</span><span class="n">sigma</span><span class="p">)</span>
+    <span class="n">xg</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">smth</span><span class="p">,</span> <span class="p">[</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">yg</span> <span class="o">=</span> <span class="n">convolve1d</span><span class="p">(</span><span class="n">smth</span><span class="p">,</span> <span class="p">[</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">xg</span><span class="p">,</span><span class="n">yg</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">snakeit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">kappa</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute new snakes position</span>
+
+<span class="sd">    :param x,y: snakes position</span>
+<span class="sd">    :type fx,fy: 1D arrays</span>
+<span class="sd">    :param fx,fy: external force field</span>
+<span class="sd">    :type fx,fy: 2D arrays</span>
+<span class="sd">    :param alpha: elasticity</span>
+<span class="sd">    :type alpha: float</span>
+<span class="sd">    :param beta: rigidity</span>
+<span class="sd">    :type beta: float</span>
+<span class="sd">    :param gamma: viscosity</span>
+<span class="sd">    :type gamma: float</span>
+<span class="sd">    :param kappa: external forces weight</span>
+<span class="sd">    :type kappa: float</span>
+<span class="sd">    :param niter: number of iterations</span>
+<span class="sd">    :type niter: int</span>
+
+<span class="sd">    :returns:  (X,Y) snakes position after each iteration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">beta</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">alpha</span><span class="o">+</span><span class="mf">4.</span><span class="o">*</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">alpha</span><span class="o">+</span><span class="mf">6.</span><span class="o">*</span><span class="n">beta</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">id_main</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+
+    <span class="n">line</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="p">]),</span><span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="o">-</span><span class="mi">5</span><span class="p">,))))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">id_main</span><span class="o">-</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="k">N</span>
+        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">AI</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">npy</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">invAI</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">AI</span><span class="p">)</span>
+
+    <span class="n">h1</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">niter</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">niter</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niter</span><span class="p">):</span>
+
+        <span class="n">X</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">Y</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="n">vfx</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
+        <span class="n">vfy</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">fy</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
+
+        <span class="n">fextx</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">vfx</span>
+        <span class="n">fexty</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">vfy</span>
+        <span class="n">fintx</span> <span class="o">=</span> <span class="n">gamma</span><span class="o">*</span><span class="n">x</span>
+        <span class="n">finty</span> <span class="o">=</span> <span class="n">gamma</span><span class="o">*</span><span class="n">y</span>
+        <span class="n">new_x</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">invAI</span><span class="p">,</span> <span class="n">npy</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="n">fintx</span> <span class="o">+</span> <span class="n">fextx</span><span class="p">)))</span>
+        <span class="n">new_y</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">invAI</span><span class="p">,</span> <span class="n">npy</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="n">finty</span> <span class="o">+</span> <span class="n">fexty</span><span class="p">)))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">new_y</span>
+
+    <span class="n">X</span><span class="p">[</span><span class="n">niter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">niter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">y</span>
+
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">snakeitp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">kappa</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">kappap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute new snakes position using pressure</span>
+
+<span class="sd">    :param x,y: snakes position</span>
+<span class="sd">    :type fx,fy: 1D arrays</span>
+<span class="sd">    :param fx,fy: external force field</span>
+<span class="sd">    :type fx,fy: 2D arrays</span>
+<span class="sd">    :param alpha: elasticity</span>
+<span class="sd">    :type alpha: float</span>
+<span class="sd">    :param beta: rigidity</span>
+<span class="sd">    :type beta: float</span>
+<span class="sd">    :param gamma: viscosity</span>
+<span class="sd">    :type gamma: float</span>
+<span class="sd">    :param kappa: external forces weight</span>
+<span class="sd">    :type kappa: float</span>
+<span class="sd">    :param kappap: pressure forces weight</span>
+<span class="sd">    :type kappap: float</span>
+<span class="sd">    :param niter: number of iterations</span>
+<span class="sd">    :type niter: int</span>
+
+<span class="sd">    :returns:  (X,Y) snakes position after each iteration</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="n">beta</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">alpha</span><span class="o">+</span><span class="mf">4.</span><span class="o">*</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mf">2.</span><span class="o">*</span><span class="n">alpha</span><span class="o">+</span><span class="mf">6.</span><span class="o">*</span><span class="n">beta</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">id_main</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+
+    <span class="n">line</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">npy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="p">]),</span><span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="o">-</span><span class="mi">5</span><span class="p">,))))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">id_main</span><span class="o">-</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="k">N</span>
+        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+    <span class="n">AI</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">npy</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">invAI</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">AI</span><span class="p">)</span>
+
+    <span class="n">h1</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">niter</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">niter</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">niter</span><span class="p">):</span>
+
+        <span class="n">X</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">Y</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="c1">#external forces</span>
+        <span class="n">vfx</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
+        <span class="n">vfy</span> <span class="o">=</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="n">fy</span><span class="p">,</span> <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">])</span>
+
+        <span class="c1">#pressure forces</span>
+        <span class="n">qx</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">npy</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">qy</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="n">npy</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">pmag</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">qx</span><span class="o">*</span><span class="n">qx</span><span class="o">+</span><span class="n">qy</span><span class="o">*</span><span class="n">qy</span><span class="p">)</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="p">(</span><span class="n">qy</span><span class="o">/</span><span class="n">pmag</span><span class="p">)</span>
+        <span class="n">py</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">qx</span><span class="o">/</span><span class="n">pmag</span><span class="p">)</span>
+
+        <span class="n">fextx</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">vfx</span>
+        <span class="n">fexty</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">vfy</span> 
+        <span class="n">fintx</span> <span class="o">=</span> <span class="n">gamma</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">kappap</span><span class="o">*</span><span class="n">px</span>
+        <span class="n">finty</span> <span class="o">=</span> <span class="n">gamma</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">kappap</span><span class="o">*</span><span class="n">py</span>
+        <span class="n">new_x</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">invAI</span><span class="p">,</span> <span class="n">npy</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="n">fintx</span> <span class="o">+</span> <span class="n">fextx</span><span class="p">)))</span>
+        <span class="n">new_y</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">invAI</span><span class="p">,</span> <span class="n">npy</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="n">finty</span> <span class="o">+</span> <span class="n">fexty</span><span class="p">)))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">new_y</span>
+
+    <span class="n">X</span><span class="p">[</span><span class="n">niter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">niter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">export_snakes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;save each position of the scake into a different image&#39;&#39;&#39;</span>
+    <span class="n">niter</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">niter</span><span class="p">):</span>
+        <span class="n">new_x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span>
+        <span class="n">new_y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">new_x</span><span class="o">-</span><span class="n">x</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">new_y</span><span class="o">-</span><span class="n">y</span>
+
+        <span class="k">if</span> <span class="n">h1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">lines</span><span class="p">[:]</span>
+            <span class="n">h2</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+            <span class="n">h3</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="n">h1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;:k&#39;</span><span class="p">)</span>
+        <span class="n">h2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="o">-</span><span class="n">dy</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span><span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="n">width</span><span class="o">=.</span><span class="mi">005</span><span class="p">,</span><span class="n">scale</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">h3</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;iteration: </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">iter</span>)
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">new_x</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">new_y</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;../../test/fig</span><span class="si">%04d</span><span class="s1">.png&#39;</span><span class="o">%</span><span class="k">iter</span>, dpi=100)
+
+<span class="k">def</span> <span class="nf">disp_snakes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;plot all the snakes positions in the same plot&#39;&#39;&#39;</span>
+    <span class="n">niter</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;or&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nb">iter</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">niter</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="nb">iter</span><span class="p">,:]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;:k&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="nb">iter</span><span class="o">%</span><span class="k">n</span>],y[iter%n],&#39;%d&#39;%iter)
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;og&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">im</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">(</span><span class="o">.</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">xg</span><span class="p">,</span> <span class="n">yg</span> <span class="o">=</span> <span class="n">gradients</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">xg</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;x gradient&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="s1">&#39;oy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">yg</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="s1">&#39;oy&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;y gradient&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">Y</span> <span class="o">=</span> <span class="n">snakeitp</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">xg</span><span class="p">,</span><span class="n">yg</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span><span class="n">beta</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">kappa</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">kappap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">disp_snakes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;alpha=.5,beta=.1,gamma=1.0,kappa=1000,niter = 15&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">Y</span> <span class="o">=</span> <span class="n">snakeitp</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">xg</span><span class="p">,</span><span class="n">yg</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span><span class="n">beta</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">kappa</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">kappap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">disp_snakes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;alpha=.5,beta=10,gamma=1.0,kappa=1000,niter = 15&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">Y</span> <span class="o">=</span> <span class="n">snakeitp</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">xg</span><span class="p">,</span><span class="n">yg</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span><span class="n">beta</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">kappa</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span><span class="n">kappap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">disp_snakes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;alpha=.1,beta=.1,gamma=1.0,kappa=1000,niter = 15&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">binary</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span><span class="n">Y</span> <span class="o">=</span> <span class="n">snakeitp</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">xg</span><span class="p">,</span><span class="n">yg</span><span class="p">,</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span><span class="n">beta</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="n">kappa</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span><span class="n">kappap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">niter</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<span class="n">disp_snakes</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;alpha=.5,beta=.1,gamma=1.0,kappa=100,niter = 15&#39;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_4_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_4_1.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_4_2.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_4_3.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/05-Active_contour_4_4.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+

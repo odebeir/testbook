@@ -1,0 +1,175 @@
+---
+redirect_from:
+  - "/features/03-basic-image-analysis/01-image-processing-chain"
+interact_link: content/features/03-Basic_image_analysis/01-Image_processing_chain.ipynb
+kernel_name: python3
+has_widgets: false
+title: |-
+  Image processing chain
+prev_page:
+  url: /features/03-Basic_image_analysis/content.html
+  title: |-
+    Image analysis
+next_page:
+  url: /features/04-Image_segmentation/content.html
+  title: |-
+    Image segmentation
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Typical-image-processing-pipelines">Typical image processing pipelines<a class="anchor-link" href="#Typical-image-processing-pipelines"> </a></h1>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/ip_chain.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/03-Basic_image_analysis/01-Image_processing_chain_2_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The classical image processing chain is illstrated above, we can identify the 4 major steps:</p>
+<ul>
+<li><strong>image acquisition</strong>, when photon are converted into a matrix of numbers</li>
+<li><strong>pre-processing</strong>, used to correct image acquisition default or enhance image quality in order to facilitate...</li>
+<li>the <strong>segmentation</strong>, that split image into object of interest and background, then each object of interest are described by,</li>
+<li><strong>feature extraction</strong>, that describe shape, color, texture, etc </li>
+</ul>
+<p>of course, other approaches exist, depending on the image processing task and the difficulty of it.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Image-segmentation">Image segmentation<a class="anchor-link" href="#Image-segmentation"> </a></h2><p>Segmentation is an important step in image understanding, it aims to divide an image into "objects" i.e. connected pixels that share some semantic content. It is an ill-posed problem because often the image is the result of a 3D to 2D projection, it means that an object well identified in the 3D space can be impossible to identify without ambiguity.</p>
+<p>Segmentation result is a disjoint set of regions. Here we will talk about object and background.</p>
+$$ \bigcup_{i=1}^{N} R_i = I$$$$ R_i \cap R_j = \phi \:,\: 1 \leq i,j \leq N, i\neq j  $$<p>Since segmentation tackles the identification of semantic content, it often requires low level AND high-level approaches.</p>
+<p>The low-level approach or bottom-up approach considers the segmentation as an aggregation of pixels based on some common features. For example, pixles can share a common intensity, a common color, texture, or be "contained" inside some "border".</p>
+<p>The high-level approach or top-down approach tries to identify object starting from the complete image, knowing a priori what to look for. For example, detecting the position of a face inside the image to help camera auto-focus.</p>
+<p>Human vision is a combination of both mechanisms, retina send the signal from the sensor to the brain, grouping neighbours cones and rods to detect patterns such as borders, isolated points etc, but at the same time the brain suggest objects that could be seen and that helps the detection.</p>
+<p>The segmentation can be a very complex problem, and many methods have been proposed. We will see in the following sections some of the more common ones, this is far from being exhaustive, this topic remains an open issue.</p>
+<p>The following approaches will be illustrated:</p>
+<ul>
+<li>the histogram based segmentation</li>
+<li>the border based segmentation</li>
+<li>the region based segmentation </li>
+<li>one model based object detection </li>
+<li>one model based object segmentation</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Other-approaches">Other approaches<a class="anchor-link" href="#Other-approaches"> </a></h1><p>Sometime the object of interest is more easy to detect than to segment, the image processing chain becomes:</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/ip_chain2.png&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea output_execute_result">
+<img src="../../images/features/03-Basic_image_analysis/01-Image_processing_chain_6_0.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+ 
+
