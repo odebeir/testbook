@@ -15,23 +15,23 @@ How to read the content
 
 There are two ways to read *Introduction to image processing*:
 
-* The *recommended* way to read the book is to download and run the IPython notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the **Installation** section.
+* The *recommended* way to read the book is to download and run the jupyter notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the **Installation** section.
 
 * The *easiest* way to read the book is to view the static notebooks online.
 
-If you're new to using IPython or the IPython Notebook, you can find more information at the [IPython website](http://www.ipython.org/), [IPython Notebook website](http://ipython.org/notebook), and the [IPython Notebook example gallery](https://github.com/ipython/ipython/wiki/A-gallery-of-interesting-IPython-Notebooks).
+If you're new to the jupyter Notebook, you can find more information at the [Jupyter website](https://jupyter.org/).
 
 Installation
 ------------
 
-If you're going to read the book interactively (recommended), you'll need to clone this repository, install some dependencies, and launch the IPython Notebook. For example, the following commands should work for Linux and Mac OS X users:
+If you're going to read the book interactively (recommended), you'll need to clone this repository, install some dependencies, and launch the jupyter notebook. For example, the following commands should work for Linux and Mac OS X users:
 
     anaconda distribution should do the job
     conda install scikit-image 
 
-Finally, launch the IPython Notebook to get started (be sure that you're in the ``Introduction to image processing`` directory when you run this command):
+Finally, launch the jupyter Notebook to get started (be sure that you're in the ``Introduction to image processing`` directory when you run this command):
 
-    ipython notebook --pylab inline Index.ipynb
+    jupyter notebook --pylab inline Index.ipynb
 
 That's it!
 
