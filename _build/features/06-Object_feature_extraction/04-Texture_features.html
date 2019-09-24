@@ -1,0 +1,845 @@
+---
+redirect_from:
+  - "/features/06-object-feature-extraction/04-texture-features"
+interact_link: content/features/06-Object_feature_extraction/04-Texture_features.ipynb
+kernel_name: python3
+has_widgets: false
+title: |-
+  Texture features
+prev_page:
+  url: /features/06-Object_feature_extraction/03-Moments.html
+  title: |-
+    Moments
+next_page:
+  url: 
+  title: |-
+    
+comment: "***PROGRAMMATICALLY GENERATED, DO NOT EDIT. SEE ORIGINAL FILES IN /content***"
+---
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;..&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Texture-features">Texture features<a class="anchor-link" href="#Texture-features"> </a></h1><p>Here is an example of a texture found in ultrasound medical imaging, the image exhibits a clear striation pattern due to muscle fiber orientation.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://homepages.ulb.ac.be/~odebeir/data/muscle.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_2_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The following video sequience illustrates how fiber orientation can vary during the motricity exercice.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">YouTubeVideo</span>
+<span class="n">YouTubeVideo</span><span class="p">(</span><span class="s1">&#39;PUcz11MLxUk&#39;</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">autoplay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">theme</span><span class="o">=</span><span class="s2">&quot;light&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+
+        <iframe
+            width="400"
+            height="300"
+            src="https://www.youtube.com/embed/PUcz11MLxUk?start=0&autoplay=1&theme=light&color=blue"
+            frameborder="0"
+            allowfullscreen
+        ></iframe>
+        
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here are some classical textures extracted from an atlas (Broadatz). Texture can be natural, such as grains, sand, soil, stone, biological tissue or resulting from a human artifact such as fabric, wall, pavements ...</p>
+<p>Texture in an image can be characterized by a repetitive pattern or by a statistical geometrical distribution.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">&#39;http://www.tina-vision.net/ilib/ims_broadatz.jpg&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_6_0.jpeg"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Texture is relative to a region content, it can by due to
+ a specific gray-level dynamic, a gray-level organisation
+ one define several oreder for texture description:</p>
+<ul>
+<li>first order : the pixel alone is used ti compute the texture descriptor</li>
+<li>second order : the pixel and one of its neighboor are used</li>
+<li>third order : more than 1 neighboor are used</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-coocurence-matrix">The coocurence matrix<a class="anchor-link" href="#The-coocurence-matrix"> </a></h2><blockquote><p>see also:</p>
+<ul>
+<li>the coocurence matrix in the <a href="../01-Introduction/03-Digital image.ipynb">digital image section</a></li>
+</ul>
+</blockquote>
+<p>Coorence matrix can be defined such as:</p>
+$$
+C^{\Delta x, \Delta y}_{i,j}=\sum_{p=1}^n\sum_{q=1}^m\begin{cases} 1, &amp; \mbox{if }I(p,q)=i\mbox{ and }I(p+\Delta x,q+\Delta y)=j \\ 0, &amp;\mbox{otherwise}\end{cases}
+$$<p>for a given $(\Delta x, \Delta y)$ defining the neighborhood relationship.</p>
+<p>From the coocurence matrix $C$ one can extract several descriptors that are sensitive to the texture:</p>
+<p>Normalized coocurence matrix:</p>
+$$ P_{i,j} = \frac{C_{i,j}}{\sum^{N-1}_{i,j=0} C_{i,j}}$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>contrast measures</p>
+$$Contrast = \sum^{N-1}_{i,j=0} P_{i,j}(i-j)^2$$$$Dissimilarity = \sum^{N-1}_{i,j=0} P_{i,j}|i-j|$$$$Homogeneity = \sum^{N-1}_{i,j=0} \frac{P_{i,j}}{1+(i+j)^2}$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>organization measures</p>
+$$ASM = \sum^{N-1}_{i,j=0} P_{i,j}^2$$$$ Energy = \sqrt{ASM}$$$$entropy = - \sum^{N-1}_{i,j=0} P_{i,j} \, \log(P_{i,j})$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>statistical measures</p>
+$$ \mu_i =  \sum^{N-1}_{i,j=0} i\,P_{i,j} $$$$ \mu_j =  \sum^{N-1}_{i,j=0} j\,P_{i,j} $$$$ \sigma_i =  \sum^{N-1}_{i,j=0} (i-\mu_i)^2\,P_{i,j} $$$$ \sigma_j =  \sum^{N-1}_{i,j=0} (j-\mu_j)^2\,P_{i,j} $$$$Correlation = \sum^{N-1}_{i,j=0} P_{i,j} \, \frac{(i-\mu_i)(j-\mu_j)}{\sqrt{\sigma_i^2 \sigma_j^2}}$$
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="The-Gabor-filters">The Gabor filters<a class="anchor-link" href="#The-Gabor-filters"> </a></h2><p>Gabor filters are a family of 2D filter kernels based on the product of a cosine(a sine for imaginary part) function and a gaussian function such that:</p>
+<p>for the real part:</p>
+$$g(x,y;\lambda,\theta,\psi,\sigma,\gamma) = \exp\left(-\frac{x'^2+\gamma^2y'^2}{2\sigma^2}\right)\cos\left(2\pi\frac{x'}{\lambda}+\psi\right)$$<p>and for the imaginary part:</p>
+$$g(x,y;\lambda,\theta,\psi,\sigma,\gamma) = \exp\left(-\frac{x'^2+\gamma^2y'^2}{2\sigma^2}\right)\sin\left(2\pi\frac{x'}{\lambda}+\psi\right)$$<p>where</p>
+$$x' = x \cos\theta + y \sin\theta$$<p>and</p>
+$$y' = -x \sin\theta + y \cos\theta$$<p>The Gabor parameters are:</p>
+<ul>
+<li>$\lambda$ the wave length</li>
+<li>$\theta$ the orientation</li>
+<li>$\sigma$ the gaussian envelope</li>
+<li>$\gamma$ the form factor</li>
+<li>$\psi$ the phase</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">convolve</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="k">def</span> <span class="nf">gabor</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">lam</span><span class="p">,</span><span class="n">psi</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">):</span>
+    <span class="n">Xt</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">Y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">Yt</span> <span class="o">=</span> <span class="o">-</span><span class="n">X</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">Y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">Xt</span><span class="o">**</span><span class="mf">2.</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">**</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">Yt</span><span class="o">**</span><span class="mf">2.</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">E1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">n</span><span class="o">/</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span> <span class="n">Xt</span><span class="o">/</span><span class="n">lam</span> <span class="o">+</span> <span class="n">psi</span>
+    <span class="n">E2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">E1</span> <span class="o">*</span> <span class="n">E2</span>
+
+<span class="k">def</span> <span class="nf">getGaborKernel</span><span class="p">(</span><span class="n">ksize</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">lambd</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">psi</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="n">ksize</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="n">ksize</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">gabor</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span><span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span><span class="n">lam</span><span class="o">=</span><span class="n">lambd</span><span class="p">,</span><span class="n">psi</span><span class="o">=</span><span class="n">psi</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="o">=</span><span class="n">Y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">G</span>
+
+
+<span class="n">ksize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">31</span><span class="p">,</span><span class="mi">31</span><span class="p">]</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">lambd</span> <span class="o">=</span> <span class="mf">10.</span>
+<span class="n">gamma</span> <span class="o">=</span> <span class="o">.</span><span class="mi">15</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">();</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">sigma</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">getGaborKernel</span><span class="p">(</span><span class="n">ksize</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">lambd</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">psi</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">kernel</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;sigma = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">sigma</span>)
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">();</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="o">.</span><span class="mi">1</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">theta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">getGaborKernel</span><span class="p">(</span><span class="n">ksize</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">lambd</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">psi</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">kernel</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;theta = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">theta</span>)
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">();</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">gamma</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)):</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">getGaborKernel</span><span class="p">(</span><span class="n">ksize</span><span class="p">,</span><span class="n">sigma</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">lambd</span><span class="p">,</span><span class="n">gamma</span><span class="p">,</span><span class="n">psi</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">kernel</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;gamma = </span><span class="si">%.2f</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">gamma</span>)
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea ">
+<pre>&lt;Figure size 432x288 with 0 Axes&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_13_1.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea ">
+<pre>&lt;Figure size 432x288 with 0 Axes&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_13_3.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea ">
+<pre>&lt;Figure size 432x288 with 0 Axes&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_13_5.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Hurst-coefficient">Hurst coefficient<a class="anchor-link" href="#Hurst-coefficient"> </a></h2><p>Hurst coefficient are related to the local fractal dimension, the algorithm is the following:</p>
+<ul>
+<li>compute local max and min (typ. on a 7 pixel octogonal neighbourhood)</li>
+<li>plot the log (difference) vs log (distance)</li>
+<li>least square fit the curve</li>
+</ul>
+<table>
+<thead><tr>
+<th>pixel</th>
+<th style="text-align:center">#</th>
+<th style="text-align:right">distance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a</td>
+<td style="text-align:center">1</td>
+<td style="text-align:right">0</td>
+</tr>
+<tr>
+<td>b</td>
+<td style="text-align:center">4</td>
+<td style="text-align:right">1</td>
+</tr>
+<tr>
+<td>c</td>
+<td style="text-align:center">4</td>
+<td style="text-align:right">1.41</td>
+</tr>
+<tr>
+<td>d</td>
+<td style="text-align:center">4</td>
+<td style="text-align:right">2</td>
+</tr>
+<tr>
+<td>e</td>
+<td style="text-align:center">8</td>
+<td style="text-align:right">2.236</td>
+</tr>
+<tr>
+<td>f</td>
+<td style="text-align:center">4</td>
+<td style="text-align:right">2.828</td>
+</tr>
+<tr>
+<td>g</td>
+<td style="text-align:center">4</td>
+<td style="text-align:right">3</td>
+</tr>
+<tr>
+<td>h</td>
+<td style="text-align:center">8</td>
+<td style="text-align:right">3.162</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead><tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td>h</td>
+<td>g</td>
+<td>h</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>f</td>
+<td>e</td>
+<td>d</td>
+<td>e</td>
+<td>f</td>
+<td></td>
+</tr>
+<tr>
+<td>h</td>
+<td>e</td>
+<td>c</td>
+<td>b</td>
+<td>c</td>
+<td>e</td>
+<td>h</td>
+</tr>
+<tr>
+<td>g</td>
+<td>d</td>
+<td>b</td>
+<td>a</td>
+<td>b</td>
+<td>d</td>
+<td>g</td>
+</tr>
+<tr>
+<td>h</td>
+<td>e</td>
+<td>c</td>
+<td>b</td>
+<td>c</td>
+<td>e</td>
+<td>h</td>
+</tr>
+<tr>
+<td></td>
+<td>f</td>
+<td>e</td>
+<td>d</td>
+<td>e</td>
+<td>f</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>h</td>
+<td>g</td>
+<td>h</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Fractal-analysis">Fractal analysis<a class="anchor-link" href="#Fractal-analysis"> </a></h2><p>Similarly we can analyse the value of the image filtered by a gaussian filter in a
+log/log plot of the pixel value with respect to the sigma of the filter. In the following example we compute the pixel gray level in five points located on the central line,
+the gray level is evaluated after applying a gaussian filter of increasing sigma.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">npy</span>
+<span class="kn">from</span> <span class="nn">skimage.data</span> <span class="k">import</span> <span class="n">camera</span><span class="p">,</span><span class="n">imread</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">ndimage</span><span class="p">,</span><span class="n">interpolate</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage.filters</span> <span class="k">import</span> <span class="n">convolve</span><span class="p">,</span><span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">join</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="k">import</span> <span class="n">Axes3D</span>
+
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">camera</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">::</span><span class="o">-</span><span class="mi">2</span><span class="p">,::</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">sigmas</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span><span class="mf">1.</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">2.</span><span class="p">,</span><span class="mf">2.5</span><span class="p">])</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="p">[:,:,</span><span class="n">npy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sigmas</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">C</span><span class="p">,</span><span class="n">c</span><span class="p">[:,:,</span><span class="n">npy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
+
+<span class="n">sample_n</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">samples_m</span> <span class="o">=</span> <span class="p">[</span><span class="mi">230</span><span class="p">,</span><span class="mi">186</span><span class="p">,</span><span class="mi">146</span><span class="p">,</span><span class="mi">72</span><span class="p">,</span><span class="mi">20</span><span class="p">]</span>
+
+<span class="n">log_scale</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">samples_m</span><span class="p">:</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="n">sample_n</span><span class="p">,</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">log_value</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">log_scale</span><span class="p">,</span><span class="n">log_value</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;y=</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">m</span>)
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">sample_n</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="o">.</span><span class="mi">8</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">samples_m</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">sample_n</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="n">sample_n</span><span class="o">+</span><span class="mi">5</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">C</span><span class="p">[:,</span><span class="n">sample_n</span><span class="p">,:],</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span><span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_16_0.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_16_1.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Some location have a constant value with respect to the gaussian radius, suach as the pixel located in the sky, it means that this part of the image is very homogeneous and insensitive to gaussian filtering, on the opposite, a pixel located in the tripod ($y=72$) exhibits a variable profile, because it is situated into a part of the image having more high frequencies, therefore more sensitive to the gaussian filter.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the following example, we apply the same process to Broadatz textures and compute the slope of the line fitting the curve of the gray-level with respect to the gaussian sigma in the log-log space.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;returns m,c such that y=ax+b fit x,y data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">npy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">im</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s1">&#39;http://www.tina-vision.net/ilib/ims_broadatz.jpg&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+
+
+<span class="n">sigmas</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">C</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">C</span><span class="p">[:,:,</span><span class="n">npy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sigmas</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">C</span><span class="p">,</span><span class="n">c</span><span class="p">[:,:,</span><span class="n">npy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
+
+<span class="c1">#sampling positions</span>
+<span class="n">s_m</span><span class="p">,</span><span class="n">s_n</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">128</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">128</span><span class="p">))</span>
+
+<span class="n">n_sample</span> <span class="o">=</span> <span class="n">s_m</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">n_sigmas</span> <span class="o">=</span> <span class="n">sigmas</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="n">P</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_sample</span><span class="p">,</span><span class="n">n_sigmas</span><span class="p">))</span>
+
+<span class="n">log_scale</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">sigmas</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">s_m</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span><span class="n">s_n</span><span class="o">.</span><span class="n">ravel</span><span class="p">())):</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">C</span><span class="p">[</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">log_value</span> <span class="o">=</span> <span class="n">npy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">#fitting a line</span>
+    <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="n">fit</span><span class="p">(</span><span class="n">log_scale</span><span class="p">,</span><span class="n">log_value</span><span class="p">)</span>
+
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="s1">&#39;ro&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span><span class="n">m</span><span class="o">+</span><span class="mi">10</span><span class="p">,</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">i</span>,color=[1.,1.,.5])
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="o">-</span><span class="mi">32</span><span class="p">,</span><span class="s1">&#39;a=</span><span class="si">%.3f</span><span class="s1">&#39;</span><span class="o">%</span><span class="k">a</span>,color=[0.,0.,.5],horizontalalignment=&#39;center&#39;)
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">log_scale</span><span class="p">,</span><span class="n">log_value</span><span class="p">)</span>
+    <span class="c1">#add legend close to the lines</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">log_scale</span><span class="p">[</span><span class="n">i</span><span class="o">%</span><span class="k">n_sigmas</span>],log_value[i%n_sigmas],&#39;sample=%d&#39;%i)
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;nearest&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span><span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_sample</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_sigmas</span><span class="p">),</span><span class="n">sigmas</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;$\sigma$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/ipykernel_launcher.py:5: FutureWarning: `rcond` parameter will change to the default of machine precision times ``max(M, N)`` where M and N are the input matrix dimensions.
+To use the future default and silence this warning we advise to pass `rcond=None`, to keep using the old, explicitly pass `rcond=-1`.
+  &#34;&#34;&#34;
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_19_1.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_19_2.png"
+>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/06-Object_feature_extraction/04-Texture_features_19_3.png"
+>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>see also:</p>
+<ul>
+<li>Texture <a href="../00-Preface/06-References.ipynb#[DIP]">DIP</a> p506</li>
+<li>Fractal analysis: Hurst coeficient  <a href="../00-Preface/06-References.ipynb#[IPH]">IPH</a> p262,208</li>
+<li>Spectral approach  <a href="../00-Preface/06-References.ipynb#[DIP]">DIP</a> p511</li>
+<li>Gabor filters  <a href="../00-Preface/06-References.ipynb#[HCVA]">HCVA</a> vol2 p71</li>
+<li>Edge-flow  <a href="../00-Preface/06-References.ipynb#[Ma00]">Ma00</a> vol2 p71</li>
+<li>...  <a href="../00-Preface/06-References.ipynb#[DIPCASA]">DIPCASA</a> p185</li>
+</ul>
+</blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+
