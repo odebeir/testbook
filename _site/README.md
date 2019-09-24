@@ -1,12 +1,10 @@
 Introduction to image processing 
 ================================
 
-[![Build Status](https://travis-ci.org/odebeir/info-h-500-501.png?branch=master)](https://travis-ci.org/odebeir/info-h-500-501)
-
 Outline
 -------
 
-To browse the content, [start here](https://odebeir.github.io/testbook/).
+To browse the content, [start here](https://odebeir.github.io/testbook/README.html).
 
 TOC should be updated from .ipynb
 
