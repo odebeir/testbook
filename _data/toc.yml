@@ -23,7 +23,7 @@
 
 # Top-level page
 - title: readme
-  url: /intro
+  url: ../README
   not_numbered: true
 
 # # External link
