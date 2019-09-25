@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>Search the site</title>
+  <meta name="description" content="        ">
+
+  <link rel="canonical" href="/YOUR%20URL//search">
+  <link rel="alternate" type="application/rss+xml" title="INFO-H-500" href="/YOUR%20URL//feed.xml">
+
+  <meta property="og:url"         content="/YOUR%20URL//search" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="Search the site" />
+<meta property="og:description" content="        " />
+<meta property="og:image"       content="YOUR%20URL/images/logo/logo.png" />
+
+<meta name="twitter:card" content="summary">
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": "YOUR URL//search",
+  "headline": "Search the site",
+  "datePublished": "2019-09-25T14:00:24+02:00",
+  "dateModified": "2019-09-25T14:00:24+02:00",
+  "description": "        ",
+  "author": {
+    "@type": "Person",
+    "name": "Olivier DEBEIR"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "YOUR URL/",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "YOUR URL/",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<!-- (mostly) copied from nbconvert configuration -->
+<!-- https://github.com/jupyter/nbconvert/blob/master/nbconvert/templates/html/mathjax.tpl -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    // Center justify equations in code and markdown cells. Elsewhere
+    // we use CSS to left justify single line equations in code cells.
+    displayAlign: 'center',
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}},
+        linebreaks: { automatic: true },
+    }
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML' async></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js" async></script>
+  <script>
+const initAnchors = () => {
+  if (window.anchors === undefined) {
+    setTimeout(initAnchors, 250)
+    return
+  }
+  anchors.add("main h1, main h2, main h3, main h4")
+}
+
+initFunction(initAnchors);
+</script>
+
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Selectors for elements on the page -->
+  <script>
+/**
+ * Select various elements on the page for later use
+ */
+
+// IDs we'll attach to cells
+const codeCellId = index => `codecell${index}`
+const inputCellId = index => `inputcell${index}`
+
+pageElements = {}
+
+// All code cells
+findCodeCells = function() {
+    var codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre, div.text_cell_render div.highlight pre')
+    pageElements['codeCells'] = codeCells;
+
+    codeCells.forEach((codeCell, index) => {
+      const id = codeCellId(index)
+      codeCell.setAttribute('id', id)
+    })
+};
+
+initFunction(findCodeCells);
+
+// All cells in general
+findInputCells = function() {
+    var inputCells = document.querySelectorAll('div.jb_cell')
+    pageElements['inputCells'] = inputCells;
+
+    inputCells.forEach((inputCell, index) => {
+        const id = inputCellId(index)
+        inputCell.setAttribute('id', id)
+    })
+};
+
+initFunction(findInputCells);
+</script>
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js" async></script>
+<script>
+const initToc = () => {
+  if (window.tocbot === undefined) {
+    setTimeout(initToc, 250)
+    return
+  }
+
+  // Check whether we have any sidebar content. If not, then show the sidebar earlier.
+  var SIDEBAR_CONTENT_TAGS = ['.tag_full_width', '.tag_popout'];
+  var sidebar_content_query = SIDEBAR_CONTENT_TAGS.join(', ')
+  if (document.querySelectorAll(sidebar_content_query).length === 0) {
+    document.querySelector('nav.onthispage').classList.add('no_sidebar_content')
+  }
+
+  // Initialize the TOC bot
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+
+}
+initFunction(initToc);
+</script>
+
+
+  <!-- Google analytics -->
+  <script src="/assets/js/ga.js" async></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" async></script>
+
+  <!-- Load custom website scripts -->
+  <script src="/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js" async></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  pageElements['codeCells'].forEach((codeCell) => {
+    const id = codeCell.getAttribute('id')
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  <script>
+    /**
+    Add buttons to hide code cells
+    */
+
+
+    var setCodeCellVisibility = function (inputField, kind) {
+        // Update the image and class for hidden
+        var id = inputField.getAttribute('data-id');
+        var codeCell = document.querySelector(`#${id} div.highlight`);
+
+        if (kind === "visible") {
+            codeCell.classList.remove('hidden');
+            inputField.checked = true;
+        } else {
+            codeCell.classList.add('hidden');
+            inputField.checked = false;
+        }
+    }
+
+    var toggleCodeCellVisibility = function (event) {
+        // The label is clicked, and now we decide what to do based on the input field's clicked status
+        if (event.target.tagName === "LABEL") {
+            var inputField = event.target.previousElementSibling;
+        } else {
+            // It is the span inside the target
+            var inputField = event.target.parentElement.previousElementSibling;
+        }
+
+        if (inputField.checked === true) {
+            setCodeCellVisibility(inputField, "visible");
+        } else {
+            setCodeCellVisibility(inputField, "hidden");
+        }
+    }
+
+
+    // Button constructor
+    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+    var addHideButton = function () {
+        // If a hide button is already added, don't add another
+        if (document.querySelector('div.tag_hide_input input') !== null) {
+            return;
+        }
+
+        // Find the input cells and add a hide button
+        pageElements['inputCells'].forEach(function (inputCell) {
+            if (!inputCell.classList.contains("tag_hide_input")) {
+                // Skip the cell if it doesn't have a hidecode class
+                return;
+            }
+
+            const id = inputCell.getAttribute('id')
+
+            // Insert the button just inside the end of the next div
+            inputCell.querySelector('div.input').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+            // Set up the visibility toggle
+            hideLink = document.querySelector(`#${id} div.inner_cell + input + label`);
+            hideLink.addEventListener('click', toggleCodeCellVisibility)
+        });
+    }
+
+
+    // Initialize the hide buttos
+    var initHiddenCells = function () {
+        // Add hide buttons to the cells
+        addHideButton();
+
+        // Toggle the code cells that should be hidden
+        document.querySelectorAll('div.tag_hide_input input').forEach(function (item) {
+            setCodeCellVisibility(item, 'hidden');
+            item.checked = true;
+        })
+    }
+
+    initFunction(initHiddenCells);
+
+</script>
+
+  <!-- Printing the screen -->
+  <!-- Include nbinteract for interactive widgets -->
+<script src="https://printjs-4de6.kxcdn.com/print.min.js" async></script>
+<script>
+printContent = () => {
+    // MathJax displays a second version of any math for assistive devices etc.
+    // This prevents double-rendering in the PDF output.
+    var ignoreAssistList = [];
+    assistives = document.querySelectorAll('.MathJax_Display span.MJX_Assistive_MathML').forEach((element, index) => {
+        var thisId = 'MathJax-assistive-' + index.toString();
+        element.setAttribute('id', thisId);
+        ignoreAssistList.push(thisId)
+    });
+
+    // Print the actual content object
+    printJS({
+        printable: 'textbook_content',
+        type: 'html',
+        css: "/assets/css/styles.css",
+        scanStyles: false,
+        targetStyles: ["*"],
+        ignoreElements: ignoreAssistList
+    })
+};
+
+initPrint = () => {
+    document.querySelector('#interact-button-print').addEventListener('click', printContent)
+}
+
+initFunction(initPrint)
+</script>
+
+</head>
+
+  <body>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="https://jupyter.org/jupyter-book/"><img src="/images/logo/logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">INFO-H-500</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/README.html"
+        >
+          
+          readme
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/01-Introduction/content.html"
+        >
+          
+          Introduction
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/01-Introduction/01-Biological_vision.html"
+                >
+                  
+                  Biological vision
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/01-Introduction/02-Image_sensors.html"
+                >
+                  
+                  Image sensors
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/01-Introduction/03-Digital_image.html"
+                >
+                  
+                  Digital image
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/02-Low-level_image_processing/content.html"
+        >
+          
+          Low-level image processing
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/01-Point_processing.html"
+                >
+                  
+                  Point processing
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/02-Linear_filtering.html"
+                >
+                  
+                  Linear filtering
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/03-Non_linear_filtering.html"
+                >
+                  
+                  Non-linear filtering
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/04-Image_restoration.html"
+                >
+                  
+                  Image restoration
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/02-Low-level_image_processing/05-Edge_detection.html"
+                >
+                  
+                  Edge detection
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/03-Basic_image_analysis/content.html"
+        >
+          
+          Image analysis
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/03-Basic_image_analysis/01-Image_processing_chain.html"
+                >
+                  
+                  Image processing chain
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/04-Image_segmentation/content.html"
+        >
+          
+          Image segmentation
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html"
+                >
+                  
+                  Histogram based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/02-Border-based_segmentation.html"
+                >
+                  
+                  Border based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/03-Region_based_segmentation.html"
+                >
+                  
+                  Region based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/04-Live-wire.html"
+                >
+                  
+                  Live wire
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/05-Active_contour.html"
+                >
+                  
+                  Active contour
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/06-Hough_transform.html"
+                >
+                  
+                  Hough transform
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/04-Image_segmentation/07-Examples.html"
+                >
+                  
+                  Examples
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/05-Morphomathematics/content.html"
+        >
+          
+          Morphomathematics
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/01-Operators.html"
+                >
+                  
+                  Operators
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/02-Combined_operations.html"
+                >
+                  
+                  Combined operators
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/03-The_watershed_transform.html"
+                >
+                  
+                  The_watershed transform
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/05-Morphomathematics/04-Gray_level_morphology.html"
+                >
+                  
+                  Gray level morphology
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/features/06-Object_feature_extraction/content.html"
+        >
+          
+          Object features extraction
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/01-Statistical_features.html"
+                >
+                  
+                  Statistical features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/02-Contour_features.html"
+                >
+                  
+                  Contour features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/03-Moments.html"
+                >
+                  
+                  Moments
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/features/06-Object_feature_extraction/04-Texture_features.html"
+                >
+                  
+                  Texture features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/references.html"
+        >
+          
+          References
+        </a>
+
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <div class="c-topbar" id="top-navbar">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <div class="c-topbar__buttons">
+    <button
+      id="js-sidebar-toggle"
+      class="hamburger hamburger--arrowalt is-active"
+    >
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+    <div class="buttons">
+<div class="download-buttons-dropdown">
+    <button id="dropdown-button-trigger" class="interact-button"><i class="fa fa-download"></i></button>
+    <div class="download-buttons">
+        
+        <a id="interact-button-print"><button id="interact-button-download" class="interact-button">PDF</button></a>
+    </div>
+</div>
+
+</div>
+
+  </div>
+  <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+  <aside class="sidebar__right">
+    <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+    <nav class="onthispage">
+    </nav>
+  </aside>
+  <a href="/search.html" class="topbar-right-button" id="search-button"><i class="fa fa-search"></i></a>
+</div>
+
+      <main class="c-textbook__page" tabindex="-1">
+            <div class="c-textbook__content" id="textbook_content">
+              <div class="search-content__inner-wrap">
+    <input type="text" id="lunr_search" class="search-input" tabindex="-1" placeholder="'Enter your search term...''" />
+    <div id="results" class="results"></div>
+</div>
+
+<script>
+    // Add the lunr store since we will now search it
+    var store = [{
+        "title": "readme",
+        
+        "excerpt":
+            "Introduction to image processing Outline To browse the content, start here. Original github repository . pdf dump (may be outdated) How to read the content There are two ways to read Introduction to image processing: The recommended way to read the book is to download and run the jupyter notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the Installation section. The easiest way to read the book is to view the static notebooks online. If you're new to...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/README.html",
+        "teaser":null},{
+        "title": "Biological vision",
+        
+        "excerpt":
+            "from IPython.display import HTML,Image,SVG,YouTubeVideo Eyes in the nature from IPython.display import HTML,Image,SVG,YouTubeVideo Evolution has produced a large variety of light sensors among living organisms. From the simplest, where sensitive cells are directly on the skin surface, to more complex ones where the light sensing cells are embedded into a camera obscura like organ. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Diagram_of_eye_evolution.svg/344px-Diagram_of_eye_evolution.svg.png&#39;) Wikimedia Commons Eye, can be compounded, like insect vision, or non-compound (simple eyes) when a single lens-system focus lignt on all the sensible cells. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/stack.png&#39;) The figure above, illustrate how to reconstruct the 3D shape of an ant eye (a polymer mold is taken from the...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/01-Introduction/01-Biological_vision.html",
+        "teaser":null},{
+        "title": "Image sensors",
+        
+        "excerpt":
+            "from IPython.display import HTML,Image,SVG,YouTubeVideo Image sources Passive vs active imaging the object is the source of photon (SPECT, stars,...) the object reflects/react to light given by a external source (flash, fluorescence) the object is traversed by the ligh and diffuses/asborbes it (X-ray) Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/trans_reflect.png&#39;) Object as a source Nuclear imaging is a good example of the first setup, here an injection of radio-tracer will accumulates to some region of interset (due to specific biochemical affinity). The following example shows how the radio-tracer identifies bone metastasis of a prostate cancer using a gamma camera. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/a/ae/Prostate-mets-102.jpg&#39;) wikimedia commons The source can also be...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/01-Introduction/02-Image_sensors.html",
+        "teaser":null},{
+        "title": "Digital image",
+        
+        "excerpt":
+            "from IPython.display import HTML,Image,SVG,YouTubeVideo Image representation A digital image is discrete. It means that there is somewhere in the acquisition process, most of the time, sampling that occurs. A digital image is basically a multidimentionnal array of numbers. Each picture element store a numerical value, with 2D images we speak about pixels (from PIcture ELements) and for 3D images we use voxels (from VOlume ELements). The latice of pixels are usually rectangular (or square if pixels are squares) or hexagonal, hexagonal latice has a unique distance between a pixel and its neghboors. The image dimentionnality will depend on: the spatial...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/01-Introduction/03-Digital_image.html",
+        "teaser":null},{
+        "title": "Introduction",
+        
+        "excerpt":
+            "    Chapter content   vision and human vision what is an image ?  what are the applications ? bibliography used hardware used + some details on biomedical imaging industrial, medical, GIS examples the classical image acquisition / processing chain           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/01-Introduction/content.html",
+        "teaser":null},{
+        "title": "Point processing",
+        
+        "excerpt":
+            "%matplotlib inline from IPython.display import HTML,Image,SVG,YouTubeVideo Histogram import numpy as np import matplotlib.pyplot as plt from matplotlib import cm from skimage.data import camera,astronaut plt.style.use(&#39;ggplot&#39;) def norm_hist(ima): hist,bins = np.histogram(ima.flatten(),range(256)) # histogram is computed on a 1D distribution --&gt; flatten() return 1.*hist/np.sum(hist) # normalized histogram def display_hist(ima,vmin=None,vmax=None): plt.figure(figsize=[10,5]) if ima.ndim == 2: nh = norm_hist(ima) else: nh_r = norm_hist(ima[:,:,0]) nh_g = norm_hist(ima[:,:,1]) nh_b = norm_hist(ima[:,:,2]) # display the results plt.subplot(1,2,1) plt.imshow(ima,cmap=cm.gray,vmin=vmin,vmax=vmax) plt.subplot(1,2,2) if ima.ndim == 2: plt.plot(nh,label=&#39;hist.&#39;) else: plt.plot(nh_r,color=&#39;r&#39;,label=&#39;r&#39;) plt.plot(nh_g,color=&#39;g&#39;,label=&#39;g&#39;) plt.plot(nh_b,color=&#39;b&#39;,label=&#39;b&#39;) plt.legend() plt.xlabel(&#39;gray level&#39;); display_hist(camera()) display_hist(astronaut()) def display_hist2(ima): nh = norm_hist(ima) cumul_hist = np.cumsum(nh) plt.figure(figsize=[10,5]) plt.subplot(1,2,1) plt.imshow(ima,cmap=cm.gray) ax1 = plt.subplot(1,2,2) plt.plot(nh)...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/01-Point_processing.html",
+        "teaser":null},{
+        "title": "Linear filtering",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from helpers import header,compare Linear filtering In the previous chapter, the processed value of a pixel was only a function of its orignal value. Here the processed value will also take into account the surrounding pixels as well. We speak about pixel neighborhood. Neighborhood Pixel neighborhood is defined by a binary structuring element $B$ having an origin. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/b.png&#39;) For a specific pixel (the gray one below), the neighborhood defined by $B$ ... Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/b1.png&#39;) is the ensemble of pixels belonging to $B$ when its origin is moved on the pixel of interest....",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/02-Linear_filtering.html",
+        "teaser":null},{
+        "title": "Non-linear filtering",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from helpers import compare Rank based filters Rank vs. weighted sum If the local processing consists in something different from a weighted sum of neighboor pixesl, one can speak of non-linear filters. One important category of non-linear filters are the rank filters. These filters use the ranked levels from the neighborhood. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/median.png&#39;) from skimage.data import camera import matplotlib.pyplot as plt import numpy as np # Salt and pepper noise filtering ima = camera() plt.imshow(ima,cmap=plt.cm.gray) n = np.random.random(ima.shape) noised_ima = ima.copy() noised_ima[n&lt;.05] = 0 noised_ima[n&gt;.95] = 255 plt.imshow(noised_ima,cmap=plt.cm.gray); from skimage.filters import rank...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/03-Non_linear_filtering.html",
+        "teaser":null},{
+        "title": "Image restoration",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Image restoration Image acquisition is rarely perfect, physics or external condition may deform the image being acquired, here are some example of typicall problems: Deformation model The original image is $f(x,y)$ undergoes a deformation, given by $H$, and an additive noise $\\eta(x,y)$ the acquired image is $g(x,y)$. The restoration problem can be stated as follow: how to recover a good approximation of $f(x,y)$ from $g(x,y)$? Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/restauration.png&#39;) Some examples: $$g(x,y) = H[f(x,y)] + \\eta(x,y)$$$H$ properties: linear $$ H[k_1 f_1(x,y) + k_2 f_2(x,y)] = k_1 H[f_1(x,y)] + k_2 H[f_2(x,y)]$$ additive $$ H[f_1(x,y) +...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/04-Image_restoration.html",
+        "teaser":null},{
+        "title": "Edge detection",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Edge detection Edges are important features in an image, this is one of the most saillant feature that our eye catches. Edges are also highly correlated with object borders, this is why a lot of different thechniques have been developped. Finite differences Taylor's theorem: $$ \\begin{align} f(x + h) &amp;= f(x) + \\frac{f'(x)}{1!}h + \\frac{f^{(2)}(x)}{2!}h^2 + \\cdots + \\frac{f^{(n)}(x)}{n!}h^n + R_n(x)\\\\ f(x + h) &amp;= f(x) + f'(x)h + R_1^+(x)\\\\ f(x - h) &amp;= f(x) - f'(x)h + R_1^-(x)\\\\ \\end{align} $$ We neglect $R_1$ and we substract the two last equations:...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/05-Edge_detection.html",
+        "teaser":null},{
+        "title": "Low-level image processing",
+        
+        "excerpt":
+            "    Chapter content   recall of basis ot the signal processing Fourier and other transform image sampling linear filtering non linear filtering image enhancement           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/02-Low-level_image_processing/content.html",
+        "teaser":null},{
+        "title": "Image processing chain",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Typical image processing pipelines Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/ip_chain.png&#39;) The classical image processing chain is illstrated above, we can identify the 4 major steps: image acquisition, when photon are converted into a matrix of numbers pre-processing, used to correct image acquisition default or enhance image quality in order to facilitate... the segmentation, that split image into object of interest and background, then each object of interest are described by, feature extraction, that describe shape, color, texture, etc of course, other approaches exist, depending on the image processing task and the difficulty of it. Image segmentation...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/03-Basic_image_analysis/01-Image_processing_chain.html",
+        "teaser":null},{
+        "title": "Image analysis",
+        
+        "excerpt":
+            "    chapter content             the typical image processing pipeline           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/03-Basic_image_analysis/content.html",
+        "teaser":null},{
+        "title": "Histogram based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Histogram based segmentation All the pixels in the image are processed the same way. common method easy and fast used when pixel value has a direct interpretation e.g. Hounsfield Unit in CT scan $$HU = 1000\\times\\frac{\\mu - \\mu_{water}}{\\mu_{water} - \\mu_{air}}$$ Imaging: Substance densities in Hounsfield Units (Radiodensity) Air: -1000 Lung: -700 Soft Tissue: -300 to -100 Fat: -50 Water: 0 CSF: +15 Blood: +30 to +45 Muscle: +40 Calculus: +100 to +400 Bone: +1000 (up to +3000 for dense bone) Image(&#39;http://crashingpatient.com/wp-content/images/part1/tissuedensities.jpg&#39;) a problem can arise when: the illumination is uneven in...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html",
+        "teaser":null},{
+        "title": "Border based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Border based segmentation We have seen that berder detection can be achieved by various filters, e.g. by convolution (linear filters) or by non linear filters such as morphological gradient. The results of these filters is an image where pixels located near abrupt gray level changes have a high intensity whereas pixels located in more contiuous regions share a low value. Here below, the result of a Sobel filter on the an image whith clearly identifiable objects: def norm_hist(ima): hist,bins = np.histogram(ima.flatten(),range(256)) # histogram is computed on a 1D distribution --&gt; flatten()...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/02-Border-based_segmentation.html",
+        "teaser":null},{
+        "title": "Region based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Region based segmentation Because edge based segmentation leave contours not closed, one may be interested in searching for regions. Region growing Starting from one point of the “object” region and recruiting neighbouring pixels. Split and merge Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/quadtree.png&#39;) split phase one define an homogeneity function recursive image split: if image is homogeneous return else split the image into 4 and apply the test on each sub-image merge phase for each adjacent sub-image if the two grouped regions satisfies the homogeneity criterion, merge the regions Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/split_example.png&#39;) see also: Split and merge (Gonzalez &amp;...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/03-Region_based_segmentation.html",
+        "teaser":null},{
+        "title": "Live wire",
+        
+        "excerpt":
+            "#rem &quot;%matplotlib notebook&quot; crashes with networkx %matplotlib inline import matplotlib.pyplot as plt import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Model based segmentation As far, we considered the image segmentation as a bottom-up process, where connected pixels are grouped together based on some sort of rule based on gray levels, borders etc. In some cases, one know a priori the object we are looking for. An example was already given when looking for lines and circles using the Hough transform. We will see in this chapter other method using this top-down approach. Live-wire The live-wire algorithm is an interactive segmentation method...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/04-Live-wire.html",
+        "teaser":null},{
+        "title": "Active contour",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Active contour see (Blake &amp; Isard, 2012) import matplotlib.pyplot as plt import matplotlib.cm as cm import numpy as npy from skimage.io import imread from scipy import ndimage,interpolate from scipy.ndimage.filters import convolve1d,gaussian_filter,convolve from os.path import join def Cx(ima): &quot;&quot;&quot;x&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=1,cval=1) return c/2.0 def Cy(ima): &quot;&quot;&quot;y&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=0,cval=1) return c/2.0 def Cxx(ima): &quot;&quot;&quot;x&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=1,cval=1) return c/4.0 def Cyy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=0,cval=1) return c/4.0 def Cxy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; k = npy.array([[+1,0,-1],[0,0,0],[-1,0,+1]]) c = convolve(ima,k)...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/05-Active_contour.html",
+        "teaser":null},{
+        "title": "Hough transform",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Hough transform One typical task in image processing is the detection of specific features such as lines. Lines are often present in images of man made structures. In the following image, some lines are continuous (red, green, blue) other are discontinuous (orange) but are made of aligned segments. Instead of trying to connect touching point that may be on the same line, as one would do with a classical edge detection techniques, Hough transform is grouping pixels that belong to a same line even if line is segmented. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/hough3.png&#39;) based on...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/06-Hough_transform.html",
+        "teaser":null},{
+        "title": "Examples",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from skimage import data import numpy as np from skimage.morphology import disk import skimage.filters.rank as skr from skimage.measure import label from skimage.morphology import watershed from skimage.io import imread from scipy import ndimage as ndi import matplotlib.pyplot as plt from skimage.segmentation import mark_boundaries # segment the coins im = data.coins() plt.imshow(im,cmap=plt.cm.gray) plt.colorbar(); # detect the eyes / nose im = data.chelsea() plt.imshow(im); # counting the galaxies im = data.hubble_deep_field() plt.imshow(im); im = data.page() bg = skr.median(im, disk(10)) res = (1.*im/bg) &lt; .8 plt.imshow(im,cmap=plt.cm.gray) plt.colorbar(); plt.figure() plt.imshow(bg,cmap=plt.cm.gray); plt.colorbar() plt.figure() plt.imshow(res.astype(np.uint8),cmap=plt.cm.gray); plt.colorbar(); # segment...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/07-Examples.html",
+        "teaser":null},{
+        "title": "Image segmentation",
+        
+        "excerpt":
+            "    Chapter content             optimal, entropy, percentile threshold Otsu threshold 2D threshold gaussian mixture condensation algorithm graph-cuts hierarchical region growing split and merge           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/04-Image_segmentation/content.html",
+        "teaser":null},{
+        "title": "Operators",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Morphomathematical operators Definitions Image The image $X$ is defined as a the set of pixels, connect or not, equal to $1$ (or True), the backgound being set to $0$ (or False). import matplotlib.pyplot as plt import numpy as np X = np.asarray([[0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,1,1,1,0,0,0], [0,0,1,1,1,0,0,0,0], [0,0,1,1,1,1,0,0,0], [0,0,1,1,1,0,0,0,0], [0,0,0,1,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0]]) plt.imshow(X,interpolation=&#39;nearest&#39;,cmap=plt.cm.gray); Structuring element similarily one define a structuring element $B$ as a set of pixels (connected or not) having one origin $o$. Example of a 3x3 centered structuring element: B = np.ones((3,3)) plt.imshow(B,interpolation=&#39;nearest&#39;,cmap=plt.cm.gray) plt.plot(1,1,&#39;or&#39;) plt.gca().set_xlim(-1,3) plt.gca().set_ylim(-1,3); Basic operations Image...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/01-Operators.html",
+        "teaser":null},{
+        "title": "Combined operators",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Combined operations Morphological thinning and thickening by iterating the Hit-or-Miss transform and remove detected pixels from $X$. thinning $$ X \\oslash B = X \\; | \\;(X \\otimes B)$$ thickening $$ X \\odot B = X \\cup (X \\otimes B)$$ import matplotlib.pyplot as plt import numpy as np from skimage.data import imread from skimage.morphology import erosion def hit_or_miss(X,B12): B1 = B12 == 1 B2 = B12 == 0 r = np.logical_and(erosion(X,B1),erosion(1-X,B2)) return r def rotate_4(B): #returns structuring element oriented in 4 directions return [B,np.rot90(B),np.rot90(np.rot90(B)),np.rot90(np.rot90(np.rot90(B)))] X = (imread(&#39;http://homepages.ulb.ac.be/~odebeir/data/man.tif&#39;)&gt;0)[:,:,0].astype(np.uint8) B = np.array([[2,1,2],[0,1,1],[0,0,2]]) #...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/02-Combined_operations.html",
+        "teaser":null},{
+        "title": "The_watershed transform",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo The watershed transform Principes The idea behind the watershed transform is to isolate regions of the image similarily to hydrographic region in geography. An image can indeed be seen as a 2D and a half data, i.e. with the gray level considered as the altitude. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/0/02/Amazonriverbasin_basemap.png&#39;) If one look at the gradient of an image, the borders of the objects correspond to the crests of the gradient surface. Gradient crests from skimage.data import imread import numpy as np from skimage.morphology import disk import skimage.filters.rank as skr from skimage.measure import label from...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/03-The_watershed_transform.html",
+        "teaser":null},{
+        "title": "Gray level morphology",
+        
+        "excerpt":
+            "           %matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo                  Gray level morphology  Definitions            Erosion  The equivalent gray level for the erosion operator is the local minimum.            Dilation  The equivalent gray level for the dilation operator is the local maximum.            see also:   Morphological algorithms (Dougherty, 2018) p255-288             References  Dougherty, E. (2018). Mathematical morphology in image processing. CRC press.           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/04-Gray_level_morphology.html",
+        "teaser":null},{
+        "title": "Morphomathematics",
+        
+        "excerpt":
+            "    Chapter content             Morphological algorithms Morphological thinning and skeletonizing Ultimate Eroded Point (UEP) Euclidian Distance Map (EDM) The watershed transform           ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/05-Morphomathematics/content.html",
+        "teaser":null},{
+        "title": "Statistical features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Statistical features The object we consider here are the connected components obtained after the image segmentation (i.e. objects vs. background). Each connected component can be identified using an image labelling algorithm. A feature is a measure extracted from an object. Object recognition is basically the association of a set of feature values with a certain class of object. The first feature that come in mind is the intensity of the object pixels, i.e. the brightness of an object can be used as a descriptor of it, for a color image, one...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/01-Statistical_features.html",
+        "teaser":null},{
+        "title": "Contour features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Contour features chain code algorithm Chain code algorithm is a method that describes the contour of a connected set as an ordered set of pixels (see below). Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/chain.png&#39;) The algorithm starts from an arbitrary pixel of the contour, e.g. found by rasterazing the image, the first object point detected being used. at each iteration on try to find the next border pixel, the order of test is givenby the arrows in the upper right corner, starting from the direction just after the direction of arrival, i.e. the first direction(3) correspond to...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/02-Contour_features.html",
+        "teaser":null},{
+        "title": "Moments",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Object moments We have seen that moments can be used to describe contours, similarily, the content of the shape can be described by this feature. definition The definition in the continuous domain is as follow $$ m_{pq} = \\int_{-\\infty}^{+\\infty} \\int_{-\\infty}^{+\\infty} x^p y^q f(x,y)\\:dx\\:dy $$$$ \\mu_{pq} = \\int_{-\\infty}^{+\\infty} \\int_{-\\infty}^{+\\infty} (x-\\bar x)^p (y-\\bar y)^q f(x,y)\\:dx\\:dy $$$$ \\bar{x}=\\frac{m_{10}}{m_{00}},\\bar{y}=\\frac{m_{01}}{m_{00}} $$ for a discrete domain, which is the case for image of pixels, we have $$ m_{pq} = \\sum_{x= -\\infty}^{+\\infty}\\sum_{y=-\\infty}^{+\\infty} x^p \\; y^q \\; f(x,y) $$to eliminate the influence of the absolute shape position, one define...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/03-Moments.html",
+        "teaser":null},{
+        "title": "Texture features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Texture features Here is an example of a texture found in ultrasound medical imaging, the image exhibits a clear striation pattern due to muscle fiber orientation. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/muscle.jpg&#39;) The following video sequience illustrates how fiber orientation can vary during the motricity exercice. from IPython.display import YouTubeVideo YouTubeVideo(&#39;PUcz11MLxUk&#39;, start=0, autoplay=1, theme=&quot;light&quot;, color=&quot;blue&quot;,) Here are some classical textures extracted from an atlas (Broadatz). Texture can be natural, such as grains, sand, soil, stone, biological tissue or resulting from a human artifact such as fabric, wall, pavements ... Texture in an image can be characterized...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/04-Texture_features.html",
+        "teaser":null},{
+        "title": "Object features extraction",
+        
+        "excerpt":
+            "    chapter content             chain coding polygonal approximation spectral description (intensity) 2D shape descriptors (contours) 2D shape descriptors (region) area, euler, elong,... moments texture analysis Minkowski fractal dimension  fractal analysis: Hurst coeficient Gabor filter            ",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/06-Object_feature_extraction/content.html",
+        "teaser":null},{
+        "title": "Jupyter demo1",
+        
+        "excerpt":
+            "from matplotlib import rcParams, cycler import matplotlib.pyplot as plt import numpy as np plt.ion() np.random.random((10,10)) array([[0.59020832, 0.30281941, 0.97471742, 0.16847998, 0.18973942, 0.2137434 , 0.33587379, 0.69935049, 0.54277638, 0.0631799 ], [0.06805869, 0.94382463, 0.41458625, 0.08927007, 0.46513789, 0.51625119, 0.287553 , 0.56000146, 0.66898586, 0.88180055], [0.43697955, 0.07630036, 0.88592494, 0.59113958, 0.75099287, 0.36773595, 0.51956629, 0.10751256, 0.50027841, 0.71473967], [0.35122278, 0.86001458, 0.4849633 , 0.18722847, 0.8344685 , 0.21082678, 0.76103677, 0.55039878, 0.60140844, 0.72541339], [0.2644056 , 0.35627575, 0.90665596, 0.85674572, 0.27726879, 0.20689576, 0.37496828, 0.9290322 , 0.05021753, 0.89082079], [0.39552375, 0.56412819, 0.05761692, 0.80782677, 0.05074155, 0.64937697, 0.98901233, 0.17506348, 0.06994155, 0.68992408], [0.05818001, 0.74586171, 0.67026694, 0.53555618, 0.99312404, 0.09033044, 0.55824912, 0.35381021, 0.18396974, 0.90972193], [0.9995978 , 0.62800865, 0.93806527, 0.08464823, 0.17231262, 0.96165747, 0.51573948,...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/demo1.html",
+        "teaser":null},{
+        "title": "Features and customization",
+        
+        "excerpt":
+            "Features This is a short demonstration textbook to show the general layout / style of textbooks built with Jupyter and Jekyll. The markdown files for this page (and others in the textbook) is generated from the notebooks with the scripts/generate_textbook.py script, which is called when you run make book. The content for the book is contained in a folder in the book's repository called content/. It has a combination of markdown and Jupyter notebooks. This content is rendered into the textbook that you see here! To begin, click on one of the chapter sections in the sidebar to the left....",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/features.html",
+        "teaser":null},{
+        "title": "Markdown files",
+        
+        "excerpt":
+            "Creating book content The two kinds of files that contain course content are: Jupyter Notebooks Markdown files Each are contained in the content/ folder and referenced from _data/toc.yml. If the file is markdown, it will be copied over with front-matter YAML added so that Jekyll can parse it Sidebars with Jekyll You may notice that there's a sidebar to the right (if your screen is wide enough). These are automatically generated from the headers that are present in your page. The sidebar will automatically capture all 2nd and 3rd level section headers. The best way to designate these headers is...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/markdown.html",
+        "teaser":null},{
+        "title": "Jupyter notebooks",
+        
+        "excerpt":
+            "Content with notebooks You can also create content with Jupyter Notebooks. The content for the current page is contained in a Jupyter Notebook in the notebooks/ folder of the repository. This means that we can include code blocks and their outputs, and export them to Jekyll markdown. You can find the original notebook for this page at this address Markdown + notebooks As it is markdown, you can embed images, HTML, etc into your posts! You an also $add_{math}$ and $$ math^{blocks} $$or $$ \\begin{align*} \\mbox{mean} la_{tex} \\\\ \\\\ math blocks \\end{align*} $$But make sure you \\$Escape \\$your \\$dollar signs...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/features/notebooks.html",
+        "teaser":null},{
+        "title": "Home",
+        
+        "excerpt":
+            "Books with Jupyter and Jekyll Jupyter Books lets you build an online book using a collection of Jupyter Notebooks and Markdown files. Its output is similar to the excellent Bookdown tool, and adds extra functionality for people running a Jupyter stack. For an example of a book built with Jupyter Books, see the textbook for Data 100 at UC Berkeley. Here are a few features of Jupyter Books All course content is written in markdown and Jupyter Notebooks, stored in notebooks/ The Jupyter Book repo comes packaged with helper scripts to convert these into Jekyll pages (in scripts/) that can...",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/intro.html",
+        "teaser":null},{
+        "title": "References",
+        
+        "excerpt":
+            "References Bovik, A. C. (2010). Handbook of image and video processing. Academic press. Jahne, B. (1997). Digital image processing: concepts, algorithms, and scientific applications. Springer. Gonzalez, R. C., &amp; Wintz, P. (1977). Digital image processing(Book). Reading, Mass., Addison-Wesley Publishing Co., Inc.(Applied Mathematics and Computation, (13), 451. Sonka, M., Hlavac, V., &amp; Boyle, R. (2014). Image processing, analysis, and machine vision. Cengage Learning. Mallat, S. (1999). A wavelet tour of signal processing. Elsevier. Russ, J. C. (2016). The image processing handbook. CRC press. Bankman, I. (2008). Handbook of medical image processing and analysis. Elsevier. Fitzpatrick, J. M., &amp; Sonka, M. (2000)....",
+        "categories": [],
+        "tags": [],
+        "url": "YOUR%20URL/references.html",
+        "teaser":null},]
+</script>
+            </div>
+            <nav class="c-page__nav">
+  
+
+  
+</nav>
+
+            <footer>
+  <p class="footer">This page was created by <a href="https://github.com/jupyter/jupyter-book/graphs/contributors">The Jupyter Book Community</a></p>
+</footer>
+
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
