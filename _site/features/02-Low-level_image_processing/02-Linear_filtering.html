@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//features/02-Low-level_image_processing/02-Linear_filtering.html",
   "headline": "Linear filtering",
-  "datePublished": "2019-09-25T08:41:58+02:00",
-  "dateModified": "2019-09-25T08:41:58+02:00",
+  "datePublished": "2019-09-25T13:20:14+02:00",
+  "dateModified": "2019-09-25T13:20:14+02:00",
   "description": "    %matplotlib inlineimport syssys.path.insert(0,&#39;..&#39;)from IPython.display import HTML,Image,SVG,YouTubeVideofrom helpers import header,compare    L...",
   "author": {
     "@type": "Person",
@@ -558,7 +558,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -760,7 +760,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -810,7 +810,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -962,7 +962,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -1063,7 +1063,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -2435,7 +2435,7 @@ $$ F(u,v) = \frac{1}{MN} \sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x,y) \, e^{- i \, 2\p
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="The-Fast-Fourier-Transform-algorithm">The Fast Fourier Transform algorithm<a class="anchor-link" href="#The-Fast-Fourier-Transform-algorithm"> </a></h3><p>The FFT algorithm enable to drastically diminish the number of operation for the discrete Fourier transform of a function. Without going into details (see [DIP] p 120), the complexity of the original direct Fourier transform algorithm goes from $N^2$ to $N \log_2 N$ for FFT method, which is a major improvement especially when image size $N$ is big.</p>
+<h3 id="The-Fast-Fourier-Transform-algorithm">The Fast Fourier Transform algorithm<a class="anchor-link" href="#The-Fast-Fourier-Transform-algorithm"> </a></h3><p>The FFT algorithm enable to drastically diminish the number of operation for the discrete Fourier transform of a function. Without going into details (see <a class="citation" href="#gonzalez1977digital">(Gonzalez &amp; Wintz, 1977)</a> p 120), the complexity of the original direct Fourier transform algorithm goes from $N^2$ to $N \log_2 N$ for FFT method, which is a major improvement especially when image size $N$ is big.</p>
 <p>Because image are discrete functions, and because we are interested in doing convolution with them, if the size of the structuring element is big, one may use the FFT in place of naïve convolution techniques as described above.</p>
 <blockquote><p>The FFT algorithm changes the order of the coefficients, in order to have the 0 frequency back in the center of the image we use the <code>fftshift()</code> function.</p>
 </blockquote>
@@ -2840,6 +2840,17 @@ $$f(x)\circ g(x) \Leftrightarrow F^*(u)G(u)$$
 <ul>
 <li>How to eliminate the repetitive raster pattern ?</li>
 </ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References"> </a></h3><p><ol class="bibliography"><li><span id="gonzalez1977digital">Gonzalez, R. C., &amp; Wintz, P. (1977). Digital image processing(Book). <i>Reading, Mass., Addison-Wesley Publishing Co., Inc.(Applied Mathematics and Computation</i>, (13), 451.</span></li></ol></p>
 
 </div>
 </div>

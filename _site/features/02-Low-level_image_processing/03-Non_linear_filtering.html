@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//features/02-Low-level_image_processing/03-Non_linear_filtering.html",
   "headline": "Non-linear filtering",
-  "datePublished": "2019-09-25T08:41:58+02:00",
-  "dateModified": "2019-09-25T08:41:58+02:00",
+  "datePublished": "2019-09-25T13:20:14+02:00",
+  "dateModified": "2019-09-25T13:20:14+02:00",
   "description": "    %matplotlib inlineimport syssys.path.insert(0,&#39;..&#39;)from IPython.display import HTML,Image,SVG,YouTubeVideofrom helpers import compare    Rank bas...",
   "author": {
     "@type": "Person",
@@ -558,7 +558,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -760,7 +760,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -810,7 +810,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -962,7 +962,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -1063,7 +1063,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -2218,7 +2218,7 @@ initFunction(initPrint)
 <div class="text_cell_render border-box-sizing rendered_html">
 <blockquote><p>see also:</p>
 <ul>
-<li>bi-lateral filtering <a href="../00-Preface/06-References.ipynb#[Paris08]">Paris08</a></li>
+<li>bi-lateral filtering <a class="citation" href="#paris2009bilateral">(Paris, Kornprobst, Tumblin, Durand, &amp; others, 2009)</a></li>
 </ul>
 </blockquote>
 
@@ -2284,8 +2284,8 @@ initFunction(initPrint)
 <div class="text_cell_render border-box-sizing rendered_html">
 <blockquote><p>see also:</p>
 <ul>
-<li>Edge preserving smoothing. Makoto Nagao and Takashi Matsuyama. Computer Graphics and Image Processing. Volume 9, Issue 4, April 1979, Pages 394-407</li>
-<li>Rotating filter <a href="../00-Preface/06-References.ipynb#[IPAMV]">IPAMV</a> pp72</li>
+<li><a class="citation" href="#nagao1979edge">(Nagao &amp; Matsuyama, 1979)</a></li>
+<li>Rotating filter <a class="citation" href="#sonka2014image">(Sonka, Hlavac, &amp; Boyle, 2014)</a> pp72</li>
 </ul>
 </blockquote>
 
@@ -2402,12 +2402,9 @@ $$ D(\nabla I) = e^{-(\nabla I / k)^2}$$<p>after a few iterations, the noise is 
 <div class="text_cell_render border-box-sizing rendered_html">
 <blockquote><p>see also:</p>
 <ul>
-<li>Ovidiu Ghita, Kevin Robinson, Michael Lynch, Paul F. Whelan . MRI diffusion-based
-filtering: a note on performance characterisation. Computerized Medical Imaging and Graphics 29 (2005) 267–277</li>
-<li>diffusion based edge detection <a href="../00-Preface/06-References.ipynb#[IVP]">IVP</a> p433, <a href="../00-Preface/06-References.ipynb#[HCVA]">HCVA</a> vol2 p425</li>
-<li>Pietro Perona and Jitendra Malik (July 1990). "Scale-space and edge
-detection using anisotropic diffusion". IEEE Transactions on Pattern Analysis
-and Machine Intelligence, 12 (7): 629–639</li>
+<li>MRI <a class="citation" href="#ghita2005mri">(Ghita, Robinson, Lynch, &amp; Whelan, 2005)</a></li>
+<li>diffusion based edge detection <a class="citation" href="#bovik2010handbook">(Bovik, 2010)</a> p433, <a class="citation" href="#jahne1999handbook">(Jähne, Haussecker, &amp; Geissler, 1999)</a> vol2 p425</li>
+<li><a class="citation" href="#perona1990scale">(Perona &amp; Malik, 1990)</a></li>
 </ul>
 </blockquote>
 
@@ -2531,9 +2528,27 @@ $$ W(p) = \sum_{q \in N(p)} w(p,q)$$<ul>
 <div class="text_cell_render border-box-sizing rendered_html">
 <blockquote><p>see also:</p>
 <ul>
-<li>A non-local algorithm for image denoising <a href="../00-Preface/06-References.ipynb#[Buades05]">Buades05</a></li>
+<li>A non-local algorithm for image denoising <a class="citation" href="#buades2005non">(Buades, Coll, &amp; Morel, 2005)</a></li>
 </ul>
 </blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References"> </a></h3><p><ol class="bibliography"><li><span id="paris2009bilateral">Paris, S., Kornprobst, P., Tumblin, J., Durand, F., &amp; others. (2009). Bilateral filtering: Theory and applications. <i>Foundations and Trends\Textregistered in Computer Graphics and Vision</i>, <i>4</i>(1), 1–73.</span></li>
+<li><span id="nagao1979edge">Nagao, M., &amp; Matsuyama, T. (1979). Edge preserving smoothing. <i>Computer Graphics and Image Processing</i>, <i>9</i>(4), 394–407.</span></li>
+<li><span id="sonka2014image">Sonka, M., Hlavac, V., &amp; Boyle, R. (2014). <i>Image processing, analysis, and machine vision</i>. Cengage Learning.</span></li>
+<li><span id="ghita2005mri">Ghita, O., Robinson, K., Lynch, M., &amp; Whelan, P. F. (2005). MRI diffusion-based filtering: A note on performance characterisation. <i>Computerized Medical Imaging and Graphics</i>, <i>29</i>(4), 267–277.</span></li>
+<li><span id="bovik2010handbook">Bovik, A. C. (2010). <i>Handbook of image and video processing</i>. Academic press.</span></li>
+<li><span id="jahne1999handbook">Jähne, B., Haussecker, H., &amp; Geissler, P. (1999). <i>Handbook of computer vision and applications</i> (Vol. 2). Citeseer.</span></li>
+<li><span id="perona1990scale">Perona, P., &amp; Malik, J. (1990). Scale-space and edge detection using anisotropic diffusion. <i>IEEE Transactions on Pattern Analysis and Machine Intelligence</i>, <i>12</i>(7), 629–639.</span></li>
+<li><span id="buades2005non">Buades, A., Coll, B., &amp; Morel, J.-M. (2005). A non-local algorithm for image denoising. In <i>2005 IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR’05)</i> (Vol. 2, pp. 60–65). IEEE.</span></li></ol></p>
 
 </div>
 </div>
