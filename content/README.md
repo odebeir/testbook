@@ -8,7 +8,7 @@ To browse the content, [start here](https://odebeir.github.io/testbook/README.ht
 
 Original [github repository ](https://github.com/odebeir/testbook).
 
-
+[pdf dump](./features/pdf/merged.pdf) (may be outdated)
 
 How to read the content
 -----------------------
