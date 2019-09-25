@@ -167,3 +167,10 @@
   - title: Texture features
     url: /features/06-Object_feature_extraction/04-Texture_features
     not_numbered: true
+
+# # Divider for meta-pages and content page
+- divider: true
+
+- title: References
+  url: /references
+  not_numbered: true
