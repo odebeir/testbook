@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//features/06-Object_feature_extraction/02-Contour_features.html",
   "headline": "Contour features",
-  "datePublished": "2019-09-25T08:41:58+02:00",
-  "dateModified": "2019-09-25T08:41:58+02:00",
+  "datePublished": "2019-09-25T13:20:14+02:00",
+  "dateModified": "2019-09-25T13:20:14+02:00",
   "description": "    %matplotlib inlineimport syssys.path.insert(0,&#39;..&#39;)from IPython.display import HTML,Image,SVG,YouTubeVideo    Contour features chain code algorit...",
   "author": {
     "@type": "Person",
@@ -558,7 +558,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -642,7 +642,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -760,7 +760,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -810,7 +810,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -962,7 +962,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -1684,58 +1684,24 @@ The circle has obviously a constant radius whereas the square presents a variabl
 
 <div class="jb_cell tag_hide_input">
 
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>from numpy.fft import fft, fftshift
+plt.figure(figsize=[20,3])
+for i,obj in enumerate(props):
+    perim = find_contours(lab,obj.label-1)[0]
+    xy = perim - obj.centroid
+    r = np.sqrt(xy[:,0]<strong>2+xy[:,1]</strong>2)<br>
+    R = fft(r)
+    plt.subplot(2,1,i+1)
+    plt.plot(np.power(fftshift(R),2),label=labels[i])</p>
 
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numpy.fft</span> <span class="k">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">fftshift</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">props</span><span class="p">):</span>
-    <span class="n">perim</span> <span class="o">=</span> <span class="n">find_contours</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span><span class="n">obj</span><span class="o">.</span><span class="n">label</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">xy</span> <span class="o">=</span> <span class="n">perim</span> <span class="o">-</span> <span class="n">obj</span><span class="o">.</span><span class="n">centroid</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">xy</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">xy</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>    
-    <span class="n">R</span> <span class="o">=</span> <span class="n">fft</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fftshift</span><span class="p">(</span><span class="n">R</span><span class="p">),</span><span class="mi">2</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    
-    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">r</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-<div class="jb_output_wrapper }}">
-<div class="output_area">
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/numpy/core/numeric.py:538: ComplexWarning: Casting complex values to real discards the imaginary part
-  return array(a, dtype, copy=False, order=order)
-</pre>
-</div>
-</div>
-</div>
-<div class="jb_output_wrapper }}">
-<div class="output_area">
-
-
-
-<div class="output_png output_subarea ">
-<img src="../../images/features/06-Object_feature_extraction/02-Contour_features_24_1.png"
->
-</div>
+<pre><code>plt.legend(loc=0);
+plt.gca().set_ylim([0,1000])
+plt.gca().set_xlim([0,r.shape[0]])</code></pre>
 
 </div>
 </div>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1767,9 +1733,20 @@ $$ \log L_2(X,\lambda_i) = f \; \log \lambda_i $$
 <div class="text_cell_render border-box-sizing rendered_html">
 <blockquote><p>see also:</p>
 <ul>
-<li>Minkowski fractal dimension  <a href="../00-Preface/06-References.ipynb#[IPH]">IPH</a> p442</li>
+<li>Minkowski fractal dimension <a class="citation" href="#russ2016image">(Russ, 2016)</a> p442</li>
 </ul>
 </blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References"> </a></h3><p><ol class="bibliography"><li><span id="russ2016image">Russ, J. C. (2016). <i>The image processing handbook</i>. CRC press.</span></li></ol></p>
 
 </div>
 </div>

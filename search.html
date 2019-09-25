@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "YOUR URL//search",
   "headline": "Search the site",
-  "datePublished": "2019-09-25T08:41:58+02:00",
-  "dateModified": "2019-09-25T08:41:58+02:00",
+  "datePublished": "2019-09-25T13:20:14+02:00",
+  "dateModified": "2019-09-25T13:20:14+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -558,7 +558,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -642,7 +642,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -760,7 +760,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -810,7 +810,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -962,7 +962,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -1063,7 +1063,7 @@ initFunction(initPrint)
 
           
 
-          <ul class="c-sidebar__sections ">
+          <ul class="c-sidebar__sections u-hidden-visually">
             
               
               
@@ -1334,7 +1334,7 @@ initFunction(initPrint)
         "title": "Region based segmentation",
         
         "excerpt":
-            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Region based segmentation Because edge based segmentation leave contours not closed, one may be interested in searching for regions. Region growing Starting from one point of the “object” region and recruiting neighbouring pixels. Split and merge Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/quadtree.png&#39;) split phase one define an homogeneity function recursive image split: if image is homogeneous return else split the image into 4 and apply the test on each sub-image merge phase for each adjacent sub-image if the two grouped regions satisfies the homogeneity criterion, merge the regions Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/split_example.png&#39;) see also: Split and merge DIP p.461...",
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Region based segmentation Because edge based segmentation leave contours not closed, one may be interested in searching for regions. Region growing Starting from one point of the “object” region and recruiting neighbouring pixels. Split and merge Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/quadtree.png&#39;) split phase one define an homogeneity function recursive image split: if image is homogeneous return else split the image into 4 and apply the test on each sub-image merge phase for each adjacent sub-image if the two grouped regions satisfies the homogeneity criterion, merge the regions Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/split_example.png&#39;) see also: Split and merge (Gonzalez &amp;...",
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/04-Image_segmentation/03-Region_based_segmentation.html",
@@ -1350,7 +1350,7 @@ initFunction(initPrint)
         "title": "Active contour",
         
         "excerpt":
-            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Active contour import matplotlib.pyplot as plt import matplotlib.cm as cm import numpy as npy from skimage.io import imread from scipy import ndimage,interpolate from scipy.ndimage.filters import convolve1d,gaussian_filter,convolve from os.path import join def Cx(ima): &quot;&quot;&quot;x&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=1,cval=1) return c/2.0 def Cy(ima): &quot;&quot;&quot;y&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=0,cval=1) return c/2.0 def Cxx(ima): &quot;&quot;&quot;x&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=1,cval=1) return c/4.0 def Cyy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=0,cval=1) return c/4.0 def Cxy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; k = npy.array([[+1,0,-1],[0,0,0],[-1,0,+1]]) c = convolve(ima,k) return c/4.0 def term(ima): cx...",
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Active contour see (Blake &amp; Isard, 2012) import matplotlib.pyplot as plt import matplotlib.cm as cm import numpy as npy from skimage.io import imread from scipy import ndimage,interpolate from scipy.ndimage.filters import convolve1d,gaussian_filter,convolve from os.path import join def Cx(ima): &quot;&quot;&quot;x&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=1,cval=1) return c/2.0 def Cy(ima): &quot;&quot;&quot;y&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=0,cval=1) return c/2.0 def Cxx(ima): &quot;&quot;&quot;x&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=1,cval=1) return c/4.0 def Cyy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=0,cval=1) return c/4.0 def Cxy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; k = npy.array([[+1,0,-1],[0,0,0],[-1,0,+1]]) c = convolve(ima,k)...",
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/04-Image_segmentation/05-Active_contour.html",
@@ -1406,7 +1406,7 @@ initFunction(initPrint)
         "title": "Gray level morphology",
         
         "excerpt":
-            "           %matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo                  Gray level morphology  Definitions            Erosion  The equivalent gray level for the erosion operator is the local minimum.            Dilation  The equivalent gray level for the dilation operator is the local maximum.            see also:   Morphological algorithms MMIP p255-288            ",
+            "           %matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo                  Gray level morphology  Definitions            Erosion  The equivalent gray level for the erosion operator is the local minimum.            Dilation  The equivalent gray level for the dilation operator is the local maximum.            see also:   Morphological algorithms (Dougherty, 2018) p255-288             References  Dougherty, E. (2018). Mathematical morphology in image processing. CRC press.           ",
         "categories": [],
         "tags": [],
         "url": "YOUR%20URL/features/05-Morphomathematics/04-Gray_level_morphology.html",
