@@ -28,8 +28,8 @@
   "@type": "NewsArticle",
   "mainEntityOfPage": "http://homepages.ulb.ac.be/~odebeir/_site/search",
   "headline": "Search the site",
-  "datePublished": "2019-09-26T16:52:40+02:00",
-  "dateModified": "2019-09-26T16:52:40+02:00",
+  "datePublished": "2019-09-26T17:01:53+02:00",
+  "dateModified": "2019-09-26T17:01:53+02:00",
   "description": "        ",
   "author": {
     "@type": "Person",
@@ -1210,7 +1210,263 @@ initFunction(initPrint)
 
 <script>
     // Add the lunr store since we will now search it
-    var store = []
+    var store = [{
+        "title": "readme",
+        
+        "excerpt":
+            "Introduction to image processing Outline To browse the content, start here. To browse the content on github.io, start here. Original github repository . pdf dump (may be outdated) How to read the content There are two ways to read Introduction to image processing: The recommended way to read the book is to download and run the jupyter notebooks interactively. You can do this by cloning the GitHub repository, installing the package and its dependencies, and running the notebooks interactively. Instructions for doing this are provided below in the Installation section. The easiest way to read the book is to view...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/README.html",
+        "teaser":null},{
+        "title": "Biological vision",
+        
+        "excerpt":
+            "from IPython.display import HTML,Image,SVG,YouTubeVideo Eyes in the nature from IPython.display import HTML,Image,SVG,YouTubeVideo Evolution has produced a large variety of light sensors among living organisms. From the simplest, where sensitive cells are directly on the skin surface, to more complex ones where the light sensing cells are embedded into a camera obscura like organ. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Diagram_of_eye_evolution.svg/344px-Diagram_of_eye_evolution.svg.png&#39;) Wikimedia Commons Eye, can be compounded, like insect vision, or non-compound (simple eyes) when a single lens-system focus lignt on all the sensible cells. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/stack.png&#39;) The figure above, illustrate how to reconstruct the 3D shape of an ant eye (a polymer mold is taken from the...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/01-Introduction/01-Biological_vision.html",
+        "teaser":null},{
+        "title": "Image sensors",
+        
+        "excerpt":
+            "from IPython.display import HTML,Image,SVG,YouTubeVideo Image sources Passive vs active imaging the object is the source of photon (SPECT, stars,...) the object reflects/react to light given by a external source (flash, fluorescence) the object is traversed by the ligh and diffuses/asborbes it (X-ray) Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/trans_reflect.png&#39;) Object as a source Nuclear imaging is a good example of the first setup, here an injection of radio-tracer will accumulates to some region of interset (due to specific biochemical affinity). The following example shows how the radio-tracer identifies bone metastasis of a prostate cancer using a gamma camera. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/a/ae/Prostate-mets-102.jpg&#39;) wikimedia commons The source can also be...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/01-Introduction/02-Image_sensors.html",
+        "teaser":null},{
+        "title": "Digital image",
+        
+        "excerpt":
+            "from IPython.display import HTML,Image,SVG,YouTubeVideo Image representation A digital image is discrete. It means that there is somewhere in the acquisition process, most of the time, sampling that occurs. A digital image is basically a multidimentionnal array of numbers. Each picture element store a numerical value, with 2D images we speak about pixels (from PIcture ELements) and for 3D images we use voxels (from VOlume ELements). The latice of pixels are usually rectangular (or square if pixels are squares) or hexagonal, hexagonal latice has a unique distance between a pixel and its neghboors. The image dimentionnality will depend on: the spatial...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/01-Introduction/03-Digital_image.html",
+        "teaser":null},{
+        "title": "Introduction",
+        
+        "excerpt":
+            "    Chapter content   vision and human vision what is an image ?  what are the applications ? bibliography used hardware used + some details on biomedical imaging industrial, medical, GIS examples the classical image acquisition / processing chain           ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/01-Introduction/content.html",
+        "teaser":null},{
+        "title": "Point processing",
+        
+        "excerpt":
+            "%matplotlib inline from IPython.display import HTML,Image,SVG,YouTubeVideo Histogram import numpy as np import matplotlib.pyplot as plt from matplotlib import cm from skimage.data import camera,astronaut plt.style.use(&#39;ggplot&#39;) def norm_hist(ima): hist,bins = np.histogram(ima.flatten(),range(256)) # histogram is computed on a 1D distribution --&gt; flatten() return 1.*hist/np.sum(hist) # normalized histogram def display_hist(ima,vmin=None,vmax=None): plt.figure(figsize=[10,5]) if ima.ndim == 2: nh = norm_hist(ima) else: nh_r = norm_hist(ima[:,:,0]) nh_g = norm_hist(ima[:,:,1]) nh_b = norm_hist(ima[:,:,2]) # display the results plt.subplot(1,2,1) plt.imshow(ima,cmap=cm.gray,vmin=vmin,vmax=vmax) plt.subplot(1,2,2) if ima.ndim == 2: plt.plot(nh,label=&#39;hist.&#39;) else: plt.plot(nh_r,color=&#39;r&#39;,label=&#39;r&#39;) plt.plot(nh_g,color=&#39;g&#39;,label=&#39;g&#39;) plt.plot(nh_b,color=&#39;b&#39;,label=&#39;b&#39;) plt.legend() plt.xlabel(&#39;gray level&#39;); display_hist(camera()) display_hist(astronaut()) def display_hist2(ima): nh = norm_hist(ima) cumul_hist = np.cumsum(nh) plt.figure(figsize=[10,5]) plt.subplot(1,2,1) plt.imshow(ima,cmap=cm.gray) ax1 = plt.subplot(1,2,2) plt.plot(nh)...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/02-Low-level_image_processing/01-Point_processing.html",
+        "teaser":null},{
+        "title": "Linear filtering",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from helpers import header,compare Linear filtering In the previous chapter, the processed value of a pixel was only a function of its orignal value. Here the processed value will also take into account the surrounding pixels as well. We speak about pixel neighborhood. Neighborhood Pixel neighborhood is defined by a binary structuring element $B$ having an origin. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/b.png&#39;) For a specific pixel (the gray one below), the neighborhood defined by $B$ ... Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/b1.png&#39;) is the ensemble of pixels belonging to $B$ when its origin is moved on the pixel of interest....",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/02-Low-level_image_processing/02-Linear_filtering.html",
+        "teaser":null},{
+        "title": "Non-linear filtering",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from helpers import compare Rank based filters Rank vs. weighted sum If the local processing consists in something different from a weighted sum of neighboor pixesl, one can speak of non-linear filters. One important category of non-linear filters are the rank filters. These filters use the ranked levels from the neighborhood. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/median.png&#39;) from skimage.data import camera import matplotlib.pyplot as plt import numpy as np # Salt and pepper noise filtering ima = camera() plt.imshow(ima,cmap=plt.cm.gray) n = np.random.random(ima.shape) noised_ima = ima.copy() noised_ima[n&lt;.05] = 0 noised_ima[n&gt;.95] = 255 plt.imshow(noised_ima,cmap=plt.cm.gray); from skimage.filters import rank...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/02-Low-level_image_processing/03-Non_linear_filtering.html",
+        "teaser":null},{
+        "title": "Image restoration",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Image restoration Image acquisition is rarely perfect, physics or external condition may deform the image being acquired, here are some example of typicall problems: Deformation model The original image is $f(x,y)$ undergoes a deformation, given by $H$, and an additive noise $\\eta(x,y)$ the acquired image is $g(x,y)$. The restoration problem can be stated as follow: how to recover a good approximation of $f(x,y)$ from $g(x,y)$? Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/restauration.png&#39;) Some examples: $$g(x,y) = H[f(x,y)] + \\eta(x,y)$$$H$ properties: linear $$ H[k_1 f_1(x,y) + k_2 f_2(x,y)] = k_1 H[f_1(x,y)] + k_2 H[f_2(x,y)]$$ additive $$ H[f_1(x,y) +...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/02-Low-level_image_processing/04-Image_restoration.html",
+        "teaser":null},{
+        "title": "Edge detection",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Edge detection Edges are important features in an image, this is one of the most saillant feature that our eye catches. Edges are also highly correlated with object borders, this is why a lot of different thechniques have been developped. Finite differences Taylor's theorem: $$ \\begin{align} f(x + h) &amp;= f(x) + \\frac{f'(x)}{1!}h + \\frac{f^{(2)}(x)}{2!}h^2 + \\cdots + \\frac{f^{(n)}(x)}{n!}h^n + R_n(x)\\\\ f(x + h) &amp;= f(x) + f'(x)h + R_1^+(x)\\\\ f(x - h) &amp;= f(x) - f'(x)h + R_1^-(x)\\\\ \\end{align} $$ We neglect $R_1$ and we substract the two last equations:...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/02-Low-level_image_processing/05-Edge_detection.html",
+        "teaser":null},{
+        "title": "Low-level image processing",
+        
+        "excerpt":
+            "    Chapter content   recall of basis ot the signal processing Fourier and other transform image sampling linear filtering non linear filtering image enhancement           ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/02-Low-level_image_processing/content.html",
+        "teaser":null},{
+        "title": "Image processing chain",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Typical image processing pipelines Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/ip_chain.png&#39;) The classical image processing chain is illstrated above, we can identify the 4 major steps: image acquisition, when photon are converted into a matrix of numbers pre-processing, used to correct image acquisition default or enhance image quality in order to facilitate... the segmentation, that split image into object of interest and background, then each object of interest are described by, feature extraction, that describe shape, color, texture, etc of course, other approaches exist, depending on the image processing task and the difficulty of it. Image segmentation...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/03-Basic_image_analysis/01-Image_processing_chain.html",
+        "teaser":null},{
+        "title": "Image analysis",
+        
+        "excerpt":
+            "    chapter content             the typical image processing pipeline           ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/03-Basic_image_analysis/content.html",
+        "teaser":null},{
+        "title": "Histogram based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Histogram based segmentation All the pixels in the image are processed the same way. common method easy and fast used when pixel value has a direct interpretation e.g. Hounsfield Unit in CT scan $$HU = 1000\\times\\frac{\\mu - \\mu_{water}}{\\mu_{water} - \\mu_{air}}$$ Imaging: Substance densities in Hounsfield Units (Radiodensity) Air: -1000 Lung: -700 Soft Tissue: -300 to -100 Fat: -50 Water: 0 CSF: +15 Blood: +30 to +45 Muscle: +40 Calculus: +100 to +400 Bone: +1000 (up to +3000 for dense bone) Image(&#39;http://crashingpatient.com/wp-content/images/part1/tissuedensities.jpg&#39;) a problem can arise when: the illumination is uneven in...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html",
+        "teaser":null},{
+        "title": "Border based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Border based segmentation We have seen that berder detection can be achieved by various filters, e.g. by convolution (linear filters) or by non linear filters such as morphological gradient. The results of these filters is an image where pixels located near abrupt gray level changes have a high intensity whereas pixels located in more contiuous regions share a low value. Here below, the result of a Sobel filter on the an image whith clearly identifiable objects: def norm_hist(ima): hist,bins = np.histogram(ima.flatten(),range(256)) # histogram is computed on a 1D distribution --&gt; flatten()...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/02-Border-based_segmentation.html",
+        "teaser":null},{
+        "title": "Region based segmentation",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Region based segmentation Because edge based segmentation leave contours not closed, one may be interested in searching for regions. Region growing Starting from one point of the “object” region and recruiting neighbouring pixels. Split and merge Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/quadtree.png&#39;) split phase one define an homogeneity function recursive image split: if image is homogeneous return else split the image into 4 and apply the test on each sub-image merge phase for each adjacent sub-image if the two grouped regions satisfies the homogeneity criterion, merge the regions Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/split_example.png&#39;) see also: Split and merge (Gonzalez &amp;...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/03-Region_based_segmentation.html",
+        "teaser":null},{
+        "title": "Live wire",
+        
+        "excerpt":
+            "#rem &quot;%matplotlib notebook&quot; crashes with networkx %matplotlib inline import matplotlib.pyplot as plt import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Model based segmentation As far, we considered the image segmentation as a bottom-up process, where connected pixels are grouped together based on some sort of rule based on gray levels, borders etc. In some cases, one know a priori the object we are looking for. An example was already given when looking for lines and circles using the Hough transform. We will see in this chapter other method using this top-down approach. Live-wire The live-wire algorithm is an interactive segmentation method...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/04-Live-wire.html",
+        "teaser":null},{
+        "title": "Active contour",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Active contour see (Blake &amp; Isard, 2012) import matplotlib.pyplot as plt import matplotlib.cm as cm import numpy as npy from skimage.io import imread from scipy import ndimage,interpolate from scipy.ndimage.filters import convolve1d,gaussian_filter,convolve from os.path import join def Cx(ima): &quot;&quot;&quot;x&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=1,cval=1) return c/2.0 def Cy(ima): &quot;&quot;&quot;y&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([-1,0,1]),axis=0,cval=1) return c/2.0 def Cxx(ima): &quot;&quot;&quot;x&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=1,cval=1) return c/4.0 def Cyy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; c = convolve1d(ima,npy.array([1,-2,1]),axis=0,cval=1) return c/4.0 def Cxy(ima): &quot;&quot;&quot;y&#39;&#39; derivative of image&quot;&quot;&quot; k = npy.array([[+1,0,-1],[0,0,0],[-1,0,+1]]) c = convolve(ima,k)...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/05-Active_contour.html",
+        "teaser":null},{
+        "title": "Hough transform",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Hough transform One typical task in image processing is the detection of specific features such as lines. Lines are often present in images of man made structures. In the following image, some lines are continuous (red, green, blue) other are discontinuous (orange) but are made of aligned segments. Instead of trying to connect touching point that may be on the same line, as one would do with a classical edge detection techniques, Hough transform is grouping pixels that belong to a same line even if line is segmented. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/hough3.png&#39;) based on...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/06-Hough_transform.html",
+        "teaser":null},{
+        "title": "Examples",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo from skimage import data import numpy as np from skimage.morphology import disk import skimage.filters.rank as skr from skimage.measure import label from skimage.morphology import watershed from skimage.io import imread from scipy import ndimage as ndi import matplotlib.pyplot as plt from skimage.segmentation import mark_boundaries # segment the coins im = data.coins() plt.imshow(im,cmap=plt.cm.gray) plt.colorbar(); # detect the eyes / nose im = data.chelsea() plt.imshow(im); # counting the galaxies im = data.hubble_deep_field() plt.imshow(im); im = data.page() bg = skr.median(im, disk(10)) res = (1.*im/bg) &lt; .8 plt.imshow(im,cmap=plt.cm.gray) plt.colorbar(); plt.figure() plt.imshow(bg,cmap=plt.cm.gray); plt.colorbar() plt.figure() plt.imshow(res.astype(np.uint8),cmap=plt.cm.gray); plt.colorbar(); # segment...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/07-Examples.html",
+        "teaser":null},{
+        "title": "Image segmentation",
+        
+        "excerpt":
+            "    Chapter content             optimal, entropy, percentile threshold Otsu threshold 2D threshold gaussian mixture condensation algorithm graph-cuts hierarchical region growing split and merge           ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/04-Image_segmentation/content.html",
+        "teaser":null},{
+        "title": "Operators",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Morphomathematical operators Definitions Image The image $X$ is defined as a the set of pixels, connect or not, equal to $1$ (or True), the backgound being set to $0$ (or False). import matplotlib.pyplot as plt import numpy as np X = np.asarray([[0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,1,1,1,0,0,0], [0,0,1,1,1,0,0,0,0], [0,0,1,1,1,1,0,0,0], [0,0,1,1,1,0,0,0,0], [0,0,0,1,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0]]) plt.imshow(X,interpolation=&#39;nearest&#39;,cmap=plt.cm.gray); Structuring element similarily one define a structuring element $B$ as a set of pixels (connected or not) having one origin $o$. Example of a 3x3 centered structuring element: B = np.ones((3,3)) plt.imshow(B,interpolation=&#39;nearest&#39;,cmap=plt.cm.gray) plt.plot(1,1,&#39;or&#39;) plt.gca().set_xlim(-1,3) plt.gca().set_ylim(-1,3); Basic operations Image...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/05-Morphomathematics/01-Operators.html",
+        "teaser":null},{
+        "title": "Combined operators",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Combined operations Morphological thinning and thickening by iterating the Hit-or-Miss transform and remove detected pixels from $X$. thinning $$ X \\oslash B = X \\; | \\;(X \\otimes B)$$ thickening $$ X \\odot B = X \\cup (X \\otimes B)$$ import matplotlib.pyplot as plt import numpy as np from skimage.data import imread from skimage.morphology import erosion def hit_or_miss(X,B12): B1 = B12 == 1 B2 = B12 == 0 r = np.logical_and(erosion(X,B1),erosion(1-X,B2)) return r def rotate_4(B): #returns structuring element oriented in 4 directions return [B,np.rot90(B),np.rot90(np.rot90(B)),np.rot90(np.rot90(np.rot90(B)))] X = (imread(&#39;http://homepages.ulb.ac.be/~odebeir/data/man.tif&#39;)&gt;0)[:,:,0].astype(np.uint8) B = np.array([[2,1,2],[0,1,1],[0,0,2]]) #...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/05-Morphomathematics/02-Combined_operations.html",
+        "teaser":null},{
+        "title": "The_watershed transform",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo The watershed transform Principes The idea behind the watershed transform is to isolate regions of the image similarily to hydrographic region in geography. An image can indeed be seen as a 2D and a half data, i.e. with the gray level considered as the altitude. Image(&#39;https://upload.wikimedia.org/wikipedia/commons/0/02/Amazonriverbasin_basemap.png&#39;) If one look at the gradient of an image, the borders of the objects correspond to the crests of the gradient surface. Gradient crests from skimage.data import imread import numpy as np from skimage.morphology import disk import skimage.filters.rank as skr from skimage.measure import label from...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/05-Morphomathematics/03-The_watershed_transform.html",
+        "teaser":null},{
+        "title": "Gray level morphology",
+        
+        "excerpt":
+            "           %matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo                  Gray level morphology  Definitions            Erosion  The equivalent gray level for the erosion operator is the local minimum.            Dilation  The equivalent gray level for the dilation operator is the local maximum.            see also:   Morphological algorithms (Dougherty, 2018) p255-288             References  Dougherty, E. (2018). Mathematical morphology in image processing. CRC press.           ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/05-Morphomathematics/04-Gray_level_morphology.html",
+        "teaser":null},{
+        "title": "Morphomathematics",
+        
+        "excerpt":
+            "    Chapter content             Morphological algorithms Morphological thinning and skeletonizing Ultimate Eroded Point (UEP) Euclidian Distance Map (EDM) The watershed transform           ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/05-Morphomathematics/content.html",
+        "teaser":null},{
+        "title": "Statistical features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Statistical features The object we consider here are the connected components obtained after the image segmentation (i.e. objects vs. background). Each connected component can be identified using an image labelling algorithm. A feature is a measure extracted from an object. Object recognition is basically the association of a set of feature values with a certain class of object. The first feature that come in mind is the intensity of the object pixels, i.e. the brightness of an object can be used as a descriptor of it, for a color image, one...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/06-Object_feature_extraction/01-Statistical_features.html",
+        "teaser":null},{
+        "title": "Contour features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Contour features chain code algorithm Chain code algorithm is a method that describes the contour of a connected set as an ordered set of pixels (see below). Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/chain.png&#39;) The algorithm starts from an arbitrary pixel of the contour, e.g. found by rasterazing the image, the first object point detected being used. at each iteration on try to find the next border pixel, the order of test is givenby the arrows in the upper right corner, starting from the direction just after the direction of arrival, i.e. the first direction(3) correspond to...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/06-Object_feature_extraction/02-Contour_features.html",
+        "teaser":null},{
+        "title": "Moments",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Object moments We have seen that moments can be used to describe contours, similarily, the content of the shape can be described by this feature. definition The definition in the continuous domain is as follow $$ m_{pq} = \\int_{-\\infty}^{+\\infty} \\int_{-\\infty}^{+\\infty} x^p y^q f(x,y)\\:dx\\:dy $$$$ \\mu_{pq} = \\int_{-\\infty}^{+\\infty} \\int_{-\\infty}^{+\\infty} (x-\\bar x)^p (y-\\bar y)^q f(x,y)\\:dx\\:dy $$$$ \\bar{x}=\\frac{m_{10}}{m_{00}},\\bar{y}=\\frac{m_{01}}{m_{00}} $$ for a discrete domain, which is the case for image of pixels, we have $$ m_{pq} = \\sum_{x= -\\infty}^{+\\infty}\\sum_{y=-\\infty}^{+\\infty} x^p \\; y^q \\; f(x,y) $$to eliminate the influence of the absolute shape position, one define...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/06-Object_feature_extraction/03-Moments.html",
+        "teaser":null},{
+        "title": "Texture features",
+        
+        "excerpt":
+            "%matplotlib inline import sys sys.path.insert(0,&#39;..&#39;) from IPython.display import HTML,Image,SVG,YouTubeVideo Texture features Here is an example of a texture found in ultrasound medical imaging, the image exhibits a clear striation pattern due to muscle fiber orientation. Image(&#39;http://homepages.ulb.ac.be/~odebeir/data/muscle.jpg&#39;) The following video sequience illustrates how fiber orientation can vary during the motricity exercice. from IPython.display import YouTubeVideo YouTubeVideo(&#39;PUcz11MLxUk&#39;, start=0, autoplay=1, theme=&quot;light&quot;, color=&quot;blue&quot;,) Here are some classical textures extracted from an atlas (Broadatz). Texture can be natural, such as grains, sand, soil, stone, biological tissue or resulting from a human artifact such as fabric, wall, pavements ... Texture in an image can be characterized...",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/06-Object_feature_extraction/04-Texture_features.html",
+        "teaser":null},{
+        "title": "Object features extraction",
+        
+        "excerpt":
+            "    chapter content             chain coding polygonal approximation spectral description (intensity) 2D shape descriptors (contours) 2D shape descriptors (region) area, euler, elong,... moments texture analysis Minkowski fractal dimension  fractal analysis: Hurst coeficient Gabor filter            ",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/features/06-Object_feature_extraction/content.html",
+        "teaser":null},{
+        "title": "References",
+        
+        "excerpt":
+            "References Bovik, A. C. (2010). Handbook of image and video processing. Academic press. Jahne, B. (1997). Digital image processing: concepts, algorithms, and scientific applications. Springer. Gonzalez, R. C., &amp; Wintz, P. (1977). Digital image processing(Book). Reading, Mass., Addison-Wesley Publishing Co., Inc.(Applied Mathematics and Computation, (13), 451. Sonka, M., Hlavac, V., &amp; Boyle, R. (2014). Image processing, analysis, and machine vision. Cengage Learning. Mallat, S. (1999). A wavelet tour of signal processing. Elsevier. Russ, J. C. (2016). The image processing handbook. CRC press. Bankman, I. (2008). Handbook of medical image processing and analysis. Elsevier. Fitzpatrick, J. M., &amp; Sonka, M. (2000)....",
+        "categories": [],
+        "tags": [],
+        "url": "http://homepages.ulb.ac.be/~odebeir/_site/references.html",
+        "teaser":null},]
 </script>
             </div>
             <nav class="c-page__nav">

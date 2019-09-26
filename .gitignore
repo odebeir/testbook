@@ -4,3 +4,6 @@ notebook_*.pdf
 
 _site/
 _build/
+
+_site/redirects.json
+_site/search.html
