@@ -2,3 +2,5 @@
 .ipynb_checkpoints/
 notebook_*.pdf
 
+_site/
+_build/
