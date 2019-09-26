@@ -4,12 +4,14 @@ Introduction to image processing
 Outline
 -------
 
-To browse the content, [start here](https://odebeir.github.io/testbook/README.html).
+To browse the content, [start here](http://homepages.ulb.ac.be/~odebeir/_site/README.html).
+
+
+To browse the content on github.io, [start here](https://odebeir.github.io/testbook/README.html).
 
 Original [github repository ](https://github.com/odebeir/testbook).
 
-[pdf dump](./pdf/merged.pdf) (may be outdated)
-
+[pdf dump](./features/pdf/merged.pdf) (may be outdated)
 
 How to read the content
 -----------------------

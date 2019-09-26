@@ -1,0 +1,2706 @@
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>Histogram based segmentation</title>
+  <meta name="description" content="    %matplotlib inlineimport syssys.path.insert(0,'..')from IPython.display import HTML,Image,SVG,YouTubeVideo    Histogram based segmentation All th...">
+
+  <link rel="canonical" href="/~odebeir/_site/YOUR%20URL/~odebeir/_site/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html">
+  <link rel="alternate" type="application/rss+xml" title="INFO-H-500" href="/~odebeir/_site/YOUR%20URL/~odebeir/_site/feed.xml">
+
+  <meta property="og:url" content="/~odebeir/_site/YOUR%20URL/~odebeir/_site/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Histogram based segmentation">
+<meta property="og:description" content="    %matplotlib inlineimport syssys.path.insert(0,'..')from IPython.display import HTML,Image,SVG,YouTubeVideo    Histogram based segmentation All th...">
+<meta property="og:image" content="YOUR%20URL/~odebeir/_site/images/logo/logo.png">
+
+<meta name="twitter:card" content="summary">
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": "YOUR URL/~odebeir/_site/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html",
+  "headline": "Histogram based segmentation",
+  "datePublished": "2019-09-26T15:20:35+02:00",
+  "dateModified": "2019-09-26T15:20:35+02:00",
+  "description": "    %matplotlib inlineimport syssys.path.insert(0,&#39;..&#39;)from IPython.display import HTML,Image,SVG,YouTubeVideo    Histogram based segmentation All th...",
+  "author": {
+    "@type": "Person",
+    "name": "Olivier DEBEIR"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "YOUR URL/~odebeir/_site",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "YOUR URL/~odebeir/_site",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <style class="anchorjs"></style><link rel="stylesheet" href="/~odebeir/_site/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/~odebeir/_site/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<!-- (mostly) copied from nbconvert configuration -->
+<!-- https://github.com/jupyter/nbconvert/blob/master/nbconvert/templates/html/mathjax.tpl -->
+<script type="text/x-mathjax-config;executed=true">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    // Center justify equations in code and markdown cells. Elsewhere
+    // we use CSS to left justify single line equations in code cells.
+    displayAlign: 'center',
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}},
+        linebreaks: { automatic: true },
+    }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML" async=""></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/~odebeir/_site';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js" async=""></script>
+  <script>
+const initAnchors = () => {
+  if (window.anchors === undefined) {
+    setTimeout(initAnchors, 250)
+    return
+  }
+  anchors.add("main h1, main h2, main h3, main h4")
+}
+
+initFunction(initAnchors);
+</script>
+
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js" async=""></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Selectors for elements on the page -->
+  <script>
+/**
+ * Select various elements on the page for later use
+ */
+
+// IDs we'll attach to cells
+const codeCellId = index => `codecell${index}`
+const inputCellId = index => `inputcell${index}`
+
+pageElements = {}
+
+// All code cells
+findCodeCells = function() {
+    var codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre, div.text_cell_render div.highlight pre')
+    pageElements['codeCells'] = codeCells;
+
+    codeCells.forEach((codeCell, index) => {
+      const id = codeCellId(index)
+      codeCell.setAttribute('id', id)
+    })
+};
+
+initFunction(findCodeCells);
+
+// All cells in general
+findInputCells = function() {
+    var inputCells = document.querySelectorAll('div.jb_cell')
+    pageElements['inputCells'] = inputCells;
+
+    inputCells.forEach((inputCell, index) => {
+        const id = inputCellId(index)
+        inputCell.setAttribute('id', id)
+    })
+};
+
+initFunction(findInputCells);
+</script>
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js" async=""></script>
+<script>
+const initToc = () => {
+  if (window.tocbot === undefined) {
+    setTimeout(initToc, 250)
+    return
+  }
+
+  // Check whether we have any sidebar content. If not, then show the sidebar earlier.
+  var SIDEBAR_CONTENT_TAGS = ['.tag_full_width', '.tag_popout'];
+  var sidebar_content_query = SIDEBAR_CONTENT_TAGS.join(', ')
+  if (document.querySelectorAll(sidebar_content_query).length === 0) {
+    document.querySelector('nav.onthispage').classList.add('no_sidebar_content')
+  }
+
+  // Initialize the TOC bot
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+
+}
+initFunction(initToc);
+</script>
+
+
+  <!-- Google analytics -->
+  <script src="/~odebeir/_site/assets/js/ga.js" async=""></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" async=""></script>
+
+  <!-- Load custom website scripts -->
+  <script src="/~odebeir/_site/assets/js/scripts.js" async=""></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/~odebeir/_site/assets/custom/custom.js" async=""></script>
+  <link rel="stylesheet" href="/~odebeir/_site/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.6/lunr.min.js" async=""></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  pageElements['codeCells'].forEach((codeCell) => {
+    const id = codeCell.getAttribute('id')
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  <script>
+    /**
+    Add buttons to hide code cells
+    */
+
+
+    var setCodeCellVisibility = function (inputField, kind) {
+        // Update the image and class for hidden
+        var id = inputField.getAttribute('data-id');
+        var codeCell = document.querySelector(`#${id} div.highlight`);
+
+        if (kind === "visible") {
+            codeCell.classList.remove('hidden');
+            inputField.checked = true;
+        } else {
+            codeCell.classList.add('hidden');
+            inputField.checked = false;
+        }
+    }
+
+    var toggleCodeCellVisibility = function (event) {
+        // The label is clicked, and now we decide what to do based on the input field's clicked status
+        if (event.target.tagName === "LABEL") {
+            var inputField = event.target.previousElementSibling;
+        } else {
+            // It is the span inside the target
+            var inputField = event.target.parentElement.previousElementSibling;
+        }
+
+        if (inputField.checked === true) {
+            setCodeCellVisibility(inputField, "visible");
+        } else {
+            setCodeCellVisibility(inputField, "hidden");
+        }
+    }
+
+
+    // Button constructor
+    const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+    var addHideButton = function () {
+        // If a hide button is already added, don't add another
+        if (document.querySelector('div.tag_hide_input input') !== null) {
+            return;
+        }
+
+        // Find the input cells and add a hide button
+        pageElements['inputCells'].forEach(function (inputCell) {
+            if (!inputCell.classList.contains("tag_hide_input")) {
+                // Skip the cell if it doesn't have a hidecode class
+                return;
+            }
+
+            const id = inputCell.getAttribute('id')
+
+            // Insert the button just inside the end of the next div
+            inputCell.querySelector('div.input').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+            // Set up the visibility toggle
+            hideLink = document.querySelector(`#${id} div.inner_cell + input + label`);
+            hideLink.addEventListener('click', toggleCodeCellVisibility)
+        });
+    }
+
+
+    // Initialize the hide buttos
+    var initHiddenCells = function () {
+        // Add hide buttons to the cells
+        addHideButton();
+
+        // Toggle the code cells that should be hidden
+        document.querySelectorAll('div.tag_hide_input input').forEach(function (item) {
+            setCodeCellVisibility(item, 'hidden');
+            item.checked = true;
+        })
+    }
+
+    initFunction(initHiddenCells);
+
+</script>
+
+  <!-- Printing the screen -->
+  <!-- Include nbinteract for interactive widgets -->
+<script src="https://printjs-4de6.kxcdn.com/print.min.js" async=""></script>
+<script>
+printContent = () => {
+    // MathJax displays a second version of any math for assistive devices etc.
+    // This prevents double-rendering in the PDF output.
+    var ignoreAssistList = [];
+    assistives = document.querySelectorAll('.MathJax_Display span.MJX_Assistive_MathML').forEach((element, index) => {
+        var thisId = 'MathJax-assistive-' + index.toString();
+        element.setAttribute('id', thisId);
+        ignoreAssistList.push(thisId)
+    });
+
+    // Print the actual content object
+    printJS({
+        printable: 'textbook_content',
+        type: 'html',
+        css: "/~odebeir/_site/assets/css/styles.css",
+        scanStyles: false,
+        targetStyles: ["*"],
+        ignoreElements: ignoreAssistList
+    })
+};
+
+initPrint = () => {
+    document.querySelector('#interact-button-print').addEventListener('click', printContent)
+}
+
+initFunction(initPrint)
+</script>
+
+<script type="text/javascript" async="" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.6/MathJax.js?config=TeX-AMS_HTML&amp;latest"></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover, .MJXp-munder {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > *, .MJXp-munder > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+  <body><div id="MathJax_Message" style="">Processing math: 100%</div>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="https://jupyter.org/jupyter-book/"><img src="/~odebeir/_site/images/logo/logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent=""></a>
+  <h2 class="c-sidebar__title">INFO-H-500</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/README.html">
+          
+          readme
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/features/01-Introduction/content.html">
+          
+          Introduction
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/01-Introduction/01-Biological_vision.html">
+                  
+                  Biological vision
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/01-Introduction/02-Image_sensors.html">
+                  
+                  Image sensors
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/01-Introduction/03-Digital_image.html">
+                  
+                  Digital image
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/features/02-Low-level_image_processing/content.html">
+          
+          Low-level image processing
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/02-Low-level_image_processing/01-Point_processing.html">
+                  
+                  Point processing
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/02-Low-level_image_processing/02-Linear_filtering.html">
+                  
+                  Linear filtering
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/02-Low-level_image_processing/03-Non_linear_filtering.html">
+                  
+                  Non-linear filtering
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/02-Low-level_image_processing/04-Image_restoration.html">
+                  
+                  Image restoration
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/02-Low-level_image_processing/05-Edge_detection.html">
+                  
+                  Edge detection
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/features/03-Basic_image_analysis/content.html">
+          
+          Image analysis
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/03-Basic_image_analysis/01-Image_processing_chain.html">
+                  
+                  Image processing chain
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/content.html">
+          
+          Image segmentation
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections ">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry c-sidebar__entry--active" href="/~odebeir/_site/features/04-Image_segmentation/01-Histogram_based_image_segmentation.html">
+                  
+                  Histogram based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/02-Border-based_segmentation.html">
+                  
+                  Border based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/03-Region_based_segmentation.html">
+                  
+                  Region based segmentation
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/04-Live-wire.html">
+                  
+                  Live wire
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/05-Active_contour.html">
+                  
+                  Active contour
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/06-Hough_transform.html">
+                  
+                  Hough transform
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/04-Image_segmentation/07-Examples.html">
+                  
+                  Examples
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/features/05-Morphomathematics/content.html">
+          
+          Morphomathematics
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/05-Morphomathematics/01-Operators.html">
+                  
+                  Operators
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/05-Morphomathematics/02-Combined_operations.html">
+                  
+                  Combined operators
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/05-Morphomathematics/03-The_watershed_transform.html">
+                  
+                  The_watershed transform
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/05-Morphomathematics/04-Gray_level_morphology.html">
+                  
+                  Gray level morphology
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/features/06-Object_feature_extraction/content.html">
+          
+          Object features extraction
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/06-Object_feature_extraction/01-Statistical_features.html">
+                  
+                  Statistical features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/06-Object_feature_extraction/02-Contour_features.html">
+                  
+                  Contour features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/06-Object_feature_extraction/03-Moments.html">
+                  
+                  Moments
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry " href="/~odebeir/_site/features/06-Object_feature_extraction/04-Texture_features.html">
+                  
+                  Texture features
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+        <li class="c-sidebar__divider"></li>
+        
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry " href="/~odebeir/_site/references.html">
+          
+          References
+        </a>
+
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <div class="c-topbar" id="top-navbar">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <div class="c-topbar__buttons">
+    <button id="js-sidebar-toggle" class="hamburger hamburger--arrowalt is-active">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
+    <div class="buttons">
+<div class="download-buttons-dropdown">
+    <button id="dropdown-button-trigger" class="interact-button"><i class="fa fa-download"></i></button>
+    <div class="download-buttons">
+        <a href="/~odebeir/_site/content/features/04-Image_segmentation/01-Histogram_based_image_segmentation.ipynb" download="">
+        <button id="interact-button-download" class="interact-button">ORIG</button>
+        </a>
+        
+        <a id="interact-button-print"><button id="interact-button-download" class="interact-button">PDF</button></a>
+    </div>
+</div>
+
+  
+  
+  
+  
+
+
+</div>
+
+  </div>
+  <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+  <aside class="sidebar__right">
+    <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+    <nav class="onthispage no_sidebar_content"><ul class="toc__menu "><li class="toc-list-item"><a href="#Image-threshold" class="toc-linknode-name--H2">Image threshold</a><ul class="toc__menu "><li class="toc-list-item"><a href="#some-examples" class="toc-linknode-name--H3">some examples</a></li></ul></li><li class="toc-list-item"><a href="#percentile-threshold" class="toc-linknode-name--H2">percentile threshold</a></li><li class="toc-list-item"><a href="#optimal-threshold" class="toc-linknode-name--H2">optimal threshold</a></li><li class="toc-list-item"><a href="#Otsu's-threshold" class="toc-linknode-name--H2">Otsu's threshold</a></li><li class="toc-list-item"><a href="#entropy-threshold" class="toc-linknode-name--H2">entropy threshold</a></li><li class="toc-list-item"><a href="#multi-spectral-theshold" class="toc-linknode-name--H2">multi-spectral theshold</a></li><li class="toc-list-item"><a href="#adding-spectral-dimensions" class="toc-linknode-name--H2">adding spectral dimensions</a><ul class="toc__menu "><li class="toc-list-item"><a href="#References" class="toc-linknode-name--H3">References</a></li></ul></li></ul></nav>
+  </aside>
+  <a href="/~odebeir/_site/search.html" class="topbar-right-button" id="search-button"><i class="fa fa-search"></i></a>
+</div>
+
+      <main class="c-textbook__page" tabindex="-1">
+            <div class="c-textbook__content" id="textbook_content">
+              <div class="jb_cell tag_hide_input" id="inputcell0">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell0"><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">'..'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="k">import</span> <span class="n">HTML</span><span class="p">,</span><span class="n">Image</span><span class="p">,</span><span class="n">SVG</span><span class="p">,</span><span class="n">YouTubeVideo</span>
+</pre><a id="copy-button-codecell0" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell0">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell0" data-id="inputcell0"><label title="Toggle cell" for="hidebtninputcell0" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell1">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Histogram-based-segmentation">Histogram based segmentation<a class="anchor-link" href="#Histogram-based-segmentation"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#Histogram-based-segmentation" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h1><p>All the pixels in the image are processed the same way.</p>
+<ul>
+<li>common method</li>
+<li>easy and fast</li>
+<li>used when pixel value has a direct interpretation </li>
+</ul>
+<p>e.g. Hounsfield Unit in CT scan
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-1"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-2">H</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-3">U</span><span class="MJXp-mo" id="MJXp-Span-4" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mn" id="MJXp-Span-5">1000</span><span class="MJXp-mo" id="MJXp-Span-6" style="margin-left: 0.267em; margin-right: 0.267em;">×</span><span class="MJXp-mfrac" id="MJXp-Span-7" style="vertical-align: 0.25em;"><span class="MJXp-box"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-8">μ</span><span class="MJXp-mo" id="MJXp-Span-9" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-10"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-11" style="margin-right: 0.05em;">μ</span><span class="MJXp-mrow MJXp-script" id="MJXp-Span-12" style="vertical-align: -0.4em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-13">w</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-14">a</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-15">t</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-16">e</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-17">r</span></span></span></span><span class="MJXp-box" style="margin-top: -0.9em;"><span class="MJXp-denom"><span><span class="MJXp-rule" style="height: 1em; border-top: medium none; border-bottom: 1px solid; margin: 0.1em 0px;"></span></span><span><span class="MJXp-box"><span class="MJXp-msubsup" id="MJXp-Span-18"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-19" style="margin-right: 0.05em;">μ</span><span class="MJXp-mrow MJXp-script" id="MJXp-Span-20" style="vertical-align: -0.4em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-21">w</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-22">a</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-23">t</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-24">e</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-25">r</span></span></span><span class="MJXp-mo" id="MJXp-Span-26" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-27"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-28" style="margin-right: 0.05em;">μ</span><span class="MJXp-mrow MJXp-script" id="MJXp-Span-29" style="vertical-align: -0.4em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-30">a</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-31">i</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-32">r</span></span></span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-1">HU = 1000\times\frac{\mu - \mu_{water}}{\mu_{water} - \mu_{air}}</script></p>
+<p>Imaging: Substance densities in Hounsfield Units (Radiodensity)</p>
+
+<pre><code>Air: -1000
+Lung: -700
+Soft Tissue: -300 to -100
+Fat: -50
+Water: 0
+CSF: +15
+Blood: +30 to +45
+Muscle: +40
+Calculus: +100 to +400
+Bone: +1000 (up to +3000 for dense bone)</code></pre>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell2">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell1"><span></span><span class="n">Image</span><span class="p">(</span><span class="s1">'http://crashingpatient.com/wp-content/images/part1/tissuedensities.jpg'</span><span class="p">)</span>
+</pre><a id="copy-button-codecell1" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell1">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell2" data-id="inputcell2"><label title="Toggle cell" for="hidebtninputcell2" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_2_0.jpeg">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell3">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>a problem can arise when:</p>
+<ul>
+<li>the illumination is uneven</li>
+<li>in presence of shadows</li>
+<li>when the object of interest has a variable brightness or texture, etc</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell4">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Image-threshold">Image threshold<a class="anchor-link" href="#Image-threshold"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#Image-threshold" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2><p>definition</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-33"><span class="MJXp-mtable" id="MJXp-Span-34"><span><span class="MJXp-mtr" id="MJXp-Span-35" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-36" style="text-align: right;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-37">g</span><span class="MJXp-mo" id="MJXp-Span-38" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-39">i</span><span class="MJXp-mo" id="MJXp-Span-40" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-41">j</span><span class="MJXp-mo" id="MJXp-Span-42" style="margin-left: 0em; margin-right: 0em;">)</span></span><span class="MJXp-mtd" id="MJXp-Span-43" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-44"></span><span class="MJXp-mo" id="MJXp-Span-45" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mn" id="MJXp-Span-46">1</span><span class="MJXp-mspace" id="MJXp-Span-47" style="width: 0.167em; height: 0em;"></span><span class="MJXp-mtext" id="MJXp-Span-48">if</span><span class="MJXp-mspace" id="MJXp-Span-49" style="width: 0.167em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-50">f</span><span class="MJXp-mo" id="MJXp-Span-51" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-52">i</span><span class="MJXp-mo" id="MJXp-Span-53" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-54">j</span><span class="MJXp-mo" id="MJXp-Span-55" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-56" style="margin-left: 0.333em; margin-right: 0.333em;">&gt;</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-57">T</span></span></span><span class="MJXp-mtr" id="MJXp-Span-58" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-59" style="padding-top: 0.3em; text-align: right;"><span class="MJXp-mspace" id="MJXp-Span-60" style="width: 0.167em; height: 0em;"></span></span><span class="MJXp-mtd" id="MJXp-Span-61" style="padding-left: 0em; padding-top: 0.3em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-62"></span><span class="MJXp-mo" id="MJXp-Span-63" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mn" id="MJXp-Span-64">0</span><span class="MJXp-mspace" id="MJXp-Span-65" style="width: 0.167em; height: 0em;"></span><span class="MJXp-mtext" id="MJXp-Span-66">otherwise</span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-2">\begin{align*} 
+g(i,j) &= 1 \, \text{if} \, f(i,j)>T \\
+\,  &= 0 \, \text{otherwise}
+\end{align*}</script><p><span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-67"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-68">T</span></span></span><script type="math/tex" id="MathJax-Element-3">T</script> can be:</p>
+<ul>
+<li>fixed: <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-69"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-70">T</span><span class="MJXp-mo" id="MJXp-Span-71" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-72">T</span><span class="MJXp-mn" id="MJXp-Span-73">0</span></span></span><script type="math/tex" id="MathJax-Element-4">T = T0</script></li>
+<li>globally adaptive: <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-74"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-75">T</span><span class="MJXp-mo" id="MJXp-Span-76" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-77">T</span><span class="MJXp-mo" id="MJXp-Span-78" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-79">f</span><span class="MJXp-mo" id="MJXp-Span-80" style="margin-left: 0em; margin-right: 0em;">)</span></span></span><script type="math/tex" id="MathJax-Element-5">T = T(f)</script></li>
+<li>locally adaptive: <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-81"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-82">T</span><span class="MJXp-mo" id="MJXp-Span-83" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-84">T</span><span class="MJXp-mo" id="MJXp-Span-85" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-86">f</span><span class="MJXp-mo" id="MJXp-Span-87" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-88">f</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-89">c</span><span class="MJXp-mo" id="MJXp-Span-90" style="margin-left: 0em; margin-right: 0em;">)</span></span></span><script type="math/tex" id="MathJax-Element-6">T = T(f,fc)</script></li>
+</ul>
+<h3 id="some-examples">some examples<a class="anchor-link" href="#some-examples"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#some-examples" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell5">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell2"><span></span><span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">data</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">hist</span><span class="p">,</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span>  <span class="c1"># histogram is computed on a 1D distribution --&gt; flatten()</span>
+    <span class="k">return</span> <span class="mf">1.</span><span class="o">*</span><span class="n">hist</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span> <span class="c1"># normalized histogram</span>
+
+<span class="k">def</span> <span class="nf">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">ima</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">nh</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nh_r</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">nh_g</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">nh_b</span> <span class="o">=</span> <span class="n">norm_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># display the results</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ima</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'hist.'</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_r</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'r'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_g</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'g'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'g'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nh_b</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'b'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'gray level'</span><span class="p">);</span>
+</pre><a id="copy-button-codecell2" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell2">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell5" data-id="inputcell5"><label title="Toggle cell" for="hidebtninputcell5" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell6">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell3"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">horse</span><span class="p">())</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">horse</span><span class="p">()[:],</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">h</span>
+</pre><a id="copy-button-codecell3" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell3">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell6" data-id="inputcell6"><label title="Toggle cell" for="hidebtninputcell6" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/numpy/lib/histograms.py:778: RuntimeWarning: Converting input from bool to &lt;class 'numpy.uint8'&gt; for compatibility.
+  a, weights = _ravel_and_check_weights(a, weights)
+/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/numpy/lib/histograms.py:778: RuntimeWarning: Converting input from bool to &lt;class 'numpy.uint8'&gt; for compatibility.
+  a, weights = _ravel_and_check_weights(a, weights)
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(array([43412, 87788,     0,     0,     0,     0,     0,     0,     0]),
+ array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]))</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_6_2.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell7">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell4"><span></span>    <span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">checkerboard</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">128</span><span class="p">)</span>
+</pre><a id="copy-button-codecell4" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell4">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell7" data-id="inputcell7"><label title="Toggle cell" for="hidebtninputcell7" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_7_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell8">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell5"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">page</span><span class="p">())</span>
+</pre><a id="copy-button-codecell5" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell5">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell8" data-id="inputcell8"><label title="Toggle cell" for="hidebtninputcell8" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_8_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell9">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell6"><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">rank</span> <span class="k">as</span> <span class="n">skr</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">page</span><span class="p">()</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">g</span><span class="o">/</span><span class="n">m</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre><a id="copy-button-codecell6" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell6">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell9" data-id="inputcell9"><label title="Toggle cell" for="hidebtninputcell9" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.colorbar.Colorbar at 0x7f3190cedba8&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_9_1.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell10">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell7"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">coins</span><span class="p">())</span>
+</pre><a id="copy-button-codecell7" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell7">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell10" data-id="inputcell10"><label title="Toggle cell" for="hidebtninputcell10" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_10_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell11">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell8"><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">coins</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">g</span><span class="o">&gt;</span><span class="mi">90</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+</pre><a id="copy-button-codecell8" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell8">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell11" data-id="inputcell11"><label title="Toggle cell" for="hidebtninputcell11" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.image.AxesImage at 0x7f3190b40b70&gt;</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_11_1.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell12">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell9"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">camera</span><span class="p">())</span>
+</pre><a id="copy-button-codecell9" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell9">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell12" data-id="inputcell12"><label title="Toggle cell" for="hidebtninputcell12" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_12_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell13">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell10"><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">camera</span><span class="p">()</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="mi">150</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">t3</span> <span class="o">=</span> <span class="n">t1</span><span class="o">+</span><span class="n">t2</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">g</span><span class="o">&lt;</span><span class="mi">100</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">t3</span>
+</pre><a id="copy-button-codecell10" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell10">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell13" data-id="inputcell13"><label title="Toggle cell" for="hidebtninputcell13" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[1, 1, 1, ..., 1, 1, 1],
+       [1, 1, 1, ..., 1, 1, 1],
+       [1, 1, 1, ..., 1, 1, 1],
+       ...,
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0],
+       [0, 0, 0, ..., 0, 0, 0]])</pre>
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_13_1.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell14">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell11"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">hubble_deep_field</span><span class="p">()[:,:,</span><span class="mi">0</span><span class="p">])</span>
+</pre><a id="copy-button-codecell11" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell11">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell14" data-id="inputcell14"><label title="Toggle cell" for="hidebtninputcell14" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_14_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell15">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell12"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">moon</span><span class="p">())</span>
+</pre><a id="copy-button-codecell12" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell12">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell15" data-id="inputcell15"><label title="Toggle cell" for="hidebtninputcell15" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_15_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell16">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell13"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">coffee</span><span class="p">())</span>
+</pre><a id="copy-button-codecell13" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell13">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell16" data-id="inputcell16"><label title="Toggle cell" for="hidebtninputcell16" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_16_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell17">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="percentile-threshold">percentile threshold<a class="anchor-link" href="#percentile-threshold"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#percentile-threshold" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell18">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell14"><span></span><span class="n">ima</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">hubble_deep_field</span><span class="p">()[:,:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+</pre><a id="copy-button-codecell14" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell14">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell18" data-id="inputcell18"><label title="Toggle cell" for="hidebtninputcell18" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_18_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell19">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If we know a priori the surface of the object of interest, here the galaxies, one can set the threshold to the corresponding percentile.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell20">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell15"><span></span><span class="n">perc</span> <span class="o">=</span> <span class="o">.</span><span class="mi">95</span> <span class="c1">#galaxies are the 5% brighter pixels in the image</span>
+
+<span class="n">h</span><span class="p">,</span><span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="p">[:],</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">))</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">h</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">perc</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+
+<span class="n">th_perc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span><span class="o">&gt;=</span><span class="n">perc</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">th_perc</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="o">&gt;=</span><span class="n">th_perc</span><span class="p">);</span>
+</pre><a id="copy-button-codecell15" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell15">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell20" data-id="inputcell20"><label title="Toggle cell" for="hidebtninputcell20" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_20_0.png">
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_20_1.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell21">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="optimal-threshold">optimal threshold<a class="anchor-link" href="#optimal-threshold"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#optimal-threshold" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2><p>algorithm:</p>
+<ol>
+<li>set an initial threshold to <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-91"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-92">T</span></span></span><script type="math/tex" id="MathJax-Element-7">T</script></li>
+<li>cut distribution into:
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-93"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-94">G</span><span class="MJXp-mn" id="MJXp-Span-95">1</span><span class="MJXp-mo" id="MJXp-Span-96" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mo" id="MJXp-Span-97" style="margin-left: 0em; margin-right: 0em;">{</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-98">p</span><span class="MJXp-mo" id="MJXp-Span-99" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-100">x</span><span class="MJXp-mo" id="MJXp-Span-101" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-102">y</span><span class="MJXp-mo" id="MJXp-Span-103" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-104" style="margin-left: 0.333em; margin-right: 0.333em;">&gt;</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-105">T</span><span class="MJXp-mo" id="MJXp-Span-106" style="margin-left: 0em; margin-right: 0em;">}</span></span></span><script type="math/tex; mode=display" id="MathJax-Element-8">G1 = \{p(x,y)>T\}</script>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-107"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-108">G</span><span class="MJXp-mn" id="MJXp-Span-109">2</span><span class="MJXp-mo" id="MJXp-Span-110" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mo" id="MJXp-Span-111" style="margin-left: 0em; margin-right: 0em;">{</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-112">p</span><span class="MJXp-mo" id="MJXp-Span-113" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-114">x</span><span class="MJXp-mo" id="MJXp-Span-115" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-116">y</span><span class="MJXp-mo" id="MJXp-Span-117" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-118" style="margin-left: 0.333em; margin-right: 0.333em;">&lt;=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-119">T</span><span class="MJXp-mo" id="MJXp-Span-120" style="margin-left: 0em; margin-right: 0em;">}</span></span></span><script type="math/tex; mode=display" id="MathJax-Element-9">G2 = \{p(x,y)<=T\}</script></li>
+<li>compute distribution centroid for each part <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-121"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-122">m</span><span class="MJXp-mn" id="MJXp-Span-123">1</span></span></span><script type="math/tex" id="MathJax-Element-10">m1</script> and <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-124"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-125">m</span><span class="MJXp-mn" id="MJXp-Span-126">2</span></span></span><script type="math/tex" id="MathJax-Element-11">m2</script></li>
+<li>the new threshold is given by:
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-127"><span class="MJXp-msup" id="MJXp-Span-128"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-129" style="margin-right: 0.05em;">T</span><span class="MJXp-mo MJXp-script" id="MJXp-Span-130" style="vertical-align: 0.5em;">′</span></span><span class="MJXp-mo" id="MJXp-Span-131" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mo" id="MJXp-Span-132" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-133">m</span><span class="MJXp-mn" id="MJXp-Span-134">1</span><span class="MJXp-mo" id="MJXp-Span-135" style="margin-left: 0.267em; margin-right: 0.267em;">+</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-136">m</span><span class="MJXp-mn" id="MJXp-Span-137">2</span><span class="MJXp-mo" id="MJXp-Span-138" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mrow" id="MJXp-Span-139"><span class="MJXp-mo" id="MJXp-Span-140" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-mn" id="MJXp-Span-141">2</span></span></span><script type="math/tex; mode=display" id="MathJax-Element-12">T’=(m1+m2)/2</script></li>
+<li>iterate (2) until convergence</li>
+</ol>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell22">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Question:</p>
+<ul>
+<li>write a function that finds the optimal threshold for the cameraman</li>
+<li>what clustering method (machine mearning) is equivallent to that algorithm ?</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell23">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Otsu's-threshold">Otsu's threshold<a class="anchor-link" href="#Otsu's-threshold"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#Otsu's-threshold" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2><p>One define two classes (e.g. foreground/background) based on pixel intensity, classes are separated by a threshold value <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-142"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-143">k</span></span></span><script type="math/tex" id="MathJax-Element-13">k</script>:</p>
+<p>the class probabilities are defined such as:</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-144"><span class="MJXp-mtable" id="MJXp-Span-145"><span><span class="MJXp-mtr" id="MJXp-Span-146" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-147" style="text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-148"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-149" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-150" style="vertical-align: -0.4em;">0</span></span></span><span class="MJXp-mtd" id="MJXp-Span-151" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-152"></span><span class="MJXp-mo" id="MJXp-Span-153" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-154" style="padding-left: 2em; text-align: right;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-155">P</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-156">r</span><span class="MJXp-mo" id="MJXp-Span-157" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-msubsup" id="MJXp-Span-158"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-159" style="margin-right: 0.05em;">C</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-160" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-161" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-162" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-163"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-169" style="margin-right: 0px; margin-left: 0px;">k</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-164" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-165" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-166">i</span><span class="MJXp-mo" id="MJXp-Span-167">=</span><span class="MJXp-mn" id="MJXp-Span-168">0</span></span></span></span><span class="MJXp-msubsup" id="MJXp-Span-170"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-171" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-172" style="vertical-align: -0.4em;">i</span></span><span class="MJXp-mo" id="MJXp-Span-173" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-174">ω</span><span class="MJXp-mo" id="MJXp-Span-175" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-176">k</span><span class="MJXp-mo" id="MJXp-Span-177" style="margin-left: 0em; margin-right: 0em;">)</span></span></span><span class="MJXp-mtr" id="MJXp-Span-178" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-179" style="padding-top: 0.3em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-180"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-181" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-182" style="vertical-align: -0.4em;">1</span></span></span><span class="MJXp-mtd" id="MJXp-Span-183" style="padding-left: 0em; padding-top: 0.3em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-184"></span><span class="MJXp-mo" id="MJXp-Span-185" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-186" style="padding-left: 2em; padding-top: 0.3em; text-align: right;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-187">P</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-188">r</span><span class="MJXp-mo" id="MJXp-Span-189" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-msubsup" id="MJXp-Span-190"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-191" style="margin-right: 0.05em;">C</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-192" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-193" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-194" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-195"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-203" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-196" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-197" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-198">i</span><span class="MJXp-mo" id="MJXp-Span-199">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-200">k</span><span class="MJXp-mo" id="MJXp-Span-201">+</span><span class="MJXp-mn" id="MJXp-Span-202">1</span></span></span></span><span class="MJXp-msubsup" id="MJXp-Span-204"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-205" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-206" style="vertical-align: -0.4em;">i</span></span><span class="MJXp-mo" id="MJXp-Span-207" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mn" id="MJXp-Span-208">1</span><span class="MJXp-mo" id="MJXp-Span-209" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-210">ω</span><span class="MJXp-mo" id="MJXp-Span-211" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-212">k</span><span class="MJXp-mo" id="MJXp-Span-213" style="margin-left: 0em; margin-right: 0em;">)</span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-14">
+\begin{align*} 
+\omega_0 &=& Pr(C_0) = \sum_{i=0}^k p_i  = \omega (k)\\
+\omega_1 &=& Pr(C_1) = \sum_{i=k+1}^L p_i  = 1-\omega (k)\\
+\end{align*} 
+</script><p>the class means are defined by:</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-214"><span class="MJXp-mtable" id="MJXp-Span-215"><span><span class="MJXp-mtr" id="MJXp-Span-216" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-217" style="text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-218"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-219" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-220" style="vertical-align: -0.4em;">0</span></span></span><span class="MJXp-mtd" id="MJXp-Span-221" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-222"></span><span class="MJXp-mo" id="MJXp-Span-223" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-224" style="padding-left: 2em; text-align: right;"><span class="MJXp-munderover" id="MJXp-Span-225"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-231" style="margin-right: 0px; margin-left: 0px;">k</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-226" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-227" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-228">i</span><span class="MJXp-mo" id="MJXp-Span-229">=</span><span class="MJXp-mn" id="MJXp-Span-230">0</span></span></span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-232">i</span><span class="MJXp-mspace" id="MJXp-Span-233" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-234">P</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-235">r</span><span class="MJXp-mo" id="MJXp-Span-236" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-237">i</span><span class="MJXp-mrow" id="MJXp-Span-238"><span class="MJXp-mo" id="MJXp-Span-239" style="margin-left: 0.167em; margin-right: 0.167em;">|</span></span><span class="MJXp-msubsup" id="MJXp-Span-240"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-241" style="margin-right: 0.05em;">C</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-242" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-243" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-244" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-245"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-251" style="margin-right: 0px; margin-left: 0px;">k</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-246" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-247" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-248">i</span><span class="MJXp-mo" id="MJXp-Span-249">=</span><span class="MJXp-mn" id="MJXp-Span-250">0</span></span></span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-252">i</span><span class="MJXp-mspace" id="MJXp-Span-253" style="width: 0.222em; height: 0em;"></span><span class="MJXp-msubsup" id="MJXp-Span-254"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-255" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-256" style="vertical-align: -0.4em;">i</span></span><span class="MJXp-mrow" id="MJXp-Span-257"><span class="MJXp-mo" id="MJXp-Span-258" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-259"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-260" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-261" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-262" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-263">μ</span><span class="MJXp-mo" id="MJXp-Span-264" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-265">k</span><span class="MJXp-mo" id="MJXp-Span-266" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mrow" id="MJXp-Span-267"><span class="MJXp-mo" id="MJXp-Span-268" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-269">ω</span><span class="MJXp-mo" id="MJXp-Span-270" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-271">k</span><span class="MJXp-mo" id="MJXp-Span-272" style="margin-left: 0em; margin-right: 0em;">)</span></span></span><span class="MJXp-mtr" id="MJXp-Span-273" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-274" style="padding-top: 0.3em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-275"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-276" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-277" style="vertical-align: -0.4em;">1</span></span></span><span class="MJXp-mtd" id="MJXp-Span-278" style="padding-left: 0em; padding-top: 0.3em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-279"></span><span class="MJXp-mo" id="MJXp-Span-280" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-281" style="padding-left: 2em; padding-top: 0.3em; text-align: right;"><span class="MJXp-munderover" id="MJXp-Span-282"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-290" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-283" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-284" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-285">i</span><span class="MJXp-mo" id="MJXp-Span-286">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-287">k</span><span class="MJXp-mo" id="MJXp-Span-288">+</span><span class="MJXp-mn" id="MJXp-Span-289">1</span></span></span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-291">i</span><span class="MJXp-mspace" id="MJXp-Span-292" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-293">P</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-294">r</span><span class="MJXp-mo" id="MJXp-Span-295" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-296">i</span><span class="MJXp-mrow" id="MJXp-Span-297"><span class="MJXp-mo" id="MJXp-Span-298" style="margin-left: 0.167em; margin-right: 0.167em;">|</span></span><span class="MJXp-msubsup" id="MJXp-Span-299"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-300" style="margin-right: 0.05em;">C</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-301" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-302" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-303" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-304"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-312" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-305" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-306" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-307">i</span><span class="MJXp-mo" id="MJXp-Span-308">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-309">k</span><span class="MJXp-mo" id="MJXp-Span-310">+</span><span class="MJXp-mn" id="MJXp-Span-311">1</span></span></span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-313">i</span><span class="MJXp-mspace" id="MJXp-Span-314" style="width: 0.222em; height: 0em;"></span><span class="MJXp-msubsup" id="MJXp-Span-315"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-316" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-317" style="vertical-align: -0.4em;">i</span></span><span class="MJXp-mrow" id="MJXp-Span-318"><span class="MJXp-mo" id="MJXp-Span-319" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-320"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-321" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-322" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-323" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mfrac" id="MJXp-Span-324" style="vertical-align: 0.25em;"><span class="MJXp-box"><span class="MJXp-msubsup" id="MJXp-Span-325"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-326" style="margin-right: 0.05em;">μ</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-327" style="vertical-align: -0.4em;">T</span></span><span class="MJXp-mo" id="MJXp-Span-328" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-329">μ</span><span class="MJXp-mo" id="MJXp-Span-330" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-331">k</span><span class="MJXp-mo" id="MJXp-Span-332" style="margin-left: 0em; margin-right: 0em;">)</span></span><span class="MJXp-box" style="margin-top: -0.9em;"><span class="MJXp-denom"><span><span class="MJXp-rule" style="height: 1em; border-top: medium none; border-bottom: 1px solid; margin: 0.1em 0px;"></span></span><span><span class="MJXp-box"><span class="MJXp-mn" id="MJXp-Span-333">1</span><span class="MJXp-mo" id="MJXp-Span-334" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-335">ω</span><span class="MJXp-mo" id="MJXp-Span-336" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-337">k</span><span class="MJXp-mo" id="MJXp-Span-338" style="margin-left: 0em; margin-right: 0em;">)</span></span></span></span></span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-15">
+\begin{align*} 
+\mu_0 &=& \sum_{i=0}^k i\:Pr(i|C_0) = \sum_{i=0}^k i\:p_i/\omega_0 = \mu(k)/\omega(k) \\
+\mu_1 &=& \sum_{i=k+1}^L i\:Pr(i|C_1) = \sum_{i=k+1}^L i\:p_i/\omega_1 = \frac{\mu_T - \mu(k)}{1-\omega(k)} \\
+\end{align*} 
+</script><p>with</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-339"><span class="MJXp-mtable" id="MJXp-Span-340"><span><span class="MJXp-mtr" id="MJXp-Span-341" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-342" style="text-align: right;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-343">μ</span><span class="MJXp-mo" id="MJXp-Span-344" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-345">k</span><span class="MJXp-mo" id="MJXp-Span-346" style="margin-left: 0em; margin-right: 0em;">)</span></span><span class="MJXp-mtd" id="MJXp-Span-347" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-348"></span><span class="MJXp-mo" id="MJXp-Span-349" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-350" style="padding-left: 2em; text-align: right;"><span class="MJXp-munderover" id="MJXp-Span-351"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-357" style="margin-right: 0px; margin-left: 0px;">k</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-352" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-353" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-354">i</span><span class="MJXp-mo" id="MJXp-Span-355">=</span><span class="MJXp-mn" id="MJXp-Span-356">0</span></span></span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-358">i</span><span class="MJXp-mspace" id="MJXp-Span-359" style="width: 0.222em; height: 0em;"></span><span class="MJXp-msubsup" id="MJXp-Span-360"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-361" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-362" style="vertical-align: -0.4em;">i</span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-16">
+\begin{align*} 
+\mu(k) &=& \sum_{i=0}^k i\: p_i\\
+\end{align*} 
+</script><p>for the total image one have:</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-363"><span class="MJXp-mtable" id="MJXp-Span-364"><span><span class="MJXp-mtr" id="MJXp-Span-365" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-366" style="text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-367"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-368" style="margin-right: 0.05em;">μ</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-369" style="vertical-align: -0.4em;">T</span></span></span><span class="MJXp-mtd" id="MJXp-Span-370" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-371"></span><span class="MJXp-mo" id="MJXp-Span-372" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-373" style="padding-left: 2em; text-align: right;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-374">μ</span><span class="MJXp-mo" id="MJXp-Span-375" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-376">L</span><span class="MJXp-mo" id="MJXp-Span-377" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-378" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-379"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-385" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-380" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-381" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-382">i</span><span class="MJXp-mo" id="MJXp-Span-383">=</span><span class="MJXp-mn" id="MJXp-Span-384">0</span></span></span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-386">i</span><span class="MJXp-mspace" id="MJXp-Span-387" style="width: 0.222em; height: 0em;"></span><span class="MJXp-msubsup" id="MJXp-Span-388"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-389" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-390" style="vertical-align: -0.4em;">i</span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-17">
+\begin{align*} 
+\mu_T &=& \mu(L) = \sum_{i=0}^L i\: p_i  
+\end{align*} 
+</script><p>total image values and class values are linked with:</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-391"><span class="MJXp-mtable" id="MJXp-Span-392"><span><span class="MJXp-mtr" id="MJXp-Span-393" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-394" style="text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-395"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-396" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-397" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-msubsup" id="MJXp-Span-398"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-399" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-400" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-401" style="margin-left: 0.267em; margin-right: 0.267em;">+</span><span class="MJXp-msubsup" id="MJXp-Span-402"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-403" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-404" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-msubsup" id="MJXp-Span-405"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-406" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-407" style="vertical-align: -0.4em;">1</span></span></span><span class="MJXp-mtd" id="MJXp-Span-408" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-409"></span><span class="MJXp-mo" id="MJXp-Span-410" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-411" style="padding-left: 2em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-412"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-413" style="margin-right: 0.05em;">μ</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-414" style="vertical-align: -0.4em;">T</span></span></span></span><span class="MJXp-mtr" id="MJXp-Span-415" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-416" style="padding-top: 0.3em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-417"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-418" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-419" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-420" style="margin-left: 0.267em; margin-right: 0.267em;">+</span><span class="MJXp-msubsup" id="MJXp-Span-421"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-422" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-423" style="vertical-align: -0.4em;">1</span></span></span><span class="MJXp-mtd" id="MJXp-Span-424" style="padding-left: 0em; padding-top: 0.3em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-425"></span><span class="MJXp-mo" id="MJXp-Span-426" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-427" style="padding-left: 2em; padding-top: 0.3em; text-align: right;"><span class="MJXp-mn" id="MJXp-Span-428">1</span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-18">
+\begin{align*} 
+\omega_0 \mu_0 + \omega_1  \mu_1 &=& \mu_T\\
+\omega_0 + \omega_1 &=& 1
+\end{align*} 
+</script><p>class variances are defined by:</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-429"><span class="MJXp-mtable" id="MJXp-Span-430"><span><span class="MJXp-mtr" id="MJXp-Span-431" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-432" style="text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-433"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-434" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-436">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mn" id="MJXp-Span-435">0</span></span></span></span></span></span></span><span class="MJXp-mtd" id="MJXp-Span-437" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-438"></span><span class="MJXp-mo" id="MJXp-Span-439" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-440" style="padding-left: 2em; text-align: right;"><span class="MJXp-munderover" id="MJXp-Span-441"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-447" style="margin-right: 0px; margin-left: 0px;">k</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-442" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-443" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-444">i</span><span class="MJXp-mo" id="MJXp-Span-445">=</span><span class="MJXp-mn" id="MJXp-Span-446">0</span></span></span></span><span class="MJXp-mo" id="MJXp-Span-448" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-449">i</span><span class="MJXp-mo" id="MJXp-Span-450" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-451"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-452" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-453" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-msubsup" id="MJXp-Span-454"><span class="MJXp-mo" id="MJXp-Span-455" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-456" style="vertical-align: 0.5em;">2</span></span><span class="MJXp-mspace" id="MJXp-Span-457" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-458">P</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-459">r</span><span class="MJXp-mo" id="MJXp-Span-460" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-461">i</span><span class="MJXp-mrow" id="MJXp-Span-462"><span class="MJXp-mo" id="MJXp-Span-463" style="margin-left: 0.167em; margin-right: 0.167em;">|</span></span><span class="MJXp-msubsup" id="MJXp-Span-464"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-465" style="margin-right: 0.05em;">C</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-466" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-467" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-468" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-469"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-475" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-470" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-471" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-472">i</span><span class="MJXp-mo" id="MJXp-Span-473">=</span><span class="MJXp-mn" id="MJXp-Span-474">0</span></span></span></span><span class="MJXp-mo" id="MJXp-Span-476" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-477">i</span><span class="MJXp-mo" id="MJXp-Span-478" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-479"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-480" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-481" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-msubsup" id="MJXp-Span-482"><span class="MJXp-mo" id="MJXp-Span-483" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-484" style="vertical-align: 0.5em;">2</span></span><span class="MJXp-msubsup" id="MJXp-Span-485"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-486" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-487" style="vertical-align: -0.4em;">i</span></span><span class="MJXp-mrow" id="MJXp-Span-488"><span class="MJXp-mo" id="MJXp-Span-489" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-490"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-491" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-492" style="vertical-align: -0.4em;">0</span></span></span></span><span class="MJXp-mtr" id="MJXp-Span-493" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-494" style="padding-top: 0.3em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-495"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-496" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-498">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mn" id="MJXp-Span-497">1</span></span></span></span></span></span></span><span class="MJXp-mtd" id="MJXp-Span-499" style="padding-left: 0em; padding-top: 0.3em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-500"></span><span class="MJXp-mo" id="MJXp-Span-501" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-502" style="padding-left: 2em; padding-top: 0.3em; text-align: right;"><span class="MJXp-munderover" id="MJXp-Span-503"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-511" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-504" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-505" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-506">i</span><span class="MJXp-mo" id="MJXp-Span-507">=</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-508">k</span><span class="MJXp-mo" id="MJXp-Span-509">+</span><span class="MJXp-mn" id="MJXp-Span-510">1</span></span></span></span><span class="MJXp-mo" id="MJXp-Span-512" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-513">i</span><span class="MJXp-mo" id="MJXp-Span-514" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-515"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-516" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-517" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-msubsup" id="MJXp-Span-518"><span class="MJXp-mo" id="MJXp-Span-519" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-520" style="vertical-align: 0.5em;">2</span></span><span class="MJXp-mspace" id="MJXp-Span-521" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-522">P</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-523">r</span><span class="MJXp-mo" id="MJXp-Span-524" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-525">i</span><span class="MJXp-mrow" id="MJXp-Span-526"><span class="MJXp-mo" id="MJXp-Span-527" style="margin-left: 0.167em; margin-right: 0.167em;">|</span></span><span class="MJXp-msubsup" id="MJXp-Span-528"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-529" style="margin-right: 0.05em;">C</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-530" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-531" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mo" id="MJXp-Span-532" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-533"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-539" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-534" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-535" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-536">i</span><span class="MJXp-mo" id="MJXp-Span-537">=</span><span class="MJXp-mn" id="MJXp-Span-538">0</span></span></span></span><span class="MJXp-mo" id="MJXp-Span-540" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-541">i</span><span class="MJXp-mo" id="MJXp-Span-542" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-543"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-544" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-545" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-msubsup" id="MJXp-Span-546"><span class="MJXp-mo" id="MJXp-Span-547" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-548" style="vertical-align: 0.5em;">2</span></span><span class="MJXp-msubsup" id="MJXp-Span-549"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-550" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-551" style="vertical-align: -0.4em;">i</span></span><span class="MJXp-mrow" id="MJXp-Span-552"><span class="MJXp-mo" id="MJXp-Span-553" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-554"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-555" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-556" style="vertical-align: -0.4em;">1</span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-19">
+\begin{align*} 
+\sigma_0^2 &=& \sum_{i=0}^k (i-\mu_0)^2\:Pr(i|C_0) =\sum_{i=0}^L (i-\mu_0)^2 p_i/\omega_0\\
+\sigma_1^2 &=& \sum_{i=k+1}^L (i-\mu_1)^2\:Pr(i|C_1) =\sum_{i=0}^L (i-\mu_1)^2 p_i/\omega_1\\
+\end{align*} 
+</script><p>variance intra-classe (within):</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-557"><span class="MJXp-msubsup" id="MJXp-Span-558"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-559" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-561">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-560">W</span></span></span></span></span></span><span class="MJXp-mo" id="MJXp-Span-562" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-msubsup" id="MJXp-Span-563"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-564" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-565" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-msubsup" id="MJXp-Span-566"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-567" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-569">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mn" id="MJXp-Span-568">0</span></span></span></span></span></span><span class="MJXp-mo" id="MJXp-Span-570" style="margin-left: 0.267em; margin-right: 0.267em;">+</span><span class="MJXp-msubsup" id="MJXp-Span-571"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-572" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-573" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-msubsup" id="MJXp-Span-574"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-575" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-577">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mn" id="MJXp-Span-576">1</span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-20">\sigma_W^2 = \omega_0 \sigma_0^2 + \omega_1 \sigma_1^2</script><p>variance inter-classe (between):
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-578"><span class="MJXp-mtable" id="MJXp-Span-579"><span><span class="MJXp-mtr" id="MJXp-Span-580" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-581" style="text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-582"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-583" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-585">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-584">B</span></span></span></span></span></span></span><span class="MJXp-mtd" id="MJXp-Span-586" style="padding-left: 0em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-587"></span><span class="MJXp-mo" id="MJXp-Span-588" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-589" style="padding-left: 2em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-590"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-591" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-592" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-593" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-msubsup" id="MJXp-Span-594"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-595" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-596" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-mo" id="MJXp-Span-597" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-598"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-599" style="margin-right: 0.05em;">μ</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-600" style="vertical-align: -0.4em;">T</span></span><span class="MJXp-msubsup" id="MJXp-Span-601"><span class="MJXp-mo" id="MJXp-Span-602" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-603" style="vertical-align: 0.5em;">2</span></span><span class="MJXp-mo" id="MJXp-Span-604" style="margin-left: 0.267em; margin-right: 0.267em;">+</span><span class="MJXp-msubsup" id="MJXp-Span-605"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-606" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-607" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-608" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-msubsup" id="MJXp-Span-609"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-610" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-611" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-612" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-613"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-614" style="margin-right: 0.05em;">μ</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-615" style="vertical-align: -0.4em;">T</span></span><span class="MJXp-msubsup" id="MJXp-Span-616"><span class="MJXp-mo" id="MJXp-Span-617" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-618" style="vertical-align: 0.5em;">2</span></span></span></span><span class="MJXp-mtr" id="MJXp-Span-619" style="vertical-align: baseline;"><span class="MJXp-mtd" id="MJXp-Span-620" style="padding-top: 0.3em; text-align: right;"></span><span class="MJXp-mtd" id="MJXp-Span-621" style="padding-left: 0em; padding-top: 0.3em; text-align: left;"><span class="MJXp-mi" id="MJXp-Span-622"></span><span class="MJXp-mo" id="MJXp-Span-623" style="margin-left: 0.333em; margin-right: 0.333em;">=</span></span><span class="MJXp-mtd" id="MJXp-Span-624" style="padding-left: 2em; padding-top: 0.3em; text-align: right;"><span class="MJXp-msubsup" id="MJXp-Span-625"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-626" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-627" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-msubsup" id="MJXp-Span-628"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-629" style="margin-right: 0.05em;">ω</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-630" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-631" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-msubsup" id="MJXp-Span-632"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-633" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-634" style="vertical-align: -0.4em;">1</span></span><span class="MJXp-mo" id="MJXp-Span-635" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-636"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-637" style="margin-right: 0.05em;">μ</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-638" style="vertical-align: -0.4em;">0</span></span><span class="MJXp-msubsup" id="MJXp-Span-639"><span class="MJXp-mo" id="MJXp-Span-640" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-641" style="vertical-align: 0.5em;">2</span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-21">
+\begin{align*} 
+\sigma_B^2 &=& \omega _0 (\mu_0 - \mu_T)^2 + \omega_1(\mu_1-\mu_T)^2\\
+&=& \omega_0 \omega_1(\mu_1-\mu_0)^2
+\end{align*} 
+</script></p>
+<p>total variance:
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-642"><span class="MJXp-msubsup" id="MJXp-Span-643"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-644" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-646">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-645">T</span></span></span></span></span></span><span class="MJXp-mo" id="MJXp-Span-647" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-munderover" id="MJXp-Span-648"><span><span class="MJXp-over"><span class=" MJXp-script"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-654" style="margin-right: 0px; margin-left: 0px;">L</span></span><span class=""><span class="MJXp-mo" id="MJXp-Span-649" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span></span></span></span><span class=" MJXp-script"><span class="MJXp-mrow" id="MJXp-Span-650" style="margin-left: 0px;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-651">i</span><span class="MJXp-mo" id="MJXp-Span-652">=</span><span class="MJXp-mn" id="MJXp-Span-653">0</span></span></span></span><span class="MJXp-mo" id="MJXp-Span-655" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-656">i</span><span class="MJXp-mo" id="MJXp-Span-657" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-msubsup" id="MJXp-Span-658"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-659" style="margin-right: 0.05em;">μ</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-660" style="vertical-align: -0.4em;">T</span></span><span class="MJXp-msubsup" id="MJXp-Span-661"><span class="MJXp-mo" id="MJXp-Span-662" style="margin-left: 0em; margin-right: 0.05em;">)</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-663" style="vertical-align: 0.5em;">2</span></span><span class="MJXp-msubsup" id="MJXp-Span-664"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-665" style="margin-right: 0.05em;">p</span><span class="MJXp-mi MJXp-italic MJXp-script" id="MJXp-Span-666" style="vertical-align: -0.4em;">i</span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-22">\sigma_T^2 = \sum_{i=0}^L (i-\mu_T)^2 p_i</script></p>
+<p>separability:
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-667"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-668">λ</span><span class="MJXp-mo" id="MJXp-Span-669" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-msubsup" id="MJXp-Span-670"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-671" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-673">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-672">B</span></span></span></span></span></span><span class="MJXp-mrow" id="MJXp-Span-674"><span class="MJXp-mo" id="MJXp-Span-675" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-676"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-677" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-679">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-678">W</span></span></span></span></span></span><span class="MJXp-mspace" id="MJXp-Span-680" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mo" id="MJXp-Span-681" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mspace" id="MJXp-Span-682" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-683">κ</span><span class="MJXp-mo" id="MJXp-Span-684" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-msubsup" id="MJXp-Span-685"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-686" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-688">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-687">T</span></span></span></span></span></span><span class="MJXp-mrow" id="MJXp-Span-689"><span class="MJXp-mo" id="MJXp-Span-690" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-691"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-692" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-694">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-693">W</span></span></span></span></span></span><span class="MJXp-mspace" id="MJXp-Span-695" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mo" id="MJXp-Span-696" style="margin-left: 0em; margin-right: 0.222em;">,</span><span class="MJXp-mspace" id="MJXp-Span-697" style="width: 0.222em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-698">η</span><span class="MJXp-mo" id="MJXp-Span-699" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-msubsup" id="MJXp-Span-700"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-701" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-703">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-702">B</span></span></span></span></span></span><span class="MJXp-mrow" id="MJXp-Span-704"><span class="MJXp-mo" id="MJXp-Span-705" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-706"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-707" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-709">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-708">T</span></span></span></span></span></span></span></span><script type="math/tex; mode=display" id="MathJax-Element-23">\lambda = \sigma_B^2/\sigma_W^2 \:,\: \kappa = \sigma_T^2/\sigma_W^2 \:,\: \eta = \sigma_B^2/\sigma_T^2 </script></p>
+<p>Otsu's threshold is <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-710"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-711">k</span></span></span><script type="math/tex" id="MathJax-Element-24">k</script> such that separability is maximal (e.g.):</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-712"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-713">η</span><span class="MJXp-mo" id="MJXp-Span-714" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-msubsup" id="MJXp-Span-715"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-716" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-718">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-717">B</span></span></span></span></span></span><span class="MJXp-mo" id="MJXp-Span-719" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-720">k</span><span class="MJXp-mo" id="MJXp-Span-721" style="margin-left: 0em; margin-right: 0em;">)</span><span class="MJXp-mrow" id="MJXp-Span-722"><span class="MJXp-mo" id="MJXp-Span-723" style="margin-left: 0.111em; margin-right: 0.111em;">/</span></span><span class="MJXp-msubsup" id="MJXp-Span-724"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-725" style="margin-right: 0.05em;">σ</span><span class="MJXp-script-box" style="height: 1.86em; vertical-align: -0.64em;"><span class=" MJXp-script"><span><span style="margin-bottom: -0.25em;"><span class="MJXp-mn" id="MJXp-Span-727">2</span></span></span></span><span class=" MJXp-script"><span><span style="margin-top: -0.85em;"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-726">T</span></span></span></span></span></span><span class="MJXp-mo" id="MJXp-Span-728" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-729">k</span><span class="MJXp-mo" id="MJXp-Span-730" style="margin-left: 0em; margin-right: 0em;">)</span></span></span><script type="math/tex; mode=display" id="MathJax-Element-25">\eta = \sigma_B^2(k)/\sigma_T^2(k)</script>
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell24">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell16"><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">threshold_otsu</span>
+
+<span class="n">ima</span> <span class="o">=</span> <span class="mi">255</span><span class="o">*</span><span class="n">data</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Monocyte_no_vacuoles.JPG/712px-Monocyte_no_vacuoles.JPG'</span><span class="p">,</span><span class="n">as_grey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">th</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">th</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Otsu's thresold = </span><span class="si">%d</span><span class="s2">"</span><span class="o">%</span><span class="k">th</span> );
+</pre><a id="copy-button-codecell16" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell16">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell24" data-id="inputcell24"><label title="Toggle cell" for="hidebtninputcell24" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/skimage/io/_io.py:48: UserWarning: `as_grey` has been deprecated in favor of `as_gray`
+  warn('`as_grey` has been deprecated in favor of `as_gray`')
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_24_1.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell25">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>see also:</p>
+<ul>
+<li>Otsu's method <a class="citation" href="#otsu1979threshold">(Otsu, 1979)</a> p432</li>
+</ul>
+</blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell26">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="entropy-threshold">entropy threshold<a class="anchor-link" href="#entropy-threshold"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#entropy-threshold" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2><p>The threshold is the value maximizing total entropy, which is the sum of the two subspaces entropies below and above the threshold.</p>
+<span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math MJXp-display" id="MJXp-Span-731"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-732">e</span><span class="MJXp-mo" id="MJXp-Span-733" style="margin-left: 0.333em; margin-right: 0.333em;">=</span><span class="MJXp-mo" id="MJXp-Span-734" style="margin-left: 0.267em; margin-right: 0.267em;">−</span><span class="MJXp-mo" id="MJXp-Span-735" style="margin-left: 0.111em; margin-right: 0.167em;"><span class="MJXp-largeop">∑</span></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-736">p</span><span class="MJXp-mspace" id="MJXp-Span-737" style="width: 0.167em; height: 0em;"></span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-738">l</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-739">o</span><span class="MJXp-msubsup" id="MJXp-Span-740"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-741" style="margin-right: 0.05em;">g</span><span class="MJXp-mn MJXp-script" id="MJXp-Span-742" style="vertical-align: -0.4em;">2</span></span><span class="MJXp-mo" id="MJXp-Span-743" style="margin-left: 0em; margin-right: 0em;">(</span><span class="MJXp-mi MJXp-italic" id="MJXp-Span-744">p</span><span class="MJXp-mo" id="MJXp-Span-745" style="margin-left: 0em; margin-right: 0em;">)</span></span></span><script type="math/tex; mode=display" id="MathJax-Element-26"> e = - \sum p \, log_2 (p) </script><p>where <span class="MathJax_Preview" style="color: inherit;"><span class="MJXp-math" id="MJXp-Span-746"><span class="MJXp-mi MJXp-italic" id="MJXp-Span-747">p</span></span></span><script type="math/tex" id="MathJax-Element-27">p</script> is the probability of occurence for one gray level in one specific subspace.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell27">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell17"><span></span><span class="n">ima</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astronaut</span><span class="p">()[:,:,</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">h</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ima</span><span class="p">[:],</span><span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span><span class="n">normed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">entropy</span><span class="p">(</span><span class="n">symb</span><span class="p">,</span><span class="n">freq</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">freq</span><span class="o">/</span><span class="n">s</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">e</span>
+
+<span class="n">e0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">255</span><span class="p">):</span>
+    <span class="n">e0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">g</span><span class="p">),</span><span class="n">h</span><span class="p">[:</span><span class="n">g</span><span class="p">]))</span>
+    <span class="n">e1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entropy</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="n">h</span><span class="p">[</span><span class="n">g</span><span class="p">:</span><span class="mi">255</span><span class="p">]))</span>
+
+<span class="n">e0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
+<span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+
+<span class="n">e_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">e0</span><span class="o">+</span><span class="n">e1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">e0</span><span class="o">+</span><span class="n">e1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">e_max</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="o">&gt;</span><span class="n">e_max</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+</pre><a id="copy-button-codecell17" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell17">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell27" data-id="inputcell27"><label title="Toggle cell" for="hidebtninputcell27" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/olivier/miniconda3/envs/py3/lib/python3.7/site-packages/ipykernel_launcher.py:3: VisibleDeprecationWarning: Passing `normed=True` on non-uniform bins has always been broken, and computes neither the probability density function nor the probability mass function. The result is only correct if the bins are uniform, when density=True will produce the same result anyway. The argument will be removed in a future version of numpy.
+  This is separate from the ipykernel package so we can avoid doing imports until
+</pre>
+</div>
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_27_1.png">
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_27_2.png">
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_27_3.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell28">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre id="codecell18"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+</pre><a id="copy-button-codecell18" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell18">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_28_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell29">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="multi-spectral-theshold">multi-spectral theshold<a class="anchor-link" href="#multi-spectral-theshold"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#multi-spectral-theshold" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2><p>For multi-spectral images (e.g. rgb, hsv, etc) one can consider each spectral plane independently and group the obtained segmentations.</p>
+<p>The following example apply an Otsu's threshold on each color plane and make a combine the segmented results.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell30">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell19"><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">threshold_otsu</span>
+<span class="kn">from</span> <span class="nn">skimage.color</span> <span class="k">import</span> <span class="n">rgb2hsv</span>
+
+<span class="n">rgb</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">immunohistochemistry</span><span class="p">()</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span>
+
+<span class="n">th_r</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">th_g</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+<span class="n">th_b</span> <span class="o">=</span> <span class="n">threshold_otsu</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">mix</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="n">th_r</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="n">th_g</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span><span class="o">&gt;</span><span class="n">th_b</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="n">th_r</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">g</span><span class="o">&gt;</span><span class="n">th_g</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">b</span><span class="o">&gt;</span><span class="n">th_b</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mix</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre><a id="copy-button-codecell19" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell19">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell30" data-id="inputcell30"><label title="Toggle cell" for="hidebtninputcell30" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_30_0.png">
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_30_1.png">
+</div>
+
+</div>
+</div>
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_30_2.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell31">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Questions:</p>
+<ul>
+<li>what appens in an other color space ?</li>
+<li>can we use this approach for images that are not multi-spectral ?</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell32">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="adding-spectral-dimensions">adding spectral dimensions<a class="anchor-link" href="#adding-spectral-dimensions"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#adding-spectral-dimensions" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h2><p>Sometime the gray level information is not enough to segment the image, the folowing image presents clearly 3 regions of different average gray level.</p>
+<p>Howerver, we also distinguish a variable texture in the central part of the image, the texture is more coarse than on the lateral borders.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell33">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell20"><span></span><span class="kn">import</span> <span class="nn">skimage.filters.rank</span> <span class="k">as</span> <span class="nn">skr</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
+
+<span class="n">ima</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">)))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">ima</span><span class="p">[</span><span class="mi">50</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">:</span><span class="mi">150</span><span class="p">]</span> <span class="o">=</span> <span class="mi">150</span>
+<span class="n">ima</span><span class="p">[</span><span class="mi">130</span><span class="p">:</span><span class="mi">200</span><span class="p">,</span><span class="mi">130</span><span class="p">:</span><span class="mi">200</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">ima</span> <span class="o">=</span> <span class="n">skr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">mask</span> <span class="o">=</span> <span class="mf">10.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">mask</span><span class="p">[:,</span><span class="mi">100</span><span class="p">:</span><span class="mi">180</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="c1"># add variable noise</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">ima</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">-.</span><span class="mi">5</span>
+<span class="n">ima</span> <span class="o">=</span> <span class="p">(</span><span class="n">ima</span> <span class="o">+</span> <span class="n">mask</span><span class="o">*</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+
+<span class="n">entropy</span> <span class="o">=</span> <span class="mf">255.</span><span class="o">*</span><span class="n">skr</span><span class="o">.</span><span class="n">entropy</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">disk</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">/</span><span class="mi">8</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ima</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">);</span>
+</pre><a id="copy-button-codecell20" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell20">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell33" data-id="inputcell33"><label title="Toggle cell" for="hidebtninputcell33" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_33_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell34">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>the gray level histogram exhibits three peaks corresponding to the three gray levels present in the image.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell35">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell21"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+</pre><a id="copy-button-codecell21" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell21">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell35" data-id="inputcell35"><label title="Toggle cell" for="hidebtninputcell35" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_35_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell36">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>in order to detect the variation of noise inside the central part, one can use a local entropy measurement, we now observe a clear contrast between the central band and the image left and right borders. Entropy is also sensitive to sharp gray level variation, so the box borders are also emphasized.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell37">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell22"><span></span><span class="n">display_hist</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+</pre><a id="copy-button-codecell22" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell22">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell37" data-id="inputcell37"><label title="Toggle cell" for="hidebtninputcell37" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_37_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell38">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell23"><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">ima</span><span class="p">)</span>
+<span class="n">r</span><span class="p">[</span><span class="n">ima</span><span class="o">&gt;</span><span class="mi">110</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">r</span><span class="p">[</span><span class="n">ima</span><span class="o">&gt;</span><span class="mi">140</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="n">ima</span><span class="o">&gt;</span><span class="mi">140</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre><a id="copy-button-codecell23" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell23">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell38" data-id="inputcell38"><label title="Toggle cell" for="hidebtninputcell38" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_38_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell tag_hide_input" id="inputcell39">
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight hl-ipython3 hidden"><pre id="codecell24"><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">entropy</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="n">entropy</span><span class="o">&gt;</span><span class="mi">110</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">s</span><span class="p">[</span><span class="n">entropy</span><span class="o">&gt;</span><span class="mi">140</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">();</span>
+</pre><a id="copy-button-codecell24" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#codecell24">
+    <img src="/~odebeir/_site/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a></div>
+
+    </div>
+</div>
+<input class="hidebtn" type="checkbox" id="hidebtninputcell39" data-id="inputcell39"><label title="Toggle cell" for="hidebtninputcell39" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label></div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="jb_output_wrapper }}">
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="../../images/features/04-Image_segmentation/01-Histogram_based_image_segmentation_39_0.png">
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="jb_cell" id="inputcell40">
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="References">References<a class="anchor-link" href="#References"> </a><a class="anchorjs-link " aria-label="Anchor" data-anchorjs-icon="" href="#References" style="font: 1em/1 anchorjs-icons; padding-left: 0.375em;"></a></h3><p></p><ol class="bibliography"><li><span id="otsu1979threshold">Otsu, N. (1979). A threshold selection method from gray-level histograms. <i>IEEE Transactions on Systems, Man, and Cybernetics</i>, <i>9</i>(1), 62–66.</span></li></ol><p></p>
+
+</div>
+</div>
+</div>
+</div>
+
+ 
+
+
+            </div>
+            <nav class="c-page__nav">
+  
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/~odebeir/_site/features/04-Image_segmentation/content.html">
+      〈 <span class="u-margin-right-tiny"></span> Image segmentation
+    </a>
+  
+
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/~odebeir/_site/features/04-Image_segmentation/02-Border-based_segmentation.html">
+      Border based segmentation <span class="u-margin-right-tiny"></span> 〉
+    </a>
+  
+</nav>
+
+            <footer>
+  <p class="footer">This page was created by <a href="https://github.com/jupyter/jupyter-book/graphs/contributors">The Jupyter Book Community</a></p>
+</footer>
+
+        </main></div>
+      
+    
+  
+
+</body></html>
